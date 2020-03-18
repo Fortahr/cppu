@@ -1,0 +1,10 @@
+VSProject/Release/
+VSProject/Debug/
+*.sdf
+*.opensdf
+*.db
+VSProject/x64/
+lib/
+*.user
+*.suo
+VSProject/.vs/

@@ -1,0 +1,2 @@
+# CPPUtilities
+Crossplatform C++ library
