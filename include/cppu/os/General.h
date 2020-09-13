@@ -11,48 +11,27 @@ namespace cppu
 	namespace os
 	{
 #ifdef WIN32
-		HANDLE appInstance;
 		FILE* stream;
 #endif
 
-		bool IsInstanceRunning(char* sAppName)
+		bool IsInstanceRunning(char* applicationName)
 		{
 #ifdef WIN32
-			HWND     hWndMe;
-			int      attempt;
-
-			for (attempt = 0; attempt < 2; attempt++)
-			{
-				// Create or open a named semaphore.
-				appInstance = CreateSemaphore(NULL, 0, 1, sAppName);
-				// Close handle and return NULL if existing semaphore was opened.
-				if ((appInstance != NULL) &&
-					(GetLastError() == ERROR_ALREADY_EXISTS))
-				{  // Someone has this semaphore open...
-					CloseHandle(appInstance);
-					appInstance = NULL;
-					hWndMe = FindWindow(sAppName, NULL);
-					if (hWndMe && IsWindow(hWndMe))
-					{  // I found the guy, try to wake him up
-						if (SetForegroundWindow(hWndMe))
-						{  // Windows says we woke the other guy up
-							return true;
-						}
-					}
-					Sleep(100); // Maybe the semaphore will go away like the window did...
-				}
-				else
-				{  // If new semaphore was created, return FALSE.
-					return false;
-				}
+			// try to create or open a named semaphore.
+			HANDLE appInstance = CreateSemaphore(nullptr, 0, 1, applicationName);
+			if (appInstance != nullptr && GetLastError() == ERROR_ALREADY_EXISTS)
+			{ 
+				// semaphore is open
+				CloseHandle(appInstance);
+				appInstance = nullptr;
+				
+				return FindWindow(applicationName, nullptr) != nullptr;
 			}
-			// We never got the semaphore, so we must 
-			// behave as if a previous instance exists
-			return true;
+			else
+				return false;
 
 #else
-			std::string command = "ps -Ac | grep '" + std::string(sAppName) + "' > /dev/null";
-			return system("ps -Ac | grep 'AProcessName' > /dev/null") == 0;
+			return system("ps -Ac | grep '" + std::string(applicationName) + "' > /dev/null") == 0;
 #endif
 		}
 

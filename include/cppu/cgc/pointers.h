@@ -42,7 +42,7 @@ namespace cppu
 			}
 
 		public:
-			typedef T Type;
+			typedef T element_type;
 
 			// constructors
 			strong_ptr()
@@ -155,6 +155,7 @@ namespace cppu
 			inline operator bool() const { return pointer != nullptr; }
 
 			inline T* operator->() const { return pointer; }
+			inline T& operator*() const { return *pointer; }
 
 			/*weak_ptr<T> weak_ptr()
 			{
@@ -207,7 +208,7 @@ namespace cppu
 			template<typename T1, typename T2, typename> friend const weak_ptr<T1>& const_pointer_cast(const weak_ptr<T2>&) noexcept;
 			template<typename T1, typename T2, typename> friend const weak_ptr<T1>& reinterpret_pointer_cast(const weak_ptr<T2>&) noexcept;
 		private:
-			T * pointer;
+			T* pointer;
 			details::base_counter* refCounter;
 
 			weak_ptr(T* pointer, details::base_counter* refCounter)
@@ -218,7 +219,7 @@ namespace cppu
 			}
 
 		public:
-			typedef T Type;
+			typedef T element_type;
 
 			// constructors
 			weak_ptr()
@@ -290,6 +291,7 @@ namespace cppu
 			inline operator bool() const { return pointer != nullptr; }
 
 			inline T* operator->() const { return pointer; }
+			inline T& operator*() const { return *pointer; }
 
 		private:
 			inline void IncrementWeakReference()
@@ -319,13 +321,13 @@ namespace cppu
 			T* pointer;
 
 		public:
-			typedef T Type;
+			typedef T element_type;
 
 			raw_ptr(T* ptr)
 				: pointer(ptr)
 			{}
 			
-			template <typename T2, typename = typename std::enable_if<std::is_base_of<T, typename T2::Type>::value>::type>
+			template <typename T2, typename = typename std::enable_if<std::is_base_of<T, typename T2::element_type>::value>::type>
 			raw_ptr(const T2& ptr)
 				: pointer(ptr.pointer)
 			{}
