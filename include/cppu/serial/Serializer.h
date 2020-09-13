@@ -148,6 +148,15 @@ namespace cppu
 			template<typename T>
 			bool Write(const T& data);
 
+			template<typename It>
+			bool Write(It begin, It end);
+
+			template<typename K, typename T>
+			bool Write(const std::pair<K, T>& data);
+
+			template<class... TT>
+			bool Write(const std::tuple<TT...>& data);
+
 			std::string_view Finish();
 			void FinishSubArchive(SubArchiveWriter& subArchive);
 
@@ -175,7 +184,7 @@ namespace cppu
 		public:
 			SubArchiveWriter(SubArchiveWriter&& move)
 				: version(std::move(move.version))
-				, writer(std::move(move.writer))
+				, writer(move.writer)
 				, swappedTable(std::move(move.swappedTable))
 				, startPosition(std::move(move.startPosition))
 			{
@@ -193,6 +202,15 @@ namespace cppu
 
 			template<typename T>
 			bool Write(const T& data);
+
+			template<typename It>
+			bool Write(It begin, It end);
+
+			template<typename K, typename T>
+			bool Write(const std::pair<K, T>& data);
+
+			template<class... TT>
+			bool Write(const std::tuple<TT...>& data);
 
 			~SubArchiveWriter();
 		};

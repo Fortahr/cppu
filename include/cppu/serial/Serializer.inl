@@ -44,28 +44,6 @@ namespace cppu
 		template<typename T> inline constexpr bool class_has_serialize_v = serialize_checker<T>::serialize_value;
 		template<typename T> inline constexpr bool class_has_deserialize_v = serialize_checker<T>::deserialize_value;
 
-		template <typename Type>
-		class is_fundamental_container
-		{
-			// This type won't compile if the second template parameter isn't of type T,
-			// so I can put a function pointer type in the first parameter and the function
-			// itself in the second thus checking that the function has a specific signature.
-			template <typename T, T> struct TypeCheck;
-
-			typedef char Yes;
-			typedef long No;
-
-			// A helper struct to hold the declaration of the function pointer.
-			// Change it if the function signature changes.
-			template <typename T> struct Serialize { typedef void (T::* func_ptr)(ArchiveWriter&) const; };
-			template <typename T> static Yes HasFundamentalType(TypeCheck<typename Serialize<T>::func_ptr, &T::Serialize>*);
-			template <typename T> static No  HasFundamentalType(...);
-
-		public:
-			static bool const serialize_value = sizeof(HasSerialize<Type>(0)) == sizeof(Yes);
-			static bool const deserialize_value = sizeof(HasDeSerialize<Type>(0)) == sizeof(Yes);
-		};
-
 		/*template <class T>
 		void Serialize(ArchiveWriter& writer, T& data)
 		{
@@ -127,7 +105,8 @@ namespace cppu
 					writePosition += sizeof(ValueSize);
 
 					cppu::stor::vector<char> vtable;
-					vtable.resize_no_construct(references.size() * (sizeof(ValuePos) + sizeof(Reference)));
+					uint32_t referenceSize = references.size();
+					vtable.resize_no_construct(referenceSize * (sizeof(ValuePos) + sizeof(Reference)));
 					char* vtableWritePtr = vtable.data();
 
 					do
@@ -138,6 +117,12 @@ namespace cppu
 
 						auto& ref = references.front();
 						ref.serialize();
+
+						if (referencesTaken.size() > referenceSize)
+						{
+							referenceSize = referencesTaken.size();
+							vtable.resize_no_construct(referenceSize * (sizeof(ValuePos) + sizeof(Reference)));
+						}
 
 						reinterpret_cast<ValueSize&>(buffer[sizePosition]) = writePosition - sizePosition - sizeof(ValueSize);
 
@@ -214,7 +199,12 @@ namespace cppu
 		inline bool ArchiveWriter::Serialize(Key key, It begin, It end)
 		{
 			AddVTableEntry(key);
+			return Write(begin, end);
+		}
 
+		template<typename It>
+		inline bool ArchiveWriter::Write(It begin, It end)
+		{
 			typedef typename std::iterator_traits<It>::value_type T;
 			ValuePos count = std::distance(begin, end);
 
@@ -361,6 +351,19 @@ namespace cppu
 			return false;
 		}
 
+		template<typename K, typename T>
+		inline bool ArchiveWriter::Write(const std::pair<K, T>& data)
+		{
+			Write(data.first);
+			return Write(data.second);
+		}
+
+		template<class... TT>
+		inline bool ArchiveWriter::Write(const std::tuple<TT...>& data)
+		{
+			std::apply(Write, data);
+		}
+
 		template<>
 		inline bool ArchiveWriter::Write(const std::string& data)
 		{
@@ -448,7 +451,7 @@ namespace cppu
 			return false;
 		}
 
-		SubArchiveWriter ArchiveWriter::CreateSubArchive(VTableSize tableSize, ArchiveVersion version, ValuePos initialBufferSize)
+		inline SubArchiveWriter ArchiveWriter::CreateSubArchive(VTableSize tableSize, ArchiveVersion version, ValuePos initialBufferSize)
 		{
 			EnoughCapacityOrReserve(writePosition + initialBufferSize);
 
@@ -486,34 +489,52 @@ namespace cppu
 		}
 
 		template<typename T>
-		bool SubArchiveWriter::Serialize(Key key, const T& data)
+		inline bool SubArchiveWriter::Serialize(Key key, const T& data)
 		{
 			return writer.Serialize(key, data);
 		}
 
-		bool SubArchiveWriter::Serialize(Key key, const void* data, std::size_t size)
+		inline bool SubArchiveWriter::Serialize(Key key, const void* data, std::size_t size)
 		{
 			return writer.Serialize(key, data, size);
 		}
 
 		template<typename It>
-		bool SubArchiveWriter::Serialize(Key key, It begin, It end)
+		inline bool SubArchiveWriter::Serialize(Key key, It begin, It end)
 		{
 			return writer.Serialize(key, begin, end);
 		}
 
-		bool SubArchiveWriter::Write(const void* data, std::size_t size)
+		inline bool SubArchiveWriter::Write(const void* data, std::size_t size)
 		{
 			return writer.Write(data, size);
 		}
 
 		template<typename T>
-		bool SubArchiveWriter::Write(const T& data)
+		inline bool SubArchiveWriter::Write(const T& data)
 		{
 			return writer.Write(data);
 		}
 
-		SubArchiveWriter::~SubArchiveWriter()
+		template<typename It>
+		inline bool SubArchiveWriter::Write(It begin, It end)
+		{
+			return writer.Write(begin, end);
+		}
+
+		template<typename K, typename T>
+		inline bool SubArchiveWriter::Write(const std::pair<K, T>& data)
+		{
+			return writer.Write(data);
+		}
+
+		template<class... TT>
+		inline bool SubArchiveWriter::Write(const std::tuple<TT...>& data)
+		{
+			return writer.Write(data);
+		}
+
+		inline SubArchiveWriter::~SubArchiveWriter()
 		{
 			writer.FinishSubArchive(*this);
 		}
