@@ -54,10 +54,27 @@ namespace cppu
 	struct is_container : std::integral_constant<bool, has_const_iterator<T>::value && has_begin_and_end<T>::value>
 	{ };
 
+	template<typename T> inline constexpr bool is_container_v = is_container<T>::value;
+
 	// Is string check
 	template<typename T>
-	struct is_string : public std::integral_constant<bool, std::is_same<char*, typename std::decay<T>::type>::value || std::is_same<const char*, typename std::decay<T>::type>::value> {};
+	struct is_string : public std::integral_constant<bool, std::is_same_v<char*, typename std::decay_t<T>> || std::is_same_v<const char*, typename std::decay_t<T>>> {};
 
 	template<>
 	struct is_string<std::string> : std::true_type {};
+
+	template <typename T, typename = void>
+	struct is_map : std::false_type {};
+
+	template <typename T>
+	struct is_map<T, std::enable_if_t<std::is_same<typename T::value_type, std::pair<const typename T::key_type, typename T::mapped_type>>::value>> : std::true_type {};
+
+	template<typename T> inline constexpr bool is_map_v = is_map<T>::value;
+
+	template<typename T> struct is_vector : public std::false_type {};
+	template<typename T, typename A> struct is_vector<std::vector<T, A>> : public std::true_type {};
+
+	template<typename T> inline constexpr bool is_vector_v = is_vector<T>::value;
+
+
 }

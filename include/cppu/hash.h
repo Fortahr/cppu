@@ -14,14 +14,14 @@ namespace cppu
 
 		constexpr const uint32_t STRING_HASH_KEY = 5381;
 
-		constexpr hash_t hash_function(const char* pTail, hash_t hash = STRING_HASH_KEY)
+		inline constexpr hash_t hash_function(const char* pTail, hash_t hash = STRING_HASH_KEY)
 		{
 			return pTail[0] == STRING_END_BYTE
 				? hash
 				: hash_function(pTail + 1, ((hash << STRING_BIT_SHIFT) + hash) + (int32_t)*pTail);
 		}
 
-		constexpr hash_t hash_function(const char* pTail, const char* endTail, hash_t hash = STRING_HASH_KEY)
+		inline constexpr hash_t hash_function(const char* pTail, const char* endTail, hash_t hash = STRING_HASH_KEY)
 		{
 			while (pTail < endTail)
 			{

@@ -9,6 +9,109 @@ namespace cppu
 {
 	namespace serial
 	{
+		namespace impl
+		{
+			template <typename T>
+			constexpr auto template_hash() noexcept
+			{
+#ifdef __clang__
+				const char* name = __PRETTY_FUNCTION__;
+				return cppu::impl::hash_function(name + strlen("auto cppu::serial::impl::template_name() [T = "), strchr(name, '<'));
+#elif defined(__GNUC__)
+				const char* name = __PRETTY_FUNCTION__;
+				return cppu::impl::hash_function(name + strlen("constexpr auto cppu::serial::impl::template_name() [with T = "), strchr(name, '<'));
+#elif defined(_MSC_VER)
+				const char* name = __FUNCSIG__;
+				name += strlen("auto __cdecl cppu::serial::impl::template_name<class ");
+				return cppu::impl::hash_function(name, strchr(name, '<'));
+#else
+				static_assert(false, "no implementation found");
+#endif
+			}
+
+			template <typename T>
+			constexpr auto class_hash() noexcept
+			{
+#ifdef __clang__
+				const char* name = __PRETTY_FUNCTION__;
+				return cppu::impl::hash_function(name + strlen("auto cppu::serial::impl::class_hash() [T = "), name + strlen(name) - strlen("]"));
+#elif defined(__GNUC__)
+				const char* name = __PRETTY_FUNCTION__;
+				return cppu::impl::hash_function(name + strlen("constexpr auto cppu::serial::impl::class_hash() [with T = "), name + strlen(name) - strlen("]"));
+#elif defined(_MSC_VER)
+				const char* name = __FUNCSIG__;
+				return cppu::impl::hash_function(name + strlen("auto __cdecl cppu::serial::impl::class_hash<class "), name + strlen(name) - strlen(">(void) noexcept"));
+#else
+				static_assert(false, "no implementation found");
+#endif
+			}
+
+			constexpr cppu::hash_t hash_combine(cppu::hash_t hash1, cppu::hash_t hash2)
+			{
+				return hash2 ^ hash1 + 0x9e3779b9 + (hash2 << 6) + (hash2 >> 2);
+			}
+
+			template <typename T>
+			constexpr void WriteBase(ArchiveWriter& writer, const base<T>& type)
+			{
+				type.ptr->T::Serialize(writer);
+			}
+
+			template <typename T>
+			constexpr void ReadBase(ArchiveReader& reader, base<T>& type)
+			{
+				type.ptr->T::DeSerialize(reader);
+			}
+		}
+
+		inline void Serialize() {}
+		inline void DeSerialize() {}
+
+
+
+		template <class T>
+		inline void MemcpySerialize(cppu::serial::ArchiveWriter& writer, const T& data)
+		{
+			static_assert(!std::is_polymorphic_v<T>, "Serialize function is missing, as it's a polymorphic type using memcpy will bring undefined behavior. <check below/output>");
+
+			writer.Write(&data, sizeof(T));
+		}
+
+		template <class T>
+		inline void MemcpyDeSerialize(cppu::serial::ArchiveReader& reader, T& data)
+		{
+			static_assert(!std::is_polymorphic_v<T>, "DeSerialize function is missing, as it's a polymorphic type using memcpy will bring undefined behavior. <check below/output>");
+
+			reader.Read(&data, sizeof(T));
+		}
+
+		inline void Construct() {}
+
+		template <class T, std::enable_if_t<std::is_constructible_v<T> || std::is_constructible_v<T, cppu::serial::ArchiveReader&>, int> = 0>
+		inline void Construct(cppu::serial::ArchiveReader& reader, cgc::strong_ptr<T>& ptr)
+		{
+			if constexpr (std::is_constructible_v<T, cppu::serial::ArchiveReader&>)
+				ptr = cgc::construct_new<T>(reader);
+			else
+			{
+				ptr = cgc::construct_new<T>();
+				reader.Read(*ptr);
+			}
+		}
+
+		template <class T, std::enable_if_t<std::is_constructible_v<T> || std::is_constructible_v<T, cppu::serial::ArchiveReader&>, int> = 0>
+		inline void Construct(cppu::serial::ArchiveReader& reader, std::shared_ptr<T>& ptr)
+		{
+			if constexpr (std::is_constructible_v<T, cppu::serial::ArchiveReader&>)
+				ptr = std::make_shared<T>(reader);
+			else
+			{
+				ptr = std::make_shared<T>();
+				reader.Read(*ptr);
+			}
+		}
+
+
 		template <typename Type>
 		class serialize_checker
 		{
@@ -20,40 +123,76 @@ namespace cppu
 			typedef char Yes;
 			typedef long No;
 
-			// A helper struct to hold the declaration of the function pointer.
-			// Change it if the function signature changes.
-			template <typename T> struct Construct { typedef void (T::* func_ptr)(ArchiveWriter&, T&) const; };
-			template <typename T> static Yes HasConstruct(TypeCheck<typename Construct<T>::func_ptr, &T::Construct>*);
-			template <typename T> static No  HasConstruct(...);
 
-			template <typename T> struct Serialize { typedef void (T::*func_ptr)(ArchiveWriter&) const; };
-			template <typename T> static Yes HasSerialize(TypeCheck<typename Serialize<T>::func_ptr, &T::Serialize>*);
+			template <typename T, typename P> struct ClassConstruct { typedef void (T::* func_ptr)(ArchiveReader&, P&); };
+			template <typename T, typename P> static Yes HasConstruct(TypeCheck<typename ClassConstruct<T, P>::func_ptr, &T::Construct>*);
+			template <typename T, typename P> static No  HasConstruct(...);
+
+			template <typename T> struct ClassSerialize { typedef void (T::* func_ptr)(ArchiveWriter&) const; };
+			template <typename T> static Yes HasSerialize(TypeCheck<typename ClassSerialize<T>::func_ptr, &T::Serialize>*);
 			template <typename T> static No  HasSerialize(...);
 
-			template <typename T> struct DeSerialize { typedef void (T::* func_ptr)(ArchiveReader&); };
-			template <typename T> static Yes HasDeSerialize(TypeCheck<typename DeSerialize<T>::func_ptr, &T::DeSerialize>*);
+			template <typename T> struct ClassDeSerialize { typedef void (T::* func_ptr)(ArchiveReader&); };
+			template <typename T> static Yes HasDeSerialize(TypeCheck<typename ClassDeSerialize<T>::func_ptr, &T::DeSerialize>*);
 			template <typename T> static No  HasDeSerialize(...);
 
+			template <typename T> static Yes NamespaceHasSerialize(TypeCheck<typedef void(ArchiveWriter&, const T&), &Serialize>*);
+			template <typename T> static No  NamespaceHasSerialize(...);
+
+			template <typename T> static Yes NamespaceHasDeSerialize(TypeCheck<typedef void(ArchiveReader&, T&), &DeSerialize>*);
+			template <typename T> static No  NamespaceHasDeSerialize(...);
+
+
 		public:
-			static bool const construct_value = sizeof(HasConstruct<Type>(0)) == sizeof(Yes);
+			template <typename P>
+			static bool const class_construct_value = sizeof(HasConstruct<Type, P>(0)) == sizeof(Yes);
 			static bool const serialize_value = sizeof(HasSerialize<Type>(0)) == sizeof(Yes);
 			static bool const deserialize_value = sizeof(HasDeSerialize<Type>(0)) == sizeof(Yes);
+
+			static bool const namespace_serialize_value = sizeof(NamespaceHasSerialize<Type>(0)) == sizeof(Yes);
+			static bool const namespace_deserialize_value = sizeof(NamespaceHasDeSerialize<Type>(0)) == sizeof(Yes);
 		};
 
-		template<typename T> inline constexpr bool class_has_construct_v = serialize_checker<T>::construct_value;
+		template<typename T, typename P> inline constexpr bool class_has_construct_v = serialize_checker<T>::template class_construct_value<P>;
 		template<typename T> inline constexpr bool class_has_serialize_v = serialize_checker<T>::serialize_value;
 		template<typename T> inline constexpr bool class_has_deserialize_v = serialize_checker<T>::deserialize_value;
 
-		/*template <class T>
-		void Serialize(ArchiveWriter& writer, T& data)
+		template<typename T> inline constexpr bool namespace_has_serialize_v = serialize_checker<T>::namespace_serialize_value;
+		template<typename T> inline constexpr bool namespace_has_deserialize_v = serialize_checker<T>::namespace_deserialize_value;
+
+		template <typename T, typename = void> struct namespace_has_construct : std::false_type {};
+		template <typename T> struct namespace_has_construct<T, std::void_t<decltype(Construct(std::declval<ArchiveReader&>(), std::declval<T&>())) >> : std::true_type {};
+		template<typename T> inline constexpr bool namespace_has_construct_v = namespace_has_construct<T>::value;
+
+		namespace impl
 		{
+			template <typename T>
+			inline void ImplSerialize(ArchiveWriter& reader, const T& data)
+			{
+				if constexpr (namespace_has_serialize_v<T>)
+					Serialize(reader, data);
+				else
+					serial::MemcpySerialize(reader, data);
+			}
+
+			template <typename T>
+			inline void ImplDeSerialize(ArchiveReader& reader, T& data)
+			{
+				if constexpr (class_has_deserialize_v<T>)
+					data.DeSerialize(reader);
+				else if constexpr (namespace_has_deserialize_v<T>)
+					DeSerialize(reader, data);
+				else
+					serial::MemcpyDeSerialize(reader, data);
+			}
 		}
 
 		template <class T>
-		void DeSerialize(ArchiveReader& reader, T& data)
+		inline void Construct(cppu::serial::ArchiveReader& reader, T*& ptr)
 		{
-
-		}*/
+			ptr = new std::remove_pointer_t<T>();
+			impl::ImplDeSerialize(reader, *ptr);
+		}
 
 		inline ValuePos VTableWrite::GetRow(Key key) const
 		{
@@ -151,7 +290,6 @@ namespace cppu
 			return std::string_view(buffer, writePosition);
 		}
 
-		
 		inline bool ArchiveWriter::Reserve(ValuePos size)
 		{
 			char* newBuffer = static_cast<char*>(realloc(buffer, size));
@@ -164,7 +302,7 @@ namespace cppu
 			}
 			else if (newBuffer != buffer)
 				buffer = newBuffer;
-			
+
 			bufferSize = size;
 
 			return true;
@@ -206,40 +344,47 @@ namespace cppu
 		inline bool ArchiveWriter::Write(It begin, It end)
 		{
 			typedef typename std::iterator_traits<It>::value_type T;
-			ValuePos count = std::distance(begin, end);
+			ValueSize count = std::distance(begin, end);
 
 			EnoughCapacityOrReserve(sizeof(ValuePos));
 
-			reinterpret_cast<ValuePos&>(buffer[writePosition]) = count; // store count of array/list
-			ValuePos objectSizePosition = writePosition + sizeof(ValuePos);
-			writePosition += sizeof(ValuePos);
+			reinterpret_cast<ValueSize&>(buffer[writePosition]) = count; // store count of array/list
+			writePosition += sizeof(ValueSize);
 
 			if constexpr (std::is_fundamental_v<T>)
 			{
 				if (EnoughCapacityOrReserve(count * sizeof(T)))
 				{
+					reinterpret_cast<ValueSize&>(buffer[writePosition]) = sizeof(T);
+					writePosition += sizeof(ValueSize);
+
 					for (; begin != end; ++begin)
 						WriteDirect(&(*begin), sizeof(T));
 
-					reinterpret_cast<ValuePos&>(buffer[objectSizePosition]) = sizeof(T);
 				}
 			}
 			else
 			{
 				for (; begin != end; ++begin)
 				{
-					ValuePos sizePosition = writePosition;
-					writePosition += sizeof(ValuePos);
+					ValueSize sizePosition = writePosition;
+					writePosition += sizeof(ValueSize);
 
 					Write(*begin);
 
-					reinterpret_cast<ValuePos&>(buffer[sizePosition]) = writePosition - sizePosition - sizeof(ValuePos);
+					reinterpret_cast<ValueSize&>(buffer[sizePosition]) = writePosition - sizePosition - sizeof(ValuePos);
 				}
 
 				return true;
 			}
-			
+
 			return false;
+		}
+
+		template<typename T>
+		inline bool ArchiveWriter::Write(const std::vector<T>& vector)
+		{
+			return Write(vector.begin(), vector.end());
 		}
 
 		inline void ArchiveWriter::AddVTableEntry(Key key)
@@ -278,7 +423,7 @@ namespace cppu
 
 		template<typename T>
 		inline bool ArchiveWriter::Write(const T& data)
-		{			
+		{
 			// basic fundamental types
 			if constexpr (std::is_fundamental_v<T>)
 			{
@@ -297,10 +442,13 @@ namespace cppu
 
 				return false;
 			}
-			// reference / pointer types
+			// pointer types
 			else if constexpr (std::is_pointer_v<T>)
 			{
-				std::size_t key = reinterpret_cast<const std::size_t&>(data);
+				if (!data)
+					return false;
+
+				void* key = &*data;
 				Reference reference;
 
 				auto found = referencesTaken.find(key);
@@ -310,7 +458,7 @@ namespace cppu
 					reference = static_cast<Reference>(references.size());
 
 					referencesTaken.emplace(key, reference);
-					references.emplace_back(key, [this, object]() { this->Write(object); });
+					references.emplace_back(reference, [this, object]() { this->Write(object); });
 				}
 				else
 					reference = found->second;
@@ -321,7 +469,10 @@ namespace cppu
 			// smart pointer types
 			else if constexpr (::cppu::is_smart_ptr_v<T>)
 			{
-				std::size_t key = reinterpret_cast<std::size_t&>(*data);
+				if (!data)
+					return false;
+
+				void* key = &*data;
 				Reference reference;
 				if (referencesTaken.count(key) == 0)
 				{
@@ -330,7 +481,7 @@ namespace cppu
 					reference = static_cast<Reference>(references.size());
 
 					referencesTaken.emplace(key, reference);
-					references.emplace_back(key, [this, object]() { this->Write(object); });
+					references.emplace_back(reference, [this, &object = object]() { this->Write(object); });
 				}
 				else
 					reference = referencesTaken.at(key);
@@ -341,11 +492,20 @@ namespace cppu
 			// all other value types
 			else
 			{
-				
+				if constexpr (std::is_class_v<T>)
+				{
+					if constexpr (std::is_polymorphic_v<T>)
+					{
+						auto& classTable = Serializer::ClassIDs();
+						auto found = classTable.find(typeid(data));
+						Write(static_cast<Reference>(found != classTable.end() ? found->second : 0));
+					}
+				}
+
 				if constexpr (class_has_serialize_v<T>)
 					data.Serialize(*this);
 				else
-					serial::Serialize(*this, data);
+					impl::ImplSerialize(*this, data);
 			}
 
 			return false;
@@ -430,7 +590,7 @@ namespace cppu
 			if (EnoughCapacityOrReserve(size))
 			{
 				char* dataPtr = buffer + writePosition;
-				
+
 				memcpy(dataPtr, &contentSize, sizeof(ValuePos));
 				dataPtr += sizeof(ValuePos);
 
@@ -449,6 +609,15 @@ namespace cppu
 			// ELSE:
 
 			return false;
+		}
+
+		template<typename... P>
+		inline void ArchiveWriter::Polymorphic(const P... bases)
+		{
+			//bool success = Write(impl::class_hash<T>());
+
+			// fold expression
+			(impl::WriteBase(*this, bases), ...);
 		}
 
 		inline SubArchiveWriter ArchiveWriter::CreateSubArchive(VTableSize tableSize, ArchiveVersion version, ValuePos initialBufferSize)
@@ -522,6 +691,12 @@ namespace cppu
 			return writer.Write(begin, end);
 		}
 
+		template<typename T>
+		inline bool SubArchiveWriter::Write(const std::vector<T>& vector)
+		{
+			return writer.Write(vector);
+		}
+
 		template<typename K, typename T>
 		inline bool SubArchiveWriter::Write(const std::pair<K, T>& data)
 		{
@@ -532,6 +707,12 @@ namespace cppu
 		inline bool SubArchiveWriter::Write(const std::tuple<TT...>& data)
 		{
 			return writer.Write(data);
+		}
+
+		template<typename... P>
+		inline void SubArchiveWriter::Polymorphic(const P... bases)
+		{
+			writer.Polymorphic(bases...);
 		}
 
 		inline SubArchiveWriter::~SubArchiveWriter()
@@ -570,50 +751,145 @@ namespace cppu
 			{
 				// TODO: enable with lookup table
 
-				typedef std::remove_pointer_t<std::decay_t<T>> ElementType;
+				using ElementType = typename std::pointer_traits<T>::element_type;
 
-				ValuePos referenceIndex = reinterpret_cast<ValuePos&>(buffer[position]);
+				Reference referenceIndex = reinterpret_cast<Reference&>(buffer[position]);
 
 				VReferenceTableRead::Row reference = reinterpret_cast<VReferenceTableRead::Row&>((&referenceTable->rows)[referenceIndex]);
 				auto found = references->find(reference.id);
 				if (found != references->end())
 				{
 					if constexpr (std::is_pointer_v<T>)
-						data = static_cast<ElementType*>(found->second.ptr);
+						data = found->second.operator() < ElementType* > ();
 					else
-						data = *reinterpret_cast<T*>(found->second.ptr);
+						data = found->second.operator() < T > ();
 				}
 				else
 				{
 
 					ValuePos oldReadPosition = readPosition;
-					
+
 					readPosition = reference.position;
-					if constexpr (class_has_construct_v<ElementType>)
-						ElementType::Construct(*this, data);
+
+					//hash_t hash = impl::class_hash<ElementType>();
+					if (std::is_class_v<ElementType> && std::is_polymorphic_v<ElementType>)
+					{
+						hash_t hash = reinterpret_cast<Reference&>(buffer[readPosition]);
+						readPosition += sizeof(Reference);
+						if (hash == 0)
+							goto base_class_deserialize;
+
+
+						if constexpr (::cppu::is_smart_ptr_v<T>)
+							hash = impl::hash_combine(hash, impl::template_hash<T>());
+
+						//Serializer::Register<ElementType>();
+
+						auto& constructors = Serializer::ClassConstructors();
+
+						auto constructorFound = constructors.find(hash);
+						if (constructorFound != constructors.end())
+						{
+							// the inside function will turn it back
+							constructorFound->second(*this, reinterpret_cast<void*>(&data));
+						}
+					}
 					else
-						serial::Construct(*this, data);
+					{
+					base_class_deserialize:
+
+						if constexpr (class_has_construct_v<ElementType, ElementType>)
+							ElementType::Construct(*this, data);
+						else
+							Construct(*this, data);
+					}
 
 					readPosition = oldReadPosition;
 
-					if constexpr (std::is_pointer_v<T>)
-						references->try_emplace(reference.id, false, data);
+					if constexpr (!::cppu::is_smart_ptr_v<T> && std::is_pointer_v<T>)
+						references->try_emplace(reference.id, false, data, sizeof(T));
 					else
-						references->try_emplace(reference.id, true, static_cast<void*>(&data));
+						references->try_emplace(reference.id, true, reinterpret_cast<void*>(&data), sizeof(T));
 				}
 
 				// make sure we can continue our previous deserialization
+			}
+			// container types
+			else if constexpr (::cppu::is_container_v<T> && !cppu::is_string<T>::value)
+			{
+				ValueSize count;
+				ReadPosition(count, position);
+				readPosition = position + sizeof(ValueSize);
+
+				if constexpr (cppu::is_map_v<T>)
+				{
+					for (uint32_t i = 0; i < count; ++i)
+					{
+						ValuePos size;
+						ReadPosition(size, readPosition);
+						size += readPosition; // just reuse the same memory
+
+						typename T::key_type key;
+						Read(key);
+
+						typename T::mapped_type value;
+						Read(value);
+
+						// TODO: allow in place construction
+						data.try_emplace(key, value);
+
+						readPosition = size;
+					}
+				}
+				else if constexpr (cppu::is_vector_v<T>)
+				{
+					if (data.size() < count)
+						data.resize(count);
+
+					for (uint32_t i = 0; i < count; ++i)
+					{
+						ValueSize size = reinterpret_cast<ValueSize&>(buffer[readPosition]);
+						readPosition += sizeof(ValueSize);
+
+						ValuePos nextPos = readPosition + size; // just reuse the same memory
+
+						if (size)
+							ReadPosition(data[i], readPosition);
+
+						readPosition = nextPos;
+					}
+				}
 			}
 			// all other value types
 			else
 			{
 				readPosition = position;
+				if constexpr (std::is_class_v<T>)
+				{
+					if constexpr (std::is_polymorphic_v<T>)
+					{
+						Reference refIndex;
+						Read(refIndex);
+					}
+				}
 
-				if constexpr (class_has_deserialize_v<T>)
-					data.DeSerialize(*this);
-				else
-					serial::DeSerialize(*this, data);
+				impl::ImplDeSerialize(*this, data);
 			}
+		}
+
+		template<typename K, typename T>
+		inline void ArchiveReader::ReadPosition(std::pair<K, T>& data, int position)
+		{
+			readPosition = position;
+			Read(data.first);
+			Read(data.second);
+		}
+
+		template<typename... TT>
+		inline void ArchiveReader::ReadPosition(std::tuple<TT...>& data, int position)
+		{
+			readPosition = position;
+			std::apply(Read, data);
 		}
 
 		inline void ArchiveReader::ReadPosition(void* data, std::size_t size, int position)
@@ -642,13 +918,8 @@ namespace cppu
 		template<typename T>
 		inline void ArchiveReader::DeSerialize(Key key, T& data)
 		{
-			if constexpr (cppu::is_container<T>::value && !cppu::is_string<T>::value)
-				DeSerializeContainer(key, data);
-			else
-			{
-				ValuePos position = table->GetRow(key);
-				ReadPosition<T>(data, position);
-			}
+			ValuePos position = table->GetRow(key);
+			ReadPosition<T>(data, position);
 		}
 
 		template<typename T>
@@ -692,18 +963,111 @@ namespace cppu
 			}
 		}
 
+		template<typename... P>
+		inline void ArchiveReader::Polymorphic(P... bases)
+		{
+			// fold expression
+			(impl::ReadBase(*this, bases), ...);
+		}
+
 		inline ArchiveReader ArchiveReader::GetSubArchive()
 		{
 			ValuePos startPosition = readPosition;
 
 			ValuePos size = reinterpret_cast<ValuePos&>(buffer[readPosition]);
 			readPosition += sizeof(ValuePos);
-			ArchiveVersion version = reinterpret_cast<ValuePos&>(buffer[readPosition + sizeof(ValuePos)]);
-			readPosition += sizeof(ArchiveVersion);
-			readPosition += size;
+			ArchiveVersion version = reinterpret_cast<ArchiveVersion&>(buffer[readPosition + sizeof(ValuePos)]);
+			//readPosition += sizeof(ArchiveVersion);
 
-			return ArchiveReader(buffer, size, startPosition, reinterpret_cast<VTableRead*>(buffer + startPosition + size), referenceTable, references);
-			
+			//readPosition += size; // advance past all the contents
+
+			VTableRead* vTable = reinterpret_cast<VTableRead*>(buffer + startPosition + size);
+
+			readPosition = startPosition + size + sizeof(ValueSize) + vTable->size * sizeof(ValuePos); // advance past the vtable
+
+			return ArchiveReader(buffer, size, startPosition, vTable, referenceTable, references);
+
+		}
+#pragma endregion
+
+#pragma region Serializer
+		template<typename T>
+		inline bool Serializer::Register()
+		{
+			if constexpr (std::is_polymorphic_v<T>)
+			{
+				if constexpr (class_has_construct_v<T, T>)
+					static auto raw_ptr_constructor = ClassConstructors().emplace(impl::class_hash<T>(),
+						[](ArchiveReader& reader, void* ptr) { T::Construct(reader, **reinterpret_cast<T**>(ptr)); });
+				else if constexpr (namespace_has_construct_v<T>)
+					static auto raw_ptr_constructor = ClassConstructors().emplace(impl::class_hash<T>(),
+						[](ArchiveReader& reader, void* ptr) { Construct(reader, **reinterpret_cast<T**>(ptr)); });
+				else if constexpr (std::is_constructible_v<T, ArchiveReader&>)
+					static auto raw_ptr_constructor = ClassConstructors().emplace(impl::class_hash<T>(),
+						[](ArchiveReader& reader, void* ptr) { T** rawPtr = reinterpret_cast<T**>(ptr); *rawPtr = new T(reader); });
+				else if constexpr (std::is_constructible_v<T>)
+					static auto raw_ptr_constructor = ClassConstructors().emplace(impl::class_hash<T>(),
+						[](ArchiveReader& reader, void* ptr) { T** rawPtr = reinterpret_cast<T**>(ptr); *rawPtr = new T(); reader.Read(**rawPtr); });
+				if constexpr (class_has_construct_v<T, cppu::cgc::strong_ptr<T>>)
+					static auto cgc_smart_ptr_constructor = ClassConstructors().emplace(impl::hash_combine(impl::class_hash<T>(), impl::template_hash<cppu::cgc::strong_ptr<T>>()),
+						[](ArchiveReader& reader, void* ptr) { T::Construct(reader, *reinterpret_cast<cppu::cgc::strong_ptr<T>*>(ptr)); });
+				else if constexpr (namespace_has_construct_v<cppu::cgc::strong_ptr<T>>)
+					static auto cgc_smart_ptr_constructor = ClassConstructors().emplace(impl::hash_combine(impl::class_hash<T>(), impl::template_hash<cppu::cgc::strong_ptr<T>>()),
+						[](ArchiveReader& reader, void* ptr) { Construct(reader, *reinterpret_cast<cppu::cgc::strong_ptr<T>*>(ptr)); });
+				else if constexpr (std::is_constructible_v<T, ArchiveReader&>)
+				{
+					static auto cgc_smart_ptr_constructor = ClassConstructors().emplace(impl::hash_combine(impl::class_hash<T>(), impl::template_hash<cppu::cgc::strong_ptr<T>>()),
+						[](ArchiveReader& reader, void* ptr) {
+						cgc::strong_ptr<T>& smartPtr = *reinterpret_cast<cgc::strong_ptr<T>*>(ptr);
+						smartPtr = cgc::construct_new<T>(reader);
+					});
+				}
+				else if constexpr (std::is_constructible_v<T>)
+				{
+					static auto cgc_smart_ptr_constructor = ClassConstructors().emplace(impl::hash_combine(impl::class_hash<T>(), impl::template_hash<cppu::cgc::strong_ptr<T>>()),
+						[](ArchiveReader& reader, void* ptr) {
+						cgc::strong_ptr<T>& smartPtr = *reinterpret_cast<cgc::strong_ptr<T>*>(ptr);
+						smartPtr = cgc::construct_new<T>();
+						reader.Read(*smartPtr);
+					});
+				}
+
+				if constexpr (class_has_construct_v<T, std::shared_ptr<T>>)
+					static auto std_smart_ptr_constructor = ClassConstructors().emplace(impl::hash_combine(impl::class_hash<T>(), impl::template_hash<std::shared_ptr<T>>()),
+						[](ArchiveReader& reader, void* ptr) { T::Construct(reader, *reinterpret_cast<std::shared_ptr<T>*>(ptr)); });
+				else if constexpr (namespace_has_construct_v<std::shared_ptr<T>>)
+					static auto std_smart_ptr_constructor = ClassConstructors().emplace(impl::hash_combine(impl::class_hash<T>(), impl::template_hash<std::shared_ptr<T>>()),
+						[](ArchiveReader& reader, void* ptr) { Construct(reader, *reinterpret_cast<std::shared_ptr<T>*>(ptr)); });
+				else if constexpr (std::is_constructible_v<T, ArchiveReader&>)
+				{
+					static auto std_smart_ptr_constructor = ClassConstructors().emplace(impl::hash_combine(impl::class_hash<T>(), impl::template_hash<std::shared_ptr<T>>()),
+						[](ArchiveReader& reader, void* ptr) {
+						std::shared_ptr<T>& smartPtr = *reinterpret_cast<std::shared_ptr<T>*>(ptr);
+						smartPtr = std::make_shared<T>(reader);
+					});
+				}
+				else if constexpr (std::is_constructible_v<T>)
+				{
+					static auto std_smart_ptr_constructor = ClassConstructors().emplace(impl::hash_combine(impl::class_hash<T>(), impl::template_hash<std::shared_ptr<T>>()),
+						[](ArchiveReader& reader, void* ptr) {
+						std::shared_ptr<T>& smartPtr = *reinterpret_cast<std::shared_ptr<T>*>(ptr);
+						smartPtr = std::make_shared<T>();
+						reader.Read(*smartPtr);
+					});
+				}
+
+				auto key = std::type_index(typeid(T));
+				auto val = impl::class_hash<T>();
+
+				Serializer::ClassIDs().emplace(key, val);
+			}
+			else
+			{
+#define TYPE_NAME_ERROR(N) "Type #N is not a polymorphic type, consider making this type a polymorphic type or remove the registration."
+				static_assert(false, TYPE_NAME_ERROR(T));
+			}
+
+			return true;
 		}
 #pragma endregion
 	}

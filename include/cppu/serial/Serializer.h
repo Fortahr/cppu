@@ -2,9 +2,12 @@
 
 #include <immintrin.h>
 #include <cstdint>
+#include <typeindex>
+
 #include "../cgc/pointers.h"
 #include "../cgc/constructor.h"
 #include "../stor/vector.h"
+#include "../hash.h"
 
 #include <unordered_map>
 #include <deque>
@@ -55,18 +58,28 @@ namespace cppu
 			//void SetRow(Key key, ValuePos pos);
 		};
 
+		template <typename Base>
+		class base
+		{
+		public:
+			typedef Base Base;
+
+			Base* ptr;
+
+			template <class T>
+			base(const T* ptr)
+				: ptr(static_cast<Base*>(const_cast<T*>(ptr))) // guarantee T is derived from the base class
+			{ }
+
+			template <class T>
+			base(T * ptr)
+				: ptr(static_cast<Base*>(ptr)) // guarantee T is derived from the base class
+			{ }
+		};
+
 		class ArchiveWriter;
 		class ArchiveReader;
 		class SubArchiveWriter;
-
-		/*class Serializer
-		{
-			static std::unordered_map<Key, void(ArchiveReader&)>& GetClassTable()
-			{
-				static std::unordered_map<Key, void(ArchiveReader&)> v;
-				return v;
-			}
-		};*/
 
 		struct ArchiveReference
 		{
@@ -79,6 +92,38 @@ namespace cppu
 				, serialize(serialize)
 			{ }
 		};
+
+		class Serializer
+		{
+			friend class ArchiveReader;
+			friend class ArchiveWriter;
+
+		public:
+			typedef cppu::hash_t Key;
+			typedef std::function<void(ArchiveReader&, void*)> Constructor;
+
+		private:
+			static auto& ClassConstructors()
+			{
+				static std::unordered_map<Key, Constructor> v;
+				return v;
+			}
+		public:
+			static auto& ClassIDs()
+			{
+				static std::unordered_map<std::type_index, cppu::hash_t> v;
+				return v;
+			}
+
+			static void Register(Key key, Constructor constructor)
+			{
+				ClassConstructors().try_emplace(key, constructor);
+			}
+
+			template<typename T>
+			static bool Register();
+		};
+
 
 		class ArchiveWriter
 		{
@@ -93,7 +138,7 @@ namespace cppu
 			ValuePos bufferSize;
 			ValuePos writePosition;
 
-			std::unordered_map<std::size_t, Reference> referencesTaken;
+			std::unordered_map<void*, Reference> referencesTaken;
 			std::deque<ArchiveReference> references;
 
 			bool Reserve(ValuePos size);
@@ -151,14 +196,27 @@ namespace cppu
 			template<typename It>
 			bool Write(It begin, It end);
 
+			template<typename T>
+			bool Write(const std::vector<T>& vector);
+
 			template<typename K, typename T>
 			bool Write(const std::pair<K, T>& data);
 
-			template<class... TT>
+			template<typename... TT>
 			bool Write(const std::tuple<TT...>& data);
+
+			template<typename... P>
+			void Polymorphic(const P... bases);
 
 			std::string_view Finish();
 			void FinishSubArchive(SubArchiveWriter& subArchive);
+
+			template <typename T>
+			ArchiveWriter& operator<<(const T& data)
+			{
+				Write(data);
+				return *this;
+			}
 
 			SubArchiveWriter CreateSubArchive(VTableSize tableSize, ArchiveVersion version, ValuePos initialBufferSize = 1024);
 		};
@@ -206,11 +264,24 @@ namespace cppu
 			template<typename It>
 			bool Write(It begin, It end);
 
+			template<typename T>
+			bool Write(const std::vector<T>& vector);
+
 			template<typename K, typename T>
 			bool Write(const std::pair<K, T>& data);
 
 			template<class... TT>
 			bool Write(const std::tuple<TT...>& data);
+
+			template<typename... P>
+			void Polymorphic(const P... bases);
+
+			template <typename T>
+			SubArchiveWriter& operator<<(const T& data)
+			{
+				writer.Write(data);
+				return *this;
+			}
 
 			~SubArchiveWriter();
 		};
@@ -221,12 +292,16 @@ namespace cppu
 			struct Pointer
 			{
 				bool isSmartPointer;
-				void* ptr;
+				byte data[std::max(sizeof(std::shared_ptr<int>), sizeof(cgc::strong_ptr<int>))];
 
-				Pointer(bool isSmartPointer, void* ptr)
+				Pointer(bool isSmartPointer, void* ptr, std::size_t size)
 					: isSmartPointer(isSmartPointer)
-					, ptr(ptr)
-				{ }
+				{
+					memcpy(&data, ptr, size);
+				}
+
+				template <typename T>
+				T& operator()() { return reinterpret_cast<T&>(data); }
 			};
 
 		private:
@@ -240,9 +315,9 @@ namespace cppu
 
 			std::unordered_map<Reference, Pointer>* references;
 
-			ArchiveReader(char* buffer, ValuePos bufferSize, ValuePos readPosition, VTableRead* table, VReferenceTableRead* referenceTable, std::unordered_map<Reference, Pointer>* references)
+			ArchiveReader(const char* buffer, ValuePos bufferSize, ValuePos readPosition, VTableRead* table, VReferenceTableRead* referenceTable, std::unordered_map<Reference, Pointer>* references)
 				: original(false)
-				, buffer(buffer)
+				, buffer(const_cast<char*>(buffer))
 				, bufferSize(bufferSize)
 				, readPosition(readPosition)
 				, table(table)
@@ -262,6 +337,24 @@ namespace cppu
 				table = reinterpret_cast<VTableRead*>(buffer + bufferSize);
 
 				if (bufferSize + table->size < archive.writePosition)
+				{
+					ValuePos offset = bufferSize + sizeof(table->size) + table->size * sizeof(table->rows);
+					referenceTable = reinterpret_cast<VReferenceTableRead*>(buffer + reinterpret_cast<ValuePos&>(buffer[offset]));
+
+					references = new std::unordered_map<Reference, Pointer>();
+				}
+			}
+
+			ArchiveReader(const std::string& string)
+				: original(true)
+			{
+				buffer = static_cast<char*>(malloc(string.size()));
+				memcpy(buffer, string.data(), string.size());
+
+				bufferSize = reinterpret_cast<ValuePos&>(buffer[0]);
+				table = reinterpret_cast<VTableRead*>(buffer + bufferSize);
+
+				if (bufferSize + table->size < string.size())
 				{
 					ValuePos offset = bufferSize + sizeof(table->size) + table->size * sizeof(table->rows);
 					referenceTable = reinterpret_cast<VReferenceTableRead*>(buffer + reinterpret_cast<ValuePos&>(buffer[offset]));
@@ -292,12 +385,21 @@ namespace cppu
 			template<typename T>
 			void ReadPosition(T& data, int position);
 
+			template<typename K, typename T>
+			void ReadPosition(std::pair<K, T>& data, int position);
+
+			template<typename... TT>
+			void ReadPosition(std::tuple<TT...>& data, int position);
+
 			void ReadPosition(void* data, std::size_t size, int position);
 
 			template<typename T>
 			void Read(T& data, int offset = 0);
 
 			void Read(void* data, std::size_t size, int offset = 0);
+
+			template<typename... P>
+			void Polymorphic(P... bases);
 
 			ArchiveReader GetSubArchive();
 		};
@@ -381,39 +483,6 @@ namespace cppu
 				return SwapEndian(value);
 #			endif
 			}
-		}
-
-		template <class T>
-		inline void Serialize(ArchiveWriter& writer, const T& data)
-		{
-			writer.Write(&data, sizeof(T));
-		}
-
-		template <class T>
-		inline void DeSerialize(ArchiveReader& reader, T& data)
-		{
-			reader.Read(&data, sizeof(T));
-		}
-
-		template <class T>
-		inline void Construct(ArchiveReader& reader, T& ptr)
-		{
-			ptr = new std::remove_pointer_t<T>();
-			reader.Read(*ptr);
-		}
-
-		template <class T>
-		inline void Construct(ArchiveReader& reader, cgc::strong_ptr<T>& ptr)
-		{
-			ptr = cgc::construct_new<T>();
-			reader.Read(*ptr);
-		}
-
-		template <class T>
-		inline void Construct(ArchiveReader& reader, std::shared_ptr<T>& ptr)
-		{
-			ptr = std::make_shared<T>();
-			reader.Read(*ptr);
 		}
 	}
 }
