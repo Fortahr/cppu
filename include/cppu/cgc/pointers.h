@@ -323,6 +323,11 @@ namespace cppu
 		public:
 			typedef T element_type;
 
+			raw_ptr()
+				: pointer(nullptr)
+			{}
+
+
 			raw_ptr(T* ptr)
 				: pointer(ptr)
 			{}
