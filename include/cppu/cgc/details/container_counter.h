@@ -16,13 +16,12 @@ namespace cppu
 
 				virtual bool add_as_garbage(void* ptr) const
 				{
-					container->add_as_garbage(ptr, this);
-					return true;
+					return container->add_as_garbage(ptr, this);
 				}
 
 			public:
-				container_counter(icontainer* container, void(*dtor)(const void*))
-					: base_counter(dtor)
+				container_counter(icontainer* container, destructor&& destructor)
+					: base_counter(std::move(destructor))
 					, container(container)
 				{ }
 			};

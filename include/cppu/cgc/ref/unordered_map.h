@@ -2,6 +2,7 @@
 
 #include "../unordered_map.h"
 #include "../details/counter_value_pair.h"
+#include "../details/types.h"
 
 // Container Garbage Collection
 
@@ -11,24 +12,13 @@ namespace cppu
 	{
 		namespace ref
 		{
-			template<class K, class V, bool auto_clean = true>
+			template<class K, class V, CLEAN_PROC clean_proc = CLEAN_PROC::DIRECT>
 			class unordered_map : private details::base_unordered_map<K, details::counter_value_pair<V>>, public details::icontainer
 			{
 			private:
 				typedef details::counter_value_pair<V> VALUE;
 				typedef details::base_unordered_map<K, VALUE> BASE_MAP;
 				typedef std::unordered_map<K, VALUE> INTERNAL_MAP;
-
-				template<bool A = auto_clean, typename std::enable_if<!A>::type* = nullptr>
-				inline void auto_garbage_clean(void* ptr, const details::base_counter* c)
-				{ }
-
-				template<bool A = auto_clean, typename std::enable_if<A>::type* = nullptr>
-				inline void auto_garbage_clean(void* ptr, const details::base_counter* c)
-				{
-					if (BASE_MAP::garbage.size() == 1)
-						details::garbage_cleaner::add_to_clean(this);
-				}
 
 			public:
 				unordered_map()
@@ -41,19 +31,34 @@ namespace cppu
 				template<class... _Args>
 				inline strong_ptr<V> emplace(const K& key, _Args&&... arguments)
 				{
-					VALUE* object = BASE_MAP::base_emplace(key, new details::key_counter<K>(this, key, [](const void* x) { static_cast<const V*>(x)->~V(); }), std::forward<_Args>(arguments)...);
+					VALUE* object = BASE_MAP::base_emplace(key, new details::key_counter<K>(this, key, details::destructor::create_destructor<V>()), std::forward<_Args>(arguments)...);
 					return constructor::construct_pointer(&object->get_value(), object->get_counter());
 				}
 
-				virtual void add_as_garbage(void* ptr, const details::base_counter* c)
+				virtual bool add_as_garbage(void* ptr, const details::base_counter* c)
 				{
-					BASE_MAP::base_add_as_garbage(ptr, c);
-					auto_garbage_clean(ptr, c);
+					if constexpr (clean_proc == CLEAN_PROC::DIRECT)
+						BASE_MAP::base_destruct_slot(static_cast<const details::key_counter<K>*>(c)->get_key());
+					else
+					{
+						BASE_MAP::base_add_as_garbage(ptr, c);
+						
+						if constexpr (clean_proc == CLEAN_PROC::THREAD)
+						{
+							if (BASE_MAP::garbage.size() == 1)
+								details::garbage_cleaner::add_to_clean(this);
+						}
+					}
+
+					return true;
 				}
 
 				virtual uint clean_garbage(uint max = std::numeric_limits<uint>::max())
 				{
-					return BASE_MAP::base_clean_garbage(max);
+					if constexpr (clean_proc == CLEAN_PROC::DIRECT)
+						return max;
+					else
+						return BASE_MAP::base_clean_garbage(max);
 				}
 
 				inline size_t size()
@@ -106,12 +111,18 @@ namespace cppu
 
 				inline std::size_t garbage_size()
 				{
-					return BASE_MAP::garbage_size();
+					if constexpr (clean_proc == CLEAN_PROC::DIRECT)
+						return 0;
+					else
+						return BASE_MAP::garbage_size();
 				}
 
 				inline bool garbage_empty()
 				{
-					return BASE_MAP::garbage_empty();
+					if constexpr (clean_proc == CLEAN_PROC::DIRECT)
+						return true;
+					else
+						return BASE_MAP::garbage_empty();
 				}
 			};
 		}

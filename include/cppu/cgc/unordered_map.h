@@ -59,18 +59,26 @@ namespace cppu
 						K key = garbage.front();
 						garbage.pop();
 
-						auto found = slots.find(key);
-						if (found != slots.end())
-						{
-							// explicit deconstruction, otherwise it will never be deconstructed
-							reinterpret_cast<V&>(found->second).~V();
-							slots.erase(found);
-						}
-
+						base_destruct_slot(slots.find(key));
 						++i;
 					}
 
 					return i;
+				}
+
+				__forceinline void base_destruct_slot(typename std::unordered_map<K, V>::const_iterator it)
+				{
+					if (it != slots.end())
+					{
+						// explicit deconstruction, otherwise it will never be deconstructed
+						reinterpret_cast<const V&>(it->second).~V();
+						slots.erase(it);
+					}
+				}
+
+				__forceinline void base_destruct_slot(const K& key)
+				{
+					base_destruct_slot(slots.find(key));
 				}
 
 				__forceinline size_t base_size()
@@ -125,22 +133,11 @@ namespace cppu
 			};
 		}
 
-		template<class K, class V, bool auto_clean = true>
+		template<class K, class V, CLEAN_PROC clean_proc = CLEAN_PROC::DIRECT>
 		class unordered_map : private details::base_unordered_map<K, V>, public details::icontainer
 		{
 		private:
 			typedef details::base_unordered_map<K, V> BASE_MAP;
-
-			template<bool M = auto_clean, typename std::enable_if<!M>::type* = nullptr>
-			inline void auto_garbage_clean(void* ptr, const details::base_counter* c)
-			{ }
-
-			template<bool M = auto_clean, typename std::enable_if<M>::type* = nullptr>
-			inline void auto_garbage_clean(void* ptr, const details::base_counter* c)
-			{
-				if (BASE_MAP::garbage.size() == 1)
-					details::garbage_cleaner::add_to_clean(this);
-			}
 
 		public:
 			unordered_map()
@@ -154,18 +151,33 @@ namespace cppu
 			inline strong_ptr<V> emplace(const K& key, _Args&&... arguments)
 			{
 				V* object = BASE_MAP::base_emplace(key, std::forward<_Args>(arguments)...);
-				return constructor::construct_pointer(object, new details::key_counter<K>(this, key, [](const void* x) { static_cast<const V*>(x)->~V(); }));
+				return constructor::construct_pointer(object, new details::key_counter<K>(this, key, details::destructor::create_destructor<V>()));
 			}
 
-			virtual void add_as_garbage(void* ptr, const details::base_counter* c)
+			virtual bool add_as_garbage(void* ptr, const details::base_counter* c)
 			{
-				BASE_MAP::base_add_as_garbage(ptr, c);
-				auto_garbage_clean(ptr, c);
+				if constexpr (clean_proc == CLEAN_PROC::DIRECT)
+					BASE_MAP::base_destruct_slot(static_cast<const details::key_counter<K>*>(c)->get_key());
+				else
+				{
+					BASE_MAP::base_add_as_garbage(ptr, c);
+
+					if constexpr (clean_proc == CLEAN_PROC::THREAD)
+					{
+						if (BASE_MAP::garbage.size() == 1)
+							details::garbage_cleaner::add_to_clean(this);
+					}
+				}
+
+				return true;
 			}
 
 			virtual uint clean_garbage(uint max = std::numeric_limits<uint>::max())
 			{
-				return BASE_MAP::base_clean_garbage(max);
+				if constexpr (clean_proc == CLEAN_PROC::DIRECT)
+					return max;
+				else
+					return BASE_MAP::base_clean_garbage(max);
 			}
 
 			inline size_t size()
@@ -215,12 +227,18 @@ namespace cppu
 
 			inline std::size_t garbage_size()
 			{
-				return BASE_MAP::garbage_size();
+				if constexpr (clean_proc == CLEAN_PROC::DIRECT)
+					return 0;
+				else
+					return BASE_MAP::garbage_size();
 			}
 
 			inline bool garbage_empty()
 			{
-				return BASE_MAP::garbage_empty();
+				if constexpr (clean_proc == CLEAN_PROC::DIRECT)
+					return true;
+				else
+					return BASE_MAP::garbage_empty();
 			}
 		};
 	}

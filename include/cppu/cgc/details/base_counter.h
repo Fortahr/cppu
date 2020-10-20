@@ -28,10 +28,10 @@ namespace cppu
 				std::atomic<RefCount> weakReferences;
 				destructor destruct;
 
-				base_counter(void(*dtor)(const void*))
-					: strongReferences(0)
+				base_counter(destructor&& destructor)
+					: strongReferences(1)
 					, weakReferences(0)
-					, destruct(dtor)
+					, destruct(std::move(destructor))
 				{ }
 			};
 		}

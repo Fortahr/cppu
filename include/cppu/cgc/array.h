@@ -26,10 +26,10 @@ namespace cppu
 		typedef uint32 SIZE_32;
 		typedef uint64 SIZE_64;
 		
-		template<class T, class S = SIZE_32, bool auto_clean = true>
+		template<class T, class S = SIZE_32, CLEAN_PROC clean_proc = CLEAN_PROC::DIRECT>
 		class array : public details::icontainer
 		{
-			template<typename, typename, bool> friend class m_array;
+			template<typename, typename, CLEAN_PROC> friend class m_array;
 		public:
 			static constexpr uint size() { return std::numeric_limits<S>::digits; }
 
@@ -40,16 +40,6 @@ namespace cppu
 			std::atomic<S> freeSlots;
 			std::atomic<S> initSlots;
 			std::atomic<S> garbage;
-
-			template<bool A = auto_clean, typename std::enable_if<!A>::type* = nullptr>
-			inline void auto_garbage_clean(void* ptr, const details::base_counter* c)
-			{ }
-
-			template<bool A = auto_clean, typename std::enable_if<A>::type* = nullptr>
-			inline void auto_garbage_clean(void* ptr, const details::base_counter* c)
-			{
-				details::garbage_cleaner::add_to_clean(this);
-			}
 
 			inline T* Slots(uint i)
 			{
@@ -105,7 +95,28 @@ namespace cppu
 					newValue = oldValue | (1 << slot);
 				} while (!initSlots.compare_exchange_weak(oldValue, newValue));
 
-				return constructor::construct_pointer(object, new details::container_counter(this, [](const void* x) { static_cast<const T*>(x)->~T(); }));
+				return constructor::construct_pointer(object, new details::container_counter(this, details::destructor::create_destructor<T>()));
+			}
+
+			inline void clean_and_destruct_slot(uint offset)
+			{
+				S oldValue, newValue;
+				T* item = Slots(offset);
+				item->~T();
+
+				// reset slot value as uninitialized
+				do
+				{
+					oldValue = initSlots;
+					newValue = oldValue & ~(1 << offset);
+				} while (!initSlots.compare_exchange_weak(oldValue, newValue));
+
+				// reset slot value as free
+				do
+				{
+					oldValue = freeSlots;
+					newValue = oldValue ^ (1 << offset);
+				} while (!freeSlots.compare_exchange_weak(oldValue, newValue));
 			}
 
 		public:
@@ -139,55 +150,55 @@ namespace cppu
 				return pointer;
 			}
 
-			virtual void add_as_garbage(void* ptr, const details::base_counter* c)
+			virtual bool add_as_garbage(void* ptr, const details::base_counter* c)
 			{
-				uint offset = (reinterpret_cast<std::size_t>(ptr) - reinterpret_cast<std::size_t>(slots)) / sizeof(T);
-				S oldValue, newValue;
-				do
+				if constexpr (clean_proc == CLEAN_PROC::DIRECT)
+					clean_and_destruct_slot((reinterpret_cast<std::size_t>(ptr) - reinterpret_cast<std::size_t>(slots)) / sizeof(T));
+				else
 				{
-					oldValue = garbage;
-					newValue = oldValue | (1 << offset);
-				} while (!garbage.compare_exchange_weak(oldValue, newValue));
+					uint offset = (reinterpret_cast<std::size_t>(ptr) - reinterpret_cast<std::size_t>(slots)) / sizeof(T);
+					S oldValue, newValue;
+					do
+					{
+						oldValue = garbage;
+						newValue = oldValue | (1 << offset);
+					} while (!garbage.compare_exchange_weak(oldValue, newValue));
 
-				if(oldValue == 0)
-					auto_garbage_clean(ptr, c);
+					if constexpr (clean_proc == CLEAN_PROC::THREAD)
+					{
+						if (oldValue == 0)
+							details::garbage_cleaner::add_to_clean(this);
+					}
+				}
+
+				return true;
 			}
 
 
 			uint clean_garbage(uint max = std::numeric_limits<uint>::max())
 			{
-				uint i = 0;
-				for (uint offset = bs_rtol(garbage); offset < npos; offset = bs_rtol(garbage, offset))
+				if constexpr (clean_proc == CLEAN_PROC::MANUAL)
 				{
-					S oldValue, newValue;
-					T* item = Slots(offset);
-					item->~T();
-
-					// reset slot value as uninitialized
-					do
+					uint i = 0;
+					for (uint offset = bs_rtol(garbage); offset < npos; offset = bs_rtol(garbage, offset))
 					{
-						oldValue = initSlots;
-						newValue = oldValue & ~(1 << offset);
-					} while (!initSlots.compare_exchange_weak(oldValue, newValue));
+						clean_and_destruct_slot(offset);
 
-					// reset slot value as free
-					do
-					{
-						oldValue = freeSlots;
-						newValue = oldValue ^ (1 << offset);
-					} while (!freeSlots.compare_exchange_weak(oldValue, newValue));
+						S oldValue, newValue;
+						// set garbage slot value as free
+						do
+						{
+							oldValue = garbage;
+							newValue = oldValue & ~(1 << offset);
+						} while (!garbage.compare_exchange_weak(oldValue, newValue));
 
-					// set garbage slot value as free
-					do
-					{
-						oldValue = garbage;
-						newValue = oldValue & ~(1 << offset);
-					} while (!garbage.compare_exchange_weak(oldValue, newValue));
-					
-					++i;
+						++i;
+					}
+
+					return i;
 				}
-
-				return i;
+				else
+					return 0;
 			}
 
 			inline T* operator[] (uint i)

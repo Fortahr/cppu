@@ -18,8 +18,8 @@ namespace cppu
 				//virtual void add_as_garbage(void* ptr) { container->add_as_garbage(ptr, this); }
 
 			public:
-				key_counter(icontainer* container, const K& key, void(*dtor)(const void*))
-					: container_counter(container, dtor)
+				key_counter(icontainer* container, const K& key, destructor&& destructor)
+					: container_counter(container, std::move(destructor))
 					, key(key)
 				{ }
 

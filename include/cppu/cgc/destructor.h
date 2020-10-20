@@ -78,14 +78,14 @@ namespace cppu
 		inline strong_ptr<T> construct_new(Args&&... arguments)
 		{
 			T* object = new T(std::forward<Args>(arguments)...);
-			return constructor::construct_pointer(object, new details::base_counter(details::destructor::create_destructor<T>()));
+			return constructor::construct_pointer(object, new details::base_counter([](const void* x) { static_cast<const T*>(x)->~T(); }));
 		}
 
 		template<class T, class... Args>
 		inline strong_ptr<T> gcnew(Args&&... arguments)
 		{
 			T* object = new T(std::forward<Args>(arguments)...);
-			return constructor::construct_pointer(object, new details::base_counter(details::destructor::create_destructor<T>()));
+			return constructor::construct_pointer(object, new details::base_counter([](const void* x) { static_cast<const T*>(x)->~T(); }));
 		}
 	}
 }

@@ -8,17 +8,17 @@ namespace cppu
 	namespace cgc
 	{
 		// Don't destruct this container when any thread is still accessing it, e.g: emplace()
-		template<class T, class S = SIZE_32, bool auto_clean = true>
+		template<class T, class S = SIZE_32, CLEAN_PROC clean_proc = CLEAN_PROC::DIRECT>
 		class m_array
 		{
 		private:
-			std::vector<cgc::array<T, S, auto_clean>*> arrays;
+			std::vector<cgc::array<T, S, clean_proc>*> arrays;
 			ncm::mutex lock;
 
 		public:
 			m_array()
 			{
-				cgc::array<T, S, auto_clean>* arr = new cgc::array<T, S, auto_clean>();
+				cgc::array<T, S, clean_proc>* arr = new cgc::array<T, S, clean_proc>();
 				arrays.push_back(arr);
 			}
 
@@ -28,7 +28,7 @@ namespace cppu
 
 				for (uint i = 0; i < arrays.size(); ++i)
 				{
-					cgc::array<T, S, auto_clean>* arr = arrays[i];
+					cgc::array<T, S, clean_proc>* arr = arrays[i];
 					delete arr;
 				}
 
@@ -38,7 +38,7 @@ namespace cppu
 			template<class... _Args>
 			strong_ptr<T> emplace(_Args&&... arguments)
 			{
-				cgc::array<T, S, auto_clean>* container = nullptr;
+				cgc::array<T, S, clean_proc>* container = nullptr;
 				uint i = 0;
 
 			RETRY_EMPLACE:
@@ -46,7 +46,7 @@ namespace cppu
 				for (; i < size; ++i)
 				{
 					uint slot = arrays[i]->reserve_spot();
-					if (slot != cgc::array<T, S, auto_clean>::npos)
+					if (slot != cgc::array<T, S, clean_proc>::npos)
 						return arrays[i]->emplace_at(slot, std::forward<_Args>(arguments)...);
 				}
 
@@ -60,7 +60,7 @@ namespace cppu
 				}
 
 				// no suitable spot found in current arrays, build a new one
-				container = new cgc::array<T, S, auto_clean>();
+				container = new cgc::array<T, S, clean_proc>();
 				arrays.push_back(container);
 
 				lock.unlock();
@@ -74,7 +74,7 @@ namespace cppu
 				return std::unique_lock<std::mutex>(lock);
 			}
 
-			inline std::vector<cgc::array<T, S, auto_clean>*>& get_arrays()
+			inline std::vector<cgc::array<T, S, clean_proc>*>& get_arrays()
 			{
 				return arrays;
 			}
@@ -82,8 +82,11 @@ namespace cppu
 			virtual uint clean_garbage(uint max = std::numeric_limits<uint>::max())
 			{
 				uint newMax = max;
-				for (std::size_t i = 0; i < arrays.size(); ++i)
-					newMax -= arrays[i]->clean_garbage(newMax);
+				if constexpr (clean_proc != CLEAN_PROC::DIRECT)
+				{
+					for (std::size_t i = 0; i < arrays.size(); ++i)
+						newMax -= arrays[i]->clean_garbage(newMax);
+				}
 
 				return max - newMax;
 			}
@@ -91,18 +94,24 @@ namespace cppu
 			inline std::size_t garbage_size()
 			{
 				uint size = 0;
-				for (std::size_t i = 0; i < arrays.size(); ++i)
-					size += arrays[i]->garbage_size();
+				if constexpr (clean_proc != CLEAN_PROC::DIRECT)
+				{
+					for (std::size_t i = 0; i < arrays.size(); ++i)
+						size += arrays[i]->garbage_size();
+				}
 
 				return size;
 			}
 
 			inline bool garbage_empty()
 			{
-				for (std::size_t i = 0; i < arrays.size(); ++i)
+				if constexpr (clean_proc != CLEAN_PROC::DIRECT)
 				{
-					if (!arrays[i]->garbage_empty())
-						return false;
+					for (std::size_t i = 0; i < arrays.size(); ++i)
+					{
+						if (!arrays[i]->garbage_empty())
+							return false;
+					}
 				}
 
 				return true;

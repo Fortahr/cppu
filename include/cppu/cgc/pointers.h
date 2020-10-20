@@ -174,12 +174,13 @@ namespace cppu
 			{
 				char copy[sizeof(strong_ptr<T>)];
 				memcpy(&copy, this, sizeof(strong_ptr<T>));
-				auto& ptrCopy = reinterpret_cast<strong_ptr<T>&>(copy);
+				strong_ptr<T>& ptrCopy = reinterpret_cast<strong_ptr<T>&>(copy);
 
 				if (ptrCopy.refCounter != nullptr)
 				{
-					// if it will decrement to 0, mark this one as garbage
-					if (ptrCopy.refCounter->strongReferences.fetch_sub(1) == 1)
+					// we'll check if the previous value was 2, if so it will decrement to 0 in this procedure then mark this one as garbage
+					// the last strong value holder is merely a safety measure so weak ptrs won't destroy the ref counter before we do so in here.
+					if (ptrCopy.refCounter->strongReferences.fetch_sub(1) == 2)
 					{
 						// add it so the collection can clean it up and give out the free slot again
 						if (!ptrCopy.refCounter->add_as_garbage(ptrCopy.pointer))
@@ -188,8 +189,11 @@ namespace cppu
 							free(ptrCopy.pointer);
 						}
 
+						// after this we've set the actual strong ref count so any weak ptr can delete the ref counter from this point
+						ptrCopy.refCounter->strongReferences.fetch_sub(1);
+
 						// strong ref base_counter will be 0, now we only need to check the weak ref base_counter
-						// and remove the tracking object if it's 0
+						// and remove the tracking object if it's 1
 						if (ptrCopy.refCounter->weakReferences.load() == 0)
 							delete ptrCopy.refCounter;
 					}
