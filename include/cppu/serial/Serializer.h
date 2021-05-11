@@ -369,7 +369,8 @@ namespace cppu
 					delete references;
 			}
 
-			ValuePos GetVTableEntry(Key key);
+			ValuePos GetVTableEntry(Key key) { return table->GetRow(key); }
+			inline ValueSize GetVTableSize() { return table->size; }
 
 			void DeSerialize(Key key, void* data, std::size_t size);
 

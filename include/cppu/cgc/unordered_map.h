@@ -10,6 +10,7 @@
 #include "details/icontainer.h"
 #include "details/garbage_cleaner.h"
 #include "constructor.h"
+#include "../stor/lock/queue.h"
 
 #include "../bitops.h"
 
@@ -30,7 +31,7 @@ namespace cppu
 			{
 			protected:
 				std::unordered_map<K, V> slots;
-				std::queue<K> garbage;
+				stor::lock::queue<K> garbage;
 
 				__forceinline V& base_slots(const K& key)
 				{

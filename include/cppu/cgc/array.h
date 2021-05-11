@@ -123,7 +123,7 @@ namespace cppu
 			array()
 				: freeSlots(~0)
 				, initSlots(0)
-				, garbage()
+				, garbage(0)
 			{
 
 			}

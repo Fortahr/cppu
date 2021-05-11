@@ -50,8 +50,6 @@ namespace cppu
 
 			std::vector<int> lev_dist(min_size + 1);
 
-			std::size_t bonus = 0;
-
 			lev_dist[0] = 0;
 			for (std::size_t i = 1; i <= min_size; ++i)
 				lev_dist[i] = lev_dist[i - 1] + delete_cost;
@@ -74,7 +72,7 @@ namespace cppu
 				}
 			}
 
-			return lev_dist[min_size] - bonus;
+			return lev_dist[min_size];
 		}
 	}
 }

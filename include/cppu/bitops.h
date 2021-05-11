@@ -1,6 +1,7 @@
 #pragma once
 
 #include "dtypes.h"
+#include <atomic>
 
 #ifdef WIN32
 #include <intrin.h>
@@ -89,6 +90,39 @@ namespace cppu
 	inline uint bs_rtol(uint32 value, uint offset)
 	{
 		return bsf(value, offset);
+	}
+	
+	template<typename T>
+	T set_bit(std::atomic<T> &a, T bit)
+	{
+		T val = a.load();
+		T setValue = val | bit;
+		
+		while (!a.compare_exchange_weak(val, setValue))
+			setValue = val | bit;
+
+		return val;
+	}
+	
+	template<typename T>
+	T clr_bit(std::atomic<T> &a, T bit)
+	{
+		T val = a.load();
+		T setValue = val & ~bit;
+		
+		while (!a.compare_exchange_weak(val, setValue))
+			setValue = val & ~bit;
+
+		return val;
+	}
+
+	template<typename T>
+	T set_or_clr_bit(std::atomic<T> &a, T bit, bool set)
+	{
+		if (set)
+			return set_bit<T>(a, bit);
+		else
+			return clr_bit<T>(a, bit);
 	}
 }
 

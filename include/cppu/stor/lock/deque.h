@@ -25,7 +25,7 @@ namespace cppu
 					: container(other.container)
 				{}
 
-				deque& operator=(deque other)
+				deque& operator=(const deque& other)
 				{
 					container = other.container;
 					return *this;
