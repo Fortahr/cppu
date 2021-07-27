@@ -12,10 +12,10 @@ namespace cppu
 		public:
 			mutex() : std::mutex() { }
 			mutex(const mutex&) : std::mutex() { }
-			mutex(mutex&&) : std::mutex() { }
+			//mutex(mutex&&) noexcept : std::mutex() { }
 
 			mutex& operator=(const mutex&) { return *new(this) mutex(); }
-			mutex& operator=(mutex&&) { return *new(this) mutex(); }
+			//mutex& operator=(mutex&&) noexcept { return *new(this) mutex(); }
 		};
 	}
 }

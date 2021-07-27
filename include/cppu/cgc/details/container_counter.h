@@ -14,9 +14,10 @@ namespace cppu
 			protected:
 				icontainer* container;
 
-				virtual bool add_as_garbage(void* ptr) const
+				virtual void add_as_garbage(void* ptr) const override
 				{
-					return container->add_as_garbage(ptr, this);
+					if (!container->add_as_garbage(ptr, this))
+						base_counter::add_as_garbage(ptr);
 				}
 
 			public:

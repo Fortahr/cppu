@@ -21,7 +21,11 @@ namespace cppu
 			protected:
 
 				// by default
-				virtual bool add_as_garbage(void* ptr) const { return false; }
+				virtual void add_as_garbage(void* ptr) const
+				{
+					destruct(ptr);
+					free(ptr);
+				}
 
 			public:
 				std::atomic<RefCount> strongReferences;

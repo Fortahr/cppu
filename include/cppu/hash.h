@@ -16,18 +16,16 @@ namespace cppu
 
 		inline constexpr hash_t hash_function(const char* pTail, hash_t hash = STRING_HASH_KEY)
 		{
-			return pTail[0] == STRING_END_BYTE
-				? hash
-				: hash_function(pTail + 1, ((hash << STRING_BIT_SHIFT) + hash) + (int32_t)*pTail);
+			while (pTail[0] != STRING_END_BYTE)
+				hash += (hash << STRING_BIT_SHIFT) + static_cast<int32_t>(*pTail++);
+
+			return hash;
 		}
 
 		inline constexpr hash_t hash_function(const char* pTail, const char* endTail, hash_t hash = STRING_HASH_KEY)
 		{
 			while (pTail < endTail)
-			{
-				hash = (hash << STRING_BIT_SHIFT) + hash + static_cast<int32_t>(*pTail);
-				pTail++;
-			}
+				hash += (hash << STRING_BIT_SHIFT) + static_cast<int32_t>(*pTail++);
 
 			return hash;
 		}

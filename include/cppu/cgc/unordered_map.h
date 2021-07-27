@@ -70,11 +70,7 @@ namespace cppu
 				__forceinline void base_destruct_slot(typename std::unordered_map<K, V>::const_iterator it)
 				{
 					if (it != slots.end())
-					{
-						// explicit deconstruction, otherwise it will never be deconstructed
-						reinterpret_cast<const V&>(it->second).~V();
 						slots.erase(it);
-					}
 				}
 
 				__forceinline void base_destruct_slot(const K& key)

@@ -69,9 +69,9 @@ namespace cppu
 				return container->emplace(std::forward<_Args>(arguments)...);
 			}
 
-			inline std::unique_lock<std::mutex> get_lock()
+			inline std::mutex& get_lock()
 			{
-				return std::unique_lock<std::mutex>(lock);
+				return lock;
 			}
 
 			inline std::vector<cgc::array<T, S, clean_proc>*>& get_arrays()

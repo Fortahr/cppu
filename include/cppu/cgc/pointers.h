@@ -13,8 +13,6 @@ namespace cppu
 {
 	namespace cgc
 	{
-		class constructor;
-
 		template<class T>
 		class weak_ptr;
 		
@@ -45,13 +43,16 @@ namespace cppu
 			typedef T element_type;
 
 			// constructors
-			strong_ptr()
+			strong_ptr() noexcept
 				: pointer(nullptr)
 				, refCounter(nullptr)
-			{
+			{ }
 
-			}
-			
+			strong_ptr(std::nullptr_t) noexcept
+				: pointer(nullptr)
+				, refCounter(nullptr)
+			{ }
+						
 			strong_ptr(const strong_ptr<T>& copy)
 				: pointer(copy.pointer)
 				, refCounter(copy.refCounter)
@@ -66,7 +67,7 @@ namespace cppu
 				IncrementStrongReference();
 			}
 
-			strong_ptr(strong_ptr<T>&& move)
+			strong_ptr(strong_ptr<T>&& move) noexcept
 				: pointer(std::move(move.pointer))
 				, refCounter(std::move(move.refCounter))
 			{
@@ -75,7 +76,7 @@ namespace cppu
 			}
 
 			// up cast constructor
-			template <typename TD, typename = typename std::enable_if<std::is_base_of<T, TD>::value>::type>
+			template <typename TD, typename = typename std::enable_if_t<std::is_base_of_v<T, TD> && std::is_assignable_v<T*&, TD*>>>
 			strong_ptr(const strong_ptr<TD>& copy)
 				: pointer(copy.pointer)
 				, refCounter(copy.refCounter)
@@ -84,7 +85,7 @@ namespace cppu
 			}
 
 			// up cast move constructor
-			template <typename TD, typename = typename std::enable_if<std::is_base_of<T, TD>::value>::type>
+			template <typename TD, typename = typename std::enable_if_t<std::is_base_of_v<T, TD> && std::is_assignable_v<T*&, TD*>>>
 			strong_ptr(strong_ptr<TD>&& move) noexcept
 				: pointer(std::move(move.pointer))
 				, refCounter(std::move(move.refCounter))
@@ -98,7 +99,7 @@ namespace cppu
 				DecrementStrongReference();
 			}
 
-			T* ptr() const
+			T* ptr() const noexcept
 			{
 				return pointer;
 			}
@@ -134,6 +135,13 @@ namespace cppu
 				return *this;
 			}
 
+			strong_ptr<T>& operator=(std::nullptr_t) noexcept
+			{
+				pointer = nullptr;
+				refCounter = nullptr;
+				return *this;
+			}
+			
 			operator strong_ptr<void*>&()
 			{
 				return *reinterpret_cast<strong_ptr<void*>*>(this);
@@ -172,30 +180,25 @@ namespace cppu
 			// shared pointer mechanics
 			void DecrementStrongReference()
 			{
-				char copy[sizeof(strong_ptr<T>)];
-				memcpy(&copy, this, sizeof(strong_ptr<T>));
-				strong_ptr<T>& ptrCopy = reinterpret_cast<strong_ptr<T>&>(copy);
+				auto* pointer = this->pointer;
+				auto* refCounter = this->refCounter;
 
-				if (ptrCopy.refCounter != nullptr)
+				if (refCounter != nullptr)
 				{
 					// we'll check if the previous value was 2, if so it will decrement to 0 in this procedure then mark this one as garbage
 					// the last strong value holder is merely a safety measure so weak ptrs won't destroy the ref counter before we do so in here.
-					if (ptrCopy.refCounter->strongReferences.fetch_sub(1) == 2)
+					if (refCounter->strongReferences.fetch_sub(1) == 2)
 					{
 						// add it so the collection can clean it up and give out the free slot again
-						if (!ptrCopy.refCounter->add_as_garbage(ptrCopy.pointer))
-						{
-							ptrCopy.refCounter->destruct(ptrCopy.pointer); // delete it on our own if the collection didn't accept the call
-							free(ptrCopy.pointer);
-						}
+						refCounter->add_as_garbage((void*)pointer);
 
 						// after this we've set the actual strong ref count so any weak ptr can delete the ref counter from this point
-						ptrCopy.refCounter->strongReferences.fetch_sub(1);
+						refCounter->strongReferences.fetch_sub(1);
 
 						// strong ref base_counter will be 0, now we only need to check the weak ref base_counter
 						// and remove the tracking object if it's 1
-						if (ptrCopy.refCounter->weakReferences.load() == 0)
-							delete ptrCopy.refCounter;
+						if (refCounter->weakReferences.load() == 0)
+							delete refCounter;
 					}
 				}
 			}
@@ -229,9 +232,12 @@ namespace cppu
 			weak_ptr()
 				: pointer(nullptr)
 				, refCounter(nullptr)
-			{
+			{ }
 
-			}
+			weak_ptr(std::nullptr_t)
+				: pointer(nullptr)
+				, refCounter(nullptr)
+			{ }
 
 			weak_ptr(weak_ptr<T>* copy)
 				: pointer(copy->pointer)
@@ -331,6 +337,10 @@ namespace cppu
 				: pointer(nullptr)
 			{}
 
+			raw_ptr(std::nullptr_t)
+				: pointer(nullptr)
+			{}
+
 
 			raw_ptr(T* ptr)
 				: pointer(ptr)
@@ -381,7 +391,7 @@ namespace cppu
 		template <typename T>
 		const strong_ptr<T>& const_pointer_cast(const strong_ptr<T>& cast) noexcept
 		{
-			return const_cast<strong_ptr<T>>(cast);
+			return strong_ptr<T>(const_cast<std::remove_const_t<T>*>(cast.pointer), cast.refCounter);
 		}
 
 		///

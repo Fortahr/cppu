@@ -21,6 +21,8 @@ namespace cppu
 				typedef std::unordered_map<K, VALUE> INTERNAL_MAP;
 
 			public:
+				typedef typename INTERNAL_MAP::iterator iterator;
+
 				unordered_map()
 				{ }
 
@@ -84,22 +86,22 @@ namespace cppu
 					return constructor::construct_pointer(&element->value, element->counter);
 				}
 
-				inline typename std::unordered_map<K, VALUE>::iterator erase(const K& key)
+				inline iterator erase(const K& key)
 				{
 					return BASE_MAP::base_erase(key);
 				}
 
-				inline typename std::unordered_map<K, VALUE>::iterator find(const K& obj)
+				inline iterator find(const K& obj)
 				{
 					return BASE_MAP::base_find(obj);
 				}
 
-				inline typename std::unordered_map<K, VALUE>::iterator begin()
+				inline iterator begin()
 				{
 					return BASE_MAP::base_begin();
 				}
 
-				inline typename std::unordered_map<K, VALUE>::iterator end()
+				inline iterator end()
 				{
 					return BASE_MAP::base_end();
 				}
