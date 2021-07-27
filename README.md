@@ -1,5 +1,5 @@
 # CPPUtilities
-Header-only library that offers cross platform tools and more usable functions to develop programs and games.
+Header-only library that offers cross platform tools and more useful functions to develop programs and games.
 Crossplatform C++ library (c++17)
 
 ## Garbage collected containers with smart pointers:
@@ -27,4 +27,4 @@ Crossplatform C++ library (c++17)
   - Has a stack tracer (Windows only right now, though unstable at the moment),
   - Extra functions like showing a console screen and checking if the program is already running.
 
-CPPUtilities has been released under the MIT license, I do appreciate acknowledgement whoever uses it.
+CPPUtilities has been released under the MIT license, I do appreciate acknowledgement from whoever uses it.
