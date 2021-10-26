@@ -16,6 +16,114 @@ namespace cppu
 			ncm::mutex lock;
 
 		public:
+			struct iterator
+			{
+				template<class, class, CLEAN_PROC> friend class cgc::m_array;
+
+				using iterator_category = std::random_access_iterator_tag;
+				using difference_type = std::ptrdiff_t;
+				using value_type = T;
+				using pointer = T*;
+				using reference = T&;
+
+			private:
+				cgc::m_array<T, S, clean_proc>& m_arr;
+				typename cgc::array<T, S, clean_proc>::iterator it;
+
+				iterator(cgc::m_array<T, S, clean_proc>& m_arr, typename cgc::array<T, S, clean_proc>::iterator it)
+					: m_arr(m_arr)
+					, it(it)
+				{ }
+
+			public:
+				iterator(const iterator& it)
+					: m_arr(it.m_arr)
+					, it(it.it)
+				{ }
+
+				/*iterator operator+(size_t offset)
+				{
+					return { m_arr, it + offset };
+				}
+
+				iterator& operator+=(size_t offset)
+				{
+					it += offset;
+					return *this;
+				}*/
+
+				iterator& operator++()
+				{
+					++it;
+
+					while (it.offset == cgc::array<T, S, clean_proc>::npos && it.arr != m_arr.arrays.back())
+					{
+						++it.arr;
+						it.offset = it.arr->front_index();
+					}
+
+					return *this;
+				}
+
+				iterator operator++(int)
+				{
+					auto cpy = it;
+					this->operator++();
+					return { m_arr, cpy };
+				}
+
+				/*iterator operator-(size_t offset)
+				{
+					return { m_arr, it - offset };
+				}
+
+				iterator& operator-=(size_t offset)
+				{
+					it -= offset;
+					return *this;
+				}*/
+
+				iterator& operator--()
+				{
+					--it;
+
+					while (it.offset == cgc::array<T, S, clean_proc>::npos && it.arr != m_arr.arrays.front())
+					{
+						--it.arr;
+						it.offset = it.arr->back_index();
+					}
+
+					return *this;
+				}
+
+				iterator operator--(int)
+				{
+					auto cpy = it;
+					this->operator--();
+					return { m_arr, cpy };
+				}
+
+				bool operator==(const iterator& other)
+				{
+					return it == other.it;
+				}
+
+				bool operator!=(const iterator& other)
+				{
+					return it != other.it;
+				}
+
+				T* operator->()
+				{
+					return it.operator->();
+				}
+
+				T& operator*() const
+				{
+					return it.operator*();
+				}
+			};
+
 			m_array()
 			{
 				cgc::array<T, S, clean_proc>* arr = new cgc::array<T, S, clean_proc>();
@@ -115,6 +223,16 @@ namespace cppu
 				}
 
 				return true;
+			}
+
+			inline iterator begin()
+			{
+				return { *this, arrays.front()->begin() };
+			}
+
+			inline iterator end()
+			{
+				return { *this, arrays.back()->end() };
 			}
 		};
 	}

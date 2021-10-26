@@ -31,20 +31,20 @@ namespace cppu
 		{
 			template<typename, typename, CLEAN_PROC> friend class m_array;
 		public:
-			static constexpr uint size() { return std::numeric_limits<S>::digits; }
+			static constexpr size_t size() { return std::numeric_limits<S>::digits; }
 
 		private:
-			static constexpr uint const npos = std::numeric_limits<S>::digits;
+			static constexpr size_t const npos = std::numeric_limits<S>::digits;
 
-			byte slots[size() * sizeof(T)];
+			// Disable RAII by using a union as this should only reserve/allocate memory for the types later on
+			union
+			{
+				T slots[size()];
+			};
+
 			std::atomic<S> freeSlots;
 			std::atomic<S> initSlots;
 			std::atomic<S> garbage;
-
-			inline T* Slots(uint i)
-			{
-				return reinterpret_cast<T*>(&slots) + i;
-			}
 
 			inline static uint first_free(const S& freeSlots)
 			{
@@ -56,7 +56,7 @@ namespace cppu
 				// Find first available spot, in a thread safe & lock free approach
 				S freeSlotsCheck = freeSlots.load();
 				S freeSlotsCopy = freeSlotsCheck;
-				uint freeSpot;
+				size_t freeSpot;
 
 				while ((freeSpot = first_free(freeSlotsCheck)) < npos)
 				{
@@ -79,12 +79,12 @@ namespace cppu
 			}
 
 			template<class... _Args>
-			inline strong_ptr<T> emplace_at(uint slot, _Args&&... arguments)
+			inline strong_ptr<T> emplace_at(size_t slot, _Args&&... arguments)
 			{
 				assert(slot < npos);
 
 				// Construct object
-				T* object = Slots(slot);
+				T* object = slots + slot;
 				constructor::construct_object<T>(object, std::forward<_Args>(arguments)...);
 				
 				// note the
@@ -101,8 +101,8 @@ namespace cppu
 			inline void clean_and_destruct_slot(uint offset)
 			{
 				S oldValue, newValue;
-				T* item = Slots(offset);
-				item->~T();
+				T& item = slots[offset];
+				item.~T();
 
 				// reset slot value as uninitialized
 				do
@@ -120,20 +120,113 @@ namespace cppu
 			}
 
 		public:
+			struct iterator
+			{
+				template<class, class, CLEAN_PROC> friend class cgc::array;
+				friend struct cgc::m_array<T, S, clean_proc>::iterator;
+
+				using iterator_category = std::random_access_iterator_tag;
+				using difference_type = std::ptrdiff_t;
+				using value_type = T;
+				using pointer = T*;
+				using reference = T&;
+
+			private:
+				S offset;
+				cgc::array<T, S, clean_proc>* arr;
+
+				iterator(cgc::array<T, S, clean_proc>* arr, S offset)
+					: arr(arr)
+					, offset(offset)
+				{ }
+
+			public:
+				iterator(const iterator& it)
+					: arr(it.arr)
+					, offset(it.offset)
+				{ }
+
+				iterator operator+(size_t offset) const
+				{
+					return { arr, arr->next_index(this->offset + offset) };
+				}
+
+				iterator& operator+=(size_t offset)
+				{
+					this->offset = arr->next_index(this->offset + offset);
+					return *this;
+				}
+
+				iterator operator++()
+				{
+					this->offset = arr->next_index(this->offset + 1);
+					return *this;
+				}
+
+				iterator operator++(int)
+				{
+					S offs = this->offset;
+					this->offset = arr->next_index(this->offset + 1);
+					return iterator(arr, offs);
+				}
+
+				iterator operator-(size_t offset) const
+				{
+					return { arr, arr->prev_index(this->offset - offset) };
+				}
+
+				iterator& operator-=(size_t offset)
+				{
+					this->offset = arr->prev_index(this->offset - offset);
+					return *this;
+				}
+
+				iterator& operator--()
+				{
+					this->offset = arr->next_index(this->offset - 1);
+					return *this;
+				}
+
+				iterator operator--(int)
+				{
+					S offs = offset;
+					this->offset = arr->next_index(this->offset - 1);
+					return iterator(arr, offs);
+				}
+
+				bool operator==(const iterator& other) const
+				{
+					return offset == other.offset;
+				}
+
+				bool operator!=(const iterator& other) const
+				{
+					return offset != other.offset;
+				}
+
+				T* operator->() const
+				{
+					return arr->slots + offset;
+				}
+
+				T& operator*() const
+				{
+					return arr->slots[offset];
+				}
+			};
+
 			array()
 				: freeSlots(~0)
 				, initSlots(0)
 				, garbage(0)
-			{
-
-			}
+			{ }
 
 			// This one shouldn't be called unless all of the members are not being used anymore anywhere.
 			~array()
 			{
 				S takenSpots = ~freeSlots;
 				for (S i = bs_rtol(takenSpots); i < npos; i = bs_rtol(takenSpots, ++i))
-					Slots(i)->~T();
+					slots[i].~T();
 			}
 
 			template<class... _Args>
@@ -153,10 +246,10 @@ namespace cppu
 			virtual bool add_as_garbage(void* ptr, const details::base_counter* c)
 			{
 				if constexpr (clean_proc == CLEAN_PROC::DIRECT)
-					clean_and_destruct_slot((reinterpret_cast<std::size_t>(ptr) - reinterpret_cast<std::size_t>(slots)) / sizeof(T));
+					clean_and_destruct_slot((reinterpret_cast<uintptr_t>(ptr) - reinterpret_cast<uintptr_t>(slots)) / sizeof(T));
 				else
 				{
-					uint offset = (reinterpret_cast<std::size_t>(ptr) - reinterpret_cast<std::size_t>(slots)) / sizeof(T);
+					size_t offset = (reinterpret_cast<uintptr_t>(ptr) - reinterpret_cast<uintptr_t>(slots)) / sizeof(T);
 					S oldValue, newValue;
 					do
 					{
@@ -175,12 +268,12 @@ namespace cppu
 			}
 
 
-			uint clean_garbage(uint max = std::numeric_limits<uint>::max())
+			size_t clean_garbage(size_t max = std::numeric_limits<size_t>::max())
 			{
 				if constexpr (clean_proc == CLEAN_PROC::MANUAL)
 				{
-					uint i = 0;
-					for (uint offset = bs_rtol(garbage); offset < npos; offset = bs_rtol(garbage, offset))
+					size_t i = 0;
+					for (size_t offset = bs_rtol(garbage); offset < npos; offset = bs_rtol(garbage, offset))
 					{
 						clean_and_destruct_slot(offset);
 
@@ -201,98 +294,94 @@ namespace cppu
 					return 0;
 			}
 
-			inline T* operator[] (uint i)
+			inline T& operator[] (size_t pos)
 			{
-				return Slots(i);
+				return slots[pos];
 			}
 
-			inline uint front()
+			inline T& at(size_t pos)
 			{
-				S takenSpots = initSlots;
-				return bs_rtol(takenSpots);
+				if (pos < size())
+					return slots[pos];
+				else
+					throw std::out_of_range();
 			}
 
-			inline T* back(uint& i)
+			inline T& front()
 			{
-				S takenSpots = initSlots;
-				i = bs_ltor(takenSpots);
-				return Slots(i);
+				return slots[bs_rtol(initSlots.load())];
 			}
 
-			inline uint next(uint i)
+			inline T& back()
 			{
-				S takenSpots = initSlots;
-				return bs_rtol(takenSpots, i);
+				return slots[bs_ltor(initSlots.load())];
 			}
 
-			inline T* prev(uint& i)
+			inline T& next(S pos)
 			{
-				S takenSpots = initSlots;
-				i = bs_ltor(takenSpots, i);
-				return Slots(i);
+				return slots[next_index(pos)];
 			}
 
-			class iterator
+			inline T& prev(S pos)
 			{
-			private:
-				S offset;
-				cgc::array<T, S>* arr;
+				return slots[prev_index(pos)];
+			}
 
-				iterator(cgc::array<T, S>* arr, S offset)
-					: arr(arr)
-					, offset(offset)
-				{
+			inline S front_index()
+			{
+				return bs_rtol(initSlots.load());
+			}
 
-				}
+			inline S back_index()
+			{
+				return bs_ltor(initSlots.load());
+			}
 
-			public:
-				iterator& operator + (int offset)
-				{
-					this->offset = arr->next(this->offset + offset);
-					return *this;
-				}
+			inline S next_index(S pos)
+			{
+				return bs_rtol(initSlots.load(), pos);
+			}
 
-				T* operator -> () const
-				{
-					return arr->Slots(offset);
-				}
-
-				bool operator == (iterator& other)
-				{
-					return this->offset == other->offset;
-				}
-			};
+			inline S prev_index(S pos)
+			{
+				return bs_ltor(initSlots.load(), pos);
+			}
 
 			iterator begin()
 			{
-				return iterator(front(), this);
+				return iterator(this, bs_rtol(initSlots));
 			}
 
 			iterator end()
 			{
-				return iterator(npos, this);
+				return iterator(this, npos);
 			}
 
-			bool exists(T* object)
+			bool exists(T& object)
 			{
 				S takenSpots = ~freeSlots;
-				for (uint i = bs_rtol(takenSpots); i < npos; i = bs_rtol(takenSpots, i))
+				for (size_t i = bs_rtol(takenSpots); i < npos; i = bs_rtol(takenSpots, i))
 				{
-					if (Slots(i) == object)
+					if (slots[i] == object)
 						return true;
 				}
 
 				return false;
 			}
+			
+			bool exists(T* object)
+			{
+				// to be implemented
+			}
 
-			uint indexof(T* object)
+			size_t indexof(T& object)
 			{
 				S takenSpots = ~freeSlots;
-				for (uint i = bs_rtol(freeSlots); i < npos; i = bs_rtol(freeSlots, i))
+				for (size_t i = bs_rtol(freeSlots); i < npos; i = bs_rtol(freeSlots, i))
 				{
-					for (uint s = i; s < i; ++s)
+					for (size_t s = i; s < i; ++s)
 					{
-						if (Slots(s) == object)
+						if (slots[s] == object)
 							return s;
 					}
 				}
@@ -300,7 +389,14 @@ namespace cppu
 				return npos;
 			}
 
-			inline std::size_t garbage_size()
+			size_t indexof(T* object)
+			{
+				size_t index = (static_cast<uintptr_t>(object) - static_cast<uintptr_t>(slots)) / sizeof(T);
+				assert(index >= 0 && index < npos);
+				return index;
+			}
+
+			inline size_t garbage_size()
 			{
 				return garbage.size();
 			}
