@@ -1,0 +1,237 @@
+\hypertarget{classcppu_1_1serial_1_1_archive_writer}{}\doxysection{cppu\+::serial\+::Archive\+Writer Class Reference}
+\label{classcppu_1_1serial_1_1_archive_writer}\index{cppu::serial::ArchiveWriter@{cppu::serial::ArchiveWriter}}
+
+
+{\ttfamily \#include $<$Serializer.\+h$>$}
+
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{classcppu_1_1serial_1_1_archive_writer_a79985a96681a9cb6e56f060da18c3a44}{Archive\+Writer}} (\mbox{\hyperlink{namespacecppu_1_1serial_a9bbcb1ffc2c480017327400216e14bb8}{VTable\+Size}} table\+Size, \mbox{\hyperlink{namespacecppu_1_1serial_a5fe8f2fec8580427e6101c964f5a9453}{Archive\+Version}} version, \mbox{\hyperlink{namespacecppu_1_1serial_a5273cffccb8e0aa90012969f8c5eb0a9}{Value\+Pos}} initial\+Buffer\+Size=1024)
+\item 
+\mbox{\hyperlink{classcppu_1_1serial_1_1_archive_writer_a0c4947bbeaa230ad7236873ace7d9289}{$\sim$\+Archive\+Writer}} ()
+\item 
+{\footnotesize template$<$typename T $>$ }\\bool \mbox{\hyperlink{classcppu_1_1serial_1_1_archive_writer_a830ba8652fce3037dd1ec6e014826727}{Serialize}} (\mbox{\hyperlink{namespacecppu_1_1serial_a22bd78bc3b940a97cea915a2024a886d}{Key}} key, const T \&data)
+\item 
+bool \mbox{\hyperlink{classcppu_1_1serial_1_1_archive_writer_aca900a7585ce84d50f7730c3ef6ca111}{Serialize}} (\mbox{\hyperlink{namespacecppu_1_1serial_a22bd78bc3b940a97cea915a2024a886d}{Key}} key, const void $\ast$data, std\+::size\+\_\+t size)
+\item 
+{\footnotesize template$<$typename It $>$ }\\bool \mbox{\hyperlink{classcppu_1_1serial_1_1_archive_writer_a684f8c911f7b5ecd8df2b66c9dbe93cb}{Serialize}} (\mbox{\hyperlink{namespacecppu_1_1serial_a22bd78bc3b940a97cea915a2024a886d}{Key}} key, It begin, It end)
+\begin{DoxyCompactList}\small\item\em Serialize containers \end{DoxyCompactList}\item 
+bool \mbox{\hyperlink{classcppu_1_1serial_1_1_archive_writer_a6b107356c18c75bb615311a36c4c1e19}{Write}} (const void $\ast$data, std\+::size\+\_\+t size)
+\item 
+{\footnotesize template$<$typename T $>$ }\\bool \mbox{\hyperlink{classcppu_1_1serial_1_1_archive_writer_af7976a12c77602b1fcf532c302e5580d}{Write}} (const T \&data)
+\item 
+{\footnotesize template$<$typename It $>$ }\\bool \mbox{\hyperlink{classcppu_1_1serial_1_1_archive_writer_a3c4915677bb161b838d19174033896c7}{Write}} (It begin, It end)
+\item 
+{\footnotesize template$<$typename T $>$ }\\bool \mbox{\hyperlink{classcppu_1_1serial_1_1_archive_writer_a5674036ba4dd9c189e345d055be61de9}{Write}} (const std\+::vector$<$ T $>$ \&vector)
+\item 
+{\footnotesize template$<$typename K , typename T $>$ }\\bool \mbox{\hyperlink{classcppu_1_1serial_1_1_archive_writer_a1c4063a5c6edc012d0eb221460eeb6fe}{Write}} (const std\+::pair$<$ K, T $>$ \&data)
+\item 
+{\footnotesize template$<$typename... TT$>$ }\\bool \mbox{\hyperlink{classcppu_1_1serial_1_1_archive_writer_a4e2f676897261a89609f9b512d196388}{Write}} (const std\+::tuple$<$ TT... $>$ \&data)
+\item 
+{\footnotesize template$<$typename... P$>$ }\\void \mbox{\hyperlink{classcppu_1_1serial_1_1_archive_writer_ab8515467134b93c628a6510246347b44}{Polymorphic}} (const P... bases)
+\item 
+std\+::string\+\_\+view \mbox{\hyperlink{classcppu_1_1serial_1_1_archive_writer_ad361ac040f9fd10271e67abf38301334}{Finish}} ()
+\item 
+void \mbox{\hyperlink{classcppu_1_1serial_1_1_archive_writer_a1b8e476a3a77a634d0770bcfa7a8b0a7}{Finish\+Sub\+Archive}} (\mbox{\hyperlink{classcppu_1_1serial_1_1_sub_archive_writer}{Sub\+Archive\+Writer}} \&sub\+Archive)
+\item 
+{\footnotesize template$<$typename T $>$ }\\\mbox{\hyperlink{classcppu_1_1serial_1_1_archive_writer}{Archive\+Writer}} \& \mbox{\hyperlink{classcppu_1_1serial_1_1_archive_writer_a8e2bd0c8a61cbf1b45c7c74005a2425d}{operator$<$$<$}} (const T \&data)
+\item 
+\mbox{\hyperlink{classcppu_1_1serial_1_1_sub_archive_writer}{Sub\+Archive\+Writer}} \mbox{\hyperlink{classcppu_1_1serial_1_1_archive_writer_abceefe4d15247a9f941e15839d0aa3d0}{Create\+Sub\+Archive}} (\mbox{\hyperlink{namespacecppu_1_1serial_a9bbcb1ffc2c480017327400216e14bb8}{VTable\+Size}} table\+Size, \mbox{\hyperlink{namespacecppu_1_1serial_a5fe8f2fec8580427e6101c964f5a9453}{Archive\+Version}} version, \mbox{\hyperlink{namespacecppu_1_1serial_a5273cffccb8e0aa90012969f8c5eb0a9}{Value\+Pos}} initial\+Buffer\+Size=1024)
+\item 
+template$<$$>$ bool \mbox{\hyperlink{classcppu_1_1serial_1_1_archive_writer_aeb4a483d9c2a3a22b95df3d137155baf}{Write}} (const std\+::string \&data)
+\item 
+template$<$$>$ bool \mbox{\hyperlink{classcppu_1_1serial_1_1_archive_writer_a198d93fc2588d1fb74740cc197fd2eba}{Write}} (const std\+::string\+\_\+view \&data)
+\item 
+template$<$$>$ bool \mbox{\hyperlink{classcppu_1_1serial_1_1_archive_writer_a0b627a0befeb95eba090cc8aa88746ad}{Write}} (const std\+::istream \&data)
+\item 
+template$<$$>$ bool \mbox{\hyperlink{classcppu_1_1serial_1_1_archive_writer_a8cda276a26be6bf3d99f2a0a730e52f9}{Write}} (const \mbox{\hyperlink{classcppu_1_1serial_1_1_archive_writer}{Archive\+Writer}} \&data)
+\end{DoxyCompactItemize}
+\doxysubsection*{Friends}
+\begin{DoxyCompactItemize}
+\item 
+class \mbox{\hyperlink{classcppu_1_1serial_1_1_archive_writer_a81f2ca23fc8f9eded8f6f2270e1fdf00}{Archive\+Reader}}
+\item 
+class \mbox{\hyperlink{classcppu_1_1serial_1_1_archive_writer_a4f4a707f90665ea44f48566f04bdaf06}{Sub\+Archive\+Writer}}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{classcppu_1_1serial_1_1_archive_writer_a79985a96681a9cb6e56f060da18c3a44}\label{classcppu_1_1serial_1_1_archive_writer_a79985a96681a9cb6e56f060da18c3a44}} 
+\index{cppu::serial::ArchiveWriter@{cppu::serial::ArchiveWriter}!ArchiveWriter@{ArchiveWriter}}
+\index{ArchiveWriter@{ArchiveWriter}!cppu::serial::ArchiveWriter@{cppu::serial::ArchiveWriter}}
+\doxysubsubsection{\texorpdfstring{ArchiveWriter()}{ArchiveWriter()}}
+{\footnotesize\ttfamily cppu\+::serial\+::\+Archive\+Writer\+::\+Archive\+Writer (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{namespacecppu_1_1serial_a9bbcb1ffc2c480017327400216e14bb8}{VTable\+Size}}}]{table\+Size,  }\item[{\mbox{\hyperlink{namespacecppu_1_1serial_a5fe8f2fec8580427e6101c964f5a9453}{Archive\+Version}}}]{version,  }\item[{\mbox{\hyperlink{namespacecppu_1_1serial_a5273cffccb8e0aa90012969f8c5eb0a9}{Value\+Pos}}}]{initial\+Buffer\+Size = {\ttfamily 1024} }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+\mbox{\Hypertarget{classcppu_1_1serial_1_1_archive_writer_a0c4947bbeaa230ad7236873ace7d9289}\label{classcppu_1_1serial_1_1_archive_writer_a0c4947bbeaa230ad7236873ace7d9289}} 
+\index{cppu::serial::ArchiveWriter@{cppu::serial::ArchiveWriter}!````~ArchiveWriter@{$\sim$ArchiveWriter}}
+\index{````~ArchiveWriter@{$\sim$ArchiveWriter}!cppu::serial::ArchiveWriter@{cppu::serial::ArchiveWriter}}
+\doxysubsubsection{\texorpdfstring{$\sim$ArchiveWriter()}{~ArchiveWriter()}}
+{\footnotesize\ttfamily cppu\+::serial\+::\+Archive\+Writer\+::$\sim$\+Archive\+Writer (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{classcppu_1_1serial_1_1_archive_writer_abceefe4d15247a9f941e15839d0aa3d0}\label{classcppu_1_1serial_1_1_archive_writer_abceefe4d15247a9f941e15839d0aa3d0}} 
+\index{cppu::serial::ArchiveWriter@{cppu::serial::ArchiveWriter}!CreateSubArchive@{CreateSubArchive}}
+\index{CreateSubArchive@{CreateSubArchive}!cppu::serial::ArchiveWriter@{cppu::serial::ArchiveWriter}}
+\doxysubsubsection{\texorpdfstring{CreateSubArchive()}{CreateSubArchive()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classcppu_1_1serial_1_1_sub_archive_writer}{Sub\+Archive\+Writer}} cppu\+::serial\+::\+Archive\+Writer\+::\+Create\+Sub\+Archive (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{namespacecppu_1_1serial_a9bbcb1ffc2c480017327400216e14bb8}{VTable\+Size}}}]{table\+Size,  }\item[{\mbox{\hyperlink{namespacecppu_1_1serial_a5fe8f2fec8580427e6101c964f5a9453}{Archive\+Version}}}]{version,  }\item[{\mbox{\hyperlink{namespacecppu_1_1serial_a5273cffccb8e0aa90012969f8c5eb0a9}{Value\+Pos}}}]{initial\+Buffer\+Size = {\ttfamily 1024} }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+\mbox{\Hypertarget{classcppu_1_1serial_1_1_archive_writer_ad361ac040f9fd10271e67abf38301334}\label{classcppu_1_1serial_1_1_archive_writer_ad361ac040f9fd10271e67abf38301334}} 
+\index{cppu::serial::ArchiveWriter@{cppu::serial::ArchiveWriter}!Finish@{Finish}}
+\index{Finish@{Finish}!cppu::serial::ArchiveWriter@{cppu::serial::ArchiveWriter}}
+\doxysubsubsection{\texorpdfstring{Finish()}{Finish()}}
+{\footnotesize\ttfamily std\+::string\+\_\+view cppu\+::serial\+::\+Archive\+Writer\+::\+Finish (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+\mbox{\Hypertarget{classcppu_1_1serial_1_1_archive_writer_a1b8e476a3a77a634d0770bcfa7a8b0a7}\label{classcppu_1_1serial_1_1_archive_writer_a1b8e476a3a77a634d0770bcfa7a8b0a7}} 
+\index{cppu::serial::ArchiveWriter@{cppu::serial::ArchiveWriter}!FinishSubArchive@{FinishSubArchive}}
+\index{FinishSubArchive@{FinishSubArchive}!cppu::serial::ArchiveWriter@{cppu::serial::ArchiveWriter}}
+\doxysubsubsection{\texorpdfstring{FinishSubArchive()}{FinishSubArchive()}}
+{\footnotesize\ttfamily void cppu\+::serial\+::\+Archive\+Writer\+::\+Finish\+Sub\+Archive (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classcppu_1_1serial_1_1_sub_archive_writer}{Sub\+Archive\+Writer}} \&}]{sub\+Archive }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+\mbox{\Hypertarget{classcppu_1_1serial_1_1_archive_writer_a8e2bd0c8a61cbf1b45c7c74005a2425d}\label{classcppu_1_1serial_1_1_archive_writer_a8e2bd0c8a61cbf1b45c7c74005a2425d}} 
+\index{cppu::serial::ArchiveWriter@{cppu::serial::ArchiveWriter}!operator$<$$<$@{operator$<$$<$}}
+\index{operator$<$$<$@{operator$<$$<$}!cppu::serial::ArchiveWriter@{cppu::serial::ArchiveWriter}}
+\doxysubsubsection{\texorpdfstring{operator$<$$<$()}{operator<<()}}
+{\footnotesize\ttfamily template$<$typename T $>$ \\
+\mbox{\hyperlink{classcppu_1_1serial_1_1_archive_writer}{Archive\+Writer}}\& cppu\+::serial\+::\+Archive\+Writer\+::operator$<$$<$ (\begin{DoxyParamCaption}\item[{const T \&}]{data }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+\mbox{\Hypertarget{classcppu_1_1serial_1_1_archive_writer_ab8515467134b93c628a6510246347b44}\label{classcppu_1_1serial_1_1_archive_writer_ab8515467134b93c628a6510246347b44}} 
+\index{cppu::serial::ArchiveWriter@{cppu::serial::ArchiveWriter}!Polymorphic@{Polymorphic}}
+\index{Polymorphic@{Polymorphic}!cppu::serial::ArchiveWriter@{cppu::serial::ArchiveWriter}}
+\doxysubsubsection{\texorpdfstring{Polymorphic()}{Polymorphic()}}
+{\footnotesize\ttfamily template$<$typename... P$>$ \\
+void cppu\+::serial\+::\+Archive\+Writer\+::\+Polymorphic (\begin{DoxyParamCaption}\item[{const P...}]{bases }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+\mbox{\Hypertarget{classcppu_1_1serial_1_1_archive_writer_a830ba8652fce3037dd1ec6e014826727}\label{classcppu_1_1serial_1_1_archive_writer_a830ba8652fce3037dd1ec6e014826727}} 
+\index{cppu::serial::ArchiveWriter@{cppu::serial::ArchiveWriter}!Serialize@{Serialize}}
+\index{Serialize@{Serialize}!cppu::serial::ArchiveWriter@{cppu::serial::ArchiveWriter}}
+\doxysubsubsection{\texorpdfstring{Serialize()}{Serialize()}\hspace{0.1cm}{\footnotesize\ttfamily [1/3]}}
+{\footnotesize\ttfamily template$<$typename T $>$ \\
+bool cppu\+::serial\+::\+Archive\+Writer\+::\+Serialize (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{namespacecppu_1_1serial_a22bd78bc3b940a97cea915a2024a886d}{Key}}}]{key,  }\item[{const T \&}]{data }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+\mbox{\Hypertarget{classcppu_1_1serial_1_1_archive_writer_aca900a7585ce84d50f7730c3ef6ca111}\label{classcppu_1_1serial_1_1_archive_writer_aca900a7585ce84d50f7730c3ef6ca111}} 
+\index{cppu::serial::ArchiveWriter@{cppu::serial::ArchiveWriter}!Serialize@{Serialize}}
+\index{Serialize@{Serialize}!cppu::serial::ArchiveWriter@{cppu::serial::ArchiveWriter}}
+\doxysubsubsection{\texorpdfstring{Serialize()}{Serialize()}\hspace{0.1cm}{\footnotesize\ttfamily [2/3]}}
+{\footnotesize\ttfamily bool cppu\+::serial\+::\+Archive\+Writer\+::\+Serialize (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{namespacecppu_1_1serial_a22bd78bc3b940a97cea915a2024a886d}{Key}}}]{key,  }\item[{const void $\ast$}]{data,  }\item[{std\+::size\+\_\+t}]{size }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+\mbox{\Hypertarget{classcppu_1_1serial_1_1_archive_writer_a684f8c911f7b5ecd8df2b66c9dbe93cb}\label{classcppu_1_1serial_1_1_archive_writer_a684f8c911f7b5ecd8df2b66c9dbe93cb}} 
+\index{cppu::serial::ArchiveWriter@{cppu::serial::ArchiveWriter}!Serialize@{Serialize}}
+\index{Serialize@{Serialize}!cppu::serial::ArchiveWriter@{cppu::serial::ArchiveWriter}}
+\doxysubsubsection{\texorpdfstring{Serialize()}{Serialize()}\hspace{0.1cm}{\footnotesize\ttfamily [3/3]}}
+{\footnotesize\ttfamily template$<$typename It $>$ \\
+bool cppu\+::serial\+::\+Archive\+Writer\+::\+Serialize (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{namespacecppu_1_1serial_a22bd78bc3b940a97cea915a2024a886d}{Key}}}]{key,  }\item[{It}]{begin,  }\item[{It}]{end }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Serialize containers 
+
+
+\begin{DoxyTemplParams}{Template Parameters}
+{\em It} & \\
+\hline
+\end{DoxyTemplParams}
+
+\begin{DoxyParams}{Parameters}
+{\em key} & \\
+\hline
+{\em begin} & \\
+\hline
+{\em end} & \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+
+\end{DoxyReturn}
+\mbox{\Hypertarget{classcppu_1_1serial_1_1_archive_writer_a8cda276a26be6bf3d99f2a0a730e52f9}\label{classcppu_1_1serial_1_1_archive_writer_a8cda276a26be6bf3d99f2a0a730e52f9}} 
+\index{cppu::serial::ArchiveWriter@{cppu::serial::ArchiveWriter}!Write@{Write}}
+\index{Write@{Write}!cppu::serial::ArchiveWriter@{cppu::serial::ArchiveWriter}}
+\doxysubsubsection{\texorpdfstring{Write()}{Write()}\hspace{0.1cm}{\footnotesize\ttfamily [1/10]}}
+{\footnotesize\ttfamily template$<$$>$ \\
+bool cppu\+::serial\+::\+Archive\+Writer\+::\+Write (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classcppu_1_1serial_1_1_archive_writer}{Archive\+Writer}} \&}]{data }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+\mbox{\Hypertarget{classcppu_1_1serial_1_1_archive_writer_a0b627a0befeb95eba090cc8aa88746ad}\label{classcppu_1_1serial_1_1_archive_writer_a0b627a0befeb95eba090cc8aa88746ad}} 
+\index{cppu::serial::ArchiveWriter@{cppu::serial::ArchiveWriter}!Write@{Write}}
+\index{Write@{Write}!cppu::serial::ArchiveWriter@{cppu::serial::ArchiveWriter}}
+\doxysubsubsection{\texorpdfstring{Write()}{Write()}\hspace{0.1cm}{\footnotesize\ttfamily [2/10]}}
+{\footnotesize\ttfamily template$<$$>$ \\
+bool cppu\+::serial\+::\+Archive\+Writer\+::\+Write (\begin{DoxyParamCaption}\item[{const std\+::istream \&}]{data }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+\mbox{\Hypertarget{classcppu_1_1serial_1_1_archive_writer_a1c4063a5c6edc012d0eb221460eeb6fe}\label{classcppu_1_1serial_1_1_archive_writer_a1c4063a5c6edc012d0eb221460eeb6fe}} 
+\index{cppu::serial::ArchiveWriter@{cppu::serial::ArchiveWriter}!Write@{Write}}
+\index{Write@{Write}!cppu::serial::ArchiveWriter@{cppu::serial::ArchiveWriter}}
+\doxysubsubsection{\texorpdfstring{Write()}{Write()}\hspace{0.1cm}{\footnotesize\ttfamily [3/10]}}
+{\footnotesize\ttfamily template$<$typename K , typename T $>$ \\
+bool cppu\+::serial\+::\+Archive\+Writer\+::\+Write (\begin{DoxyParamCaption}\item[{const std\+::pair$<$ K, T $>$ \&}]{data }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+\mbox{\Hypertarget{classcppu_1_1serial_1_1_archive_writer_aeb4a483d9c2a3a22b95df3d137155baf}\label{classcppu_1_1serial_1_1_archive_writer_aeb4a483d9c2a3a22b95df3d137155baf}} 
+\index{cppu::serial::ArchiveWriter@{cppu::serial::ArchiveWriter}!Write@{Write}}
+\index{Write@{Write}!cppu::serial::ArchiveWriter@{cppu::serial::ArchiveWriter}}
+\doxysubsubsection{\texorpdfstring{Write()}{Write()}\hspace{0.1cm}{\footnotesize\ttfamily [4/10]}}
+{\footnotesize\ttfamily template$<$$>$ \\
+bool cppu\+::serial\+::\+Archive\+Writer\+::\+Write (\begin{DoxyParamCaption}\item[{const std\+::string \&}]{data }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+\mbox{\Hypertarget{classcppu_1_1serial_1_1_archive_writer_a198d93fc2588d1fb74740cc197fd2eba}\label{classcppu_1_1serial_1_1_archive_writer_a198d93fc2588d1fb74740cc197fd2eba}} 
+\index{cppu::serial::ArchiveWriter@{cppu::serial::ArchiveWriter}!Write@{Write}}
+\index{Write@{Write}!cppu::serial::ArchiveWriter@{cppu::serial::ArchiveWriter}}
+\doxysubsubsection{\texorpdfstring{Write()}{Write()}\hspace{0.1cm}{\footnotesize\ttfamily [5/10]}}
+{\footnotesize\ttfamily template$<$$>$ \\
+bool cppu\+::serial\+::\+Archive\+Writer\+::\+Write (\begin{DoxyParamCaption}\item[{const std\+::string\+\_\+view \&}]{data }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+\mbox{\Hypertarget{classcppu_1_1serial_1_1_archive_writer_a4e2f676897261a89609f9b512d196388}\label{classcppu_1_1serial_1_1_archive_writer_a4e2f676897261a89609f9b512d196388}} 
+\index{cppu::serial::ArchiveWriter@{cppu::serial::ArchiveWriter}!Write@{Write}}
+\index{Write@{Write}!cppu::serial::ArchiveWriter@{cppu::serial::ArchiveWriter}}
+\doxysubsubsection{\texorpdfstring{Write()}{Write()}\hspace{0.1cm}{\footnotesize\ttfamily [6/10]}}
+{\footnotesize\ttfamily template$<$class... TT$>$ \\
+bool cppu\+::serial\+::\+Archive\+Writer\+::\+Write (\begin{DoxyParamCaption}\item[{const std\+::tuple$<$ TT... $>$ \&}]{data }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+\mbox{\Hypertarget{classcppu_1_1serial_1_1_archive_writer_a5674036ba4dd9c189e345d055be61de9}\label{classcppu_1_1serial_1_1_archive_writer_a5674036ba4dd9c189e345d055be61de9}} 
+\index{cppu::serial::ArchiveWriter@{cppu::serial::ArchiveWriter}!Write@{Write}}
+\index{Write@{Write}!cppu::serial::ArchiveWriter@{cppu::serial::ArchiveWriter}}
+\doxysubsubsection{\texorpdfstring{Write()}{Write()}\hspace{0.1cm}{\footnotesize\ttfamily [7/10]}}
+{\footnotesize\ttfamily template$<$typename T $>$ \\
+bool cppu\+::serial\+::\+Archive\+Writer\+::\+Write (\begin{DoxyParamCaption}\item[{const std\+::vector$<$ T $>$ \&}]{vector }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+\mbox{\Hypertarget{classcppu_1_1serial_1_1_archive_writer_af7976a12c77602b1fcf532c302e5580d}\label{classcppu_1_1serial_1_1_archive_writer_af7976a12c77602b1fcf532c302e5580d}} 
+\index{cppu::serial::ArchiveWriter@{cppu::serial::ArchiveWriter}!Write@{Write}}
+\index{Write@{Write}!cppu::serial::ArchiveWriter@{cppu::serial::ArchiveWriter}}
+\doxysubsubsection{\texorpdfstring{Write()}{Write()}\hspace{0.1cm}{\footnotesize\ttfamily [8/10]}}
+{\footnotesize\ttfamily template$<$typename T $>$ \\
+bool cppu\+::serial\+::\+Archive\+Writer\+::\+Write (\begin{DoxyParamCaption}\item[{const T \&}]{data }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+\mbox{\Hypertarget{classcppu_1_1serial_1_1_archive_writer_a6b107356c18c75bb615311a36c4c1e19}\label{classcppu_1_1serial_1_1_archive_writer_a6b107356c18c75bb615311a36c4c1e19}} 
+\index{cppu::serial::ArchiveWriter@{cppu::serial::ArchiveWriter}!Write@{Write}}
+\index{Write@{Write}!cppu::serial::ArchiveWriter@{cppu::serial::ArchiveWriter}}
+\doxysubsubsection{\texorpdfstring{Write()}{Write()}\hspace{0.1cm}{\footnotesize\ttfamily [9/10]}}
+{\footnotesize\ttfamily bool cppu\+::serial\+::\+Archive\+Writer\+::\+Write (\begin{DoxyParamCaption}\item[{const void $\ast$}]{data,  }\item[{std\+::size\+\_\+t}]{size }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+\mbox{\Hypertarget{classcppu_1_1serial_1_1_archive_writer_a3c4915677bb161b838d19174033896c7}\label{classcppu_1_1serial_1_1_archive_writer_a3c4915677bb161b838d19174033896c7}} 
+\index{cppu::serial::ArchiveWriter@{cppu::serial::ArchiveWriter}!Write@{Write}}
+\index{Write@{Write}!cppu::serial::ArchiveWriter@{cppu::serial::ArchiveWriter}}
+\doxysubsubsection{\texorpdfstring{Write()}{Write()}\hspace{0.1cm}{\footnotesize\ttfamily [10/10]}}
+{\footnotesize\ttfamily template$<$typename It $>$ \\
+bool cppu\+::serial\+::\+Archive\+Writer\+::\+Write (\begin{DoxyParamCaption}\item[{It}]{begin,  }\item[{It}]{end }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+\doxysubsection{Friends And Related Function Documentation}
+\mbox{\Hypertarget{classcppu_1_1serial_1_1_archive_writer_a81f2ca23fc8f9eded8f6f2270e1fdf00}\label{classcppu_1_1serial_1_1_archive_writer_a81f2ca23fc8f9eded8f6f2270e1fdf00}} 
+\index{cppu::serial::ArchiveWriter@{cppu::serial::ArchiveWriter}!ArchiveReader@{ArchiveReader}}
+\index{ArchiveReader@{ArchiveReader}!cppu::serial::ArchiveWriter@{cppu::serial::ArchiveWriter}}
+\doxysubsubsection{\texorpdfstring{ArchiveReader}{ArchiveReader}}
+{\footnotesize\ttfamily friend class \mbox{\hyperlink{classcppu_1_1serial_1_1_archive_reader}{Archive\+Reader}}\hspace{0.3cm}{\ttfamily [friend]}}
+
+\mbox{\Hypertarget{classcppu_1_1serial_1_1_archive_writer_a4f4a707f90665ea44f48566f04bdaf06}\label{classcppu_1_1serial_1_1_archive_writer_a4f4a707f90665ea44f48566f04bdaf06}} 
+\index{cppu::serial::ArchiveWriter@{cppu::serial::ArchiveWriter}!SubArchiveWriter@{SubArchiveWriter}}
+\index{SubArchiveWriter@{SubArchiveWriter}!cppu::serial::ArchiveWriter@{cppu::serial::ArchiveWriter}}
+\doxysubsubsection{\texorpdfstring{SubArchiveWriter}{SubArchiveWriter}}
+{\footnotesize\ttfamily friend class \mbox{\hyperlink{classcppu_1_1serial_1_1_sub_archive_writer}{Sub\+Archive\+Writer}}\hspace{0.3cm}{\ttfamily [friend]}}
+
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+G\+:/\+Projects/\+C++/cpputilities/include/cppu/serial/\mbox{\hyperlink{_serializer_8h}{Serializer.\+h}}\item 
+G\+:/\+Projects/\+C++/cpputilities/include/cppu/serial/\mbox{\hyperlink{_serializer_8inl}{Serializer.\+inl}}\end{DoxyCompactItemize}

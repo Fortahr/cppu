@@ -1,0 +1,124 @@
+\hypertarget{classcppu_1_1net_1_1_u_d_p_socket}{}\doxysection{cppu\+::net\+::UDPSocket Class Reference}
+\label{classcppu_1_1net_1_1_u_d_p_socket}\index{cppu::net::UDPSocket@{cppu::net::UDPSocket}}
+
+
+{\ttfamily \#include $<$UDPSocket.\+h$>$}
+
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{classcppu_1_1net_1_1_u_d_p_socket_a6b162ccfb2751bb5f5e52a41ea0ba75e}{UDPSocket}} ()
+\item 
+\mbox{\hyperlink{namespacecppu_1_1net_ac1a2bb96e82c66cb663141c05a16eeae}{Error\+Code}} \mbox{\hyperlink{classcppu_1_1net_1_1_u_d_p_socket_aa0aa4d464eaf3f1a6d40520dfada3222}{Bind}} (const \mbox{\hyperlink{structcppu_1_1net_1_1_end_point}{End\+Point}} \&local\+End\+Point)
+\item 
+bool \mbox{\hyperlink{classcppu_1_1net_1_1_u_d_p_socket_afbcc143c75e3d0ea423a6489413b93f5}{Is\+Open}} () const
+\item 
+\mbox{\hyperlink{namespacecppu_1_1net_ac1a2bb96e82c66cb663141c05a16eeae}{Error\+Code}} \mbox{\hyperlink{classcppu_1_1net_1_1_u_d_p_socket_a8ed9e15ee50a8186a70135605f9db58c}{Close}} ()
+\item 
+std\+::size\+\_\+t \mbox{\hyperlink{classcppu_1_1net_1_1_u_d_p_socket_a722468d80dbfb7377e864efced688dfb}{Data\+Available}} () const
+\item 
+\mbox{\hyperlink{namespacecppu_1_1net_ac1a2bb96e82c66cb663141c05a16eeae}{Error\+Code}} \mbox{\hyperlink{classcppu_1_1net_1_1_u_d_p_socket_a6a1bdc8b931f5647f97f422d2cb75275}{Set\+Blocking}} (bool enabled)
+\item 
+bool \mbox{\hyperlink{classcppu_1_1net_1_1_u_d_p_socket_a701b1b5c7ee8fa49477cc6e70bd2053c}{Get\+Blocking}} () const
+\item 
+\mbox{\hyperlink{namespacecppu_1_1net_ac1a2bb96e82c66cb663141c05a16eeae}{Error\+Code}} \mbox{\hyperlink{classcppu_1_1net_1_1_u_d_p_socket_af4d6db7a264b5ade1679a5af4533cabe}{Send}} (const \mbox{\hyperlink{structcppu_1_1net_1_1_end_point}{End\+Point}} \&remote\+End\+Point, const void $\ast$data, std\+::size\+\_\+t size)
+\item 
+void \mbox{\hyperlink{classcppu_1_1net_1_1_u_d_p_socket_a680929d6dbd7f5d3cb512b2f5cf78ac8}{Send\+Async}} (const \mbox{\hyperlink{structcppu_1_1net_1_1_end_point}{End\+Point}} \&remote\+End\+Point, const void $\ast$data, std\+::size\+\_\+t size)
+\item 
+std\+::size\+\_\+t \mbox{\hyperlink{classcppu_1_1net_1_1_u_d_p_socket_a9edcd876ebb5a50226c99e26ce5171ec}{Receive}} (void $\ast$data, std\+::size\+\_\+t size)
+\item 
+void \mbox{\hyperlink{classcppu_1_1net_1_1_u_d_p_socket_a0c94c2208912c95546960333257fa399}{Receive\+Async}} (void $\ast$data, std\+::size\+\_\+t size)
+\item 
+std\+::size\+\_\+t \mbox{\hyperlink{classcppu_1_1net_1_1_u_d_p_socket_a4c4f6b1f159f4dee65cf7dd90ef58b70}{Receive}} (void $\ast$data, std\+::size\+\_\+t size, \mbox{\hyperlink{structcppu_1_1net_1_1_end_point}{End\+Point}} \&remote\+End\+Point)
+\item 
+void \mbox{\hyperlink{classcppu_1_1net_1_1_u_d_p_socket_a54ce43f435404cc7fd85ba983d95c0f8}{Receive\+Async}} (void $\ast$data, std\+::size\+\_\+t size, \mbox{\hyperlink{structcppu_1_1net_1_1_end_point}{End\+Point}} \&remote\+End\+Point)
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{classcppu_1_1net_1_1_u_d_p_socket_a6b162ccfb2751bb5f5e52a41ea0ba75e}\label{classcppu_1_1net_1_1_u_d_p_socket_a6b162ccfb2751bb5f5e52a41ea0ba75e}} 
+\index{cppu::net::UDPSocket@{cppu::net::UDPSocket}!UDPSocket@{UDPSocket}}
+\index{UDPSocket@{UDPSocket}!cppu::net::UDPSocket@{cppu::net::UDPSocket}}
+\doxysubsubsection{\texorpdfstring{UDPSocket()}{UDPSocket()}}
+{\footnotesize\ttfamily cppu\+::net\+::\+UDPSocket\+::\+UDPSocket (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{classcppu_1_1net_1_1_u_d_p_socket_aa0aa4d464eaf3f1a6d40520dfada3222}\label{classcppu_1_1net_1_1_u_d_p_socket_aa0aa4d464eaf3f1a6d40520dfada3222}} 
+\index{cppu::net::UDPSocket@{cppu::net::UDPSocket}!Bind@{Bind}}
+\index{Bind@{Bind}!cppu::net::UDPSocket@{cppu::net::UDPSocket}}
+\doxysubsubsection{\texorpdfstring{Bind()}{Bind()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{namespacecppu_1_1net_ac1a2bb96e82c66cb663141c05a16eeae}{Error\+Code}} cppu\+::net\+::\+UDPSocket\+::\+Bind (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{structcppu_1_1net_1_1_end_point}{End\+Point}} \&}]{local\+End\+Point }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+\mbox{\Hypertarget{classcppu_1_1net_1_1_u_d_p_socket_a8ed9e15ee50a8186a70135605f9db58c}\label{classcppu_1_1net_1_1_u_d_p_socket_a8ed9e15ee50a8186a70135605f9db58c}} 
+\index{cppu::net::UDPSocket@{cppu::net::UDPSocket}!Close@{Close}}
+\index{Close@{Close}!cppu::net::UDPSocket@{cppu::net::UDPSocket}}
+\doxysubsubsection{\texorpdfstring{Close()}{Close()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{namespacecppu_1_1net_ac1a2bb96e82c66cb663141c05a16eeae}{Error\+Code}} cppu\+::net\+::\+UDPSocket\+::\+Close (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+\mbox{\Hypertarget{classcppu_1_1net_1_1_u_d_p_socket_a722468d80dbfb7377e864efced688dfb}\label{classcppu_1_1net_1_1_u_d_p_socket_a722468d80dbfb7377e864efced688dfb}} 
+\index{cppu::net::UDPSocket@{cppu::net::UDPSocket}!DataAvailable@{DataAvailable}}
+\index{DataAvailable@{DataAvailable}!cppu::net::UDPSocket@{cppu::net::UDPSocket}}
+\doxysubsubsection{\texorpdfstring{DataAvailable()}{DataAvailable()}}
+{\footnotesize\ttfamily std\+::size\+\_\+t cppu\+::net\+::\+UDPSocket\+::\+Data\+Available (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+\mbox{\Hypertarget{classcppu_1_1net_1_1_u_d_p_socket_a701b1b5c7ee8fa49477cc6e70bd2053c}\label{classcppu_1_1net_1_1_u_d_p_socket_a701b1b5c7ee8fa49477cc6e70bd2053c}} 
+\index{cppu::net::UDPSocket@{cppu::net::UDPSocket}!GetBlocking@{GetBlocking}}
+\index{GetBlocking@{GetBlocking}!cppu::net::UDPSocket@{cppu::net::UDPSocket}}
+\doxysubsubsection{\texorpdfstring{GetBlocking()}{GetBlocking()}}
+{\footnotesize\ttfamily bool cppu\+::net\+::\+UDPSocket\+::\+Get\+Blocking (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+\mbox{\Hypertarget{classcppu_1_1net_1_1_u_d_p_socket_afbcc143c75e3d0ea423a6489413b93f5}\label{classcppu_1_1net_1_1_u_d_p_socket_afbcc143c75e3d0ea423a6489413b93f5}} 
+\index{cppu::net::UDPSocket@{cppu::net::UDPSocket}!IsOpen@{IsOpen}}
+\index{IsOpen@{IsOpen}!cppu::net::UDPSocket@{cppu::net::UDPSocket}}
+\doxysubsubsection{\texorpdfstring{IsOpen()}{IsOpen()}}
+{\footnotesize\ttfamily bool cppu\+::net\+::\+UDPSocket\+::\+Is\+Open (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+\mbox{\Hypertarget{classcppu_1_1net_1_1_u_d_p_socket_a9edcd876ebb5a50226c99e26ce5171ec}\label{classcppu_1_1net_1_1_u_d_p_socket_a9edcd876ebb5a50226c99e26ce5171ec}} 
+\index{cppu::net::UDPSocket@{cppu::net::UDPSocket}!Receive@{Receive}}
+\index{Receive@{Receive}!cppu::net::UDPSocket@{cppu::net::UDPSocket}}
+\doxysubsubsection{\texorpdfstring{Receive()}{Receive()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily std\+::size\+\_\+t cppu\+::net\+::\+UDPSocket\+::\+Receive (\begin{DoxyParamCaption}\item[{void $\ast$}]{data,  }\item[{std\+::size\+\_\+t}]{size }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+\mbox{\Hypertarget{classcppu_1_1net_1_1_u_d_p_socket_a4c4f6b1f159f4dee65cf7dd90ef58b70}\label{classcppu_1_1net_1_1_u_d_p_socket_a4c4f6b1f159f4dee65cf7dd90ef58b70}} 
+\index{cppu::net::UDPSocket@{cppu::net::UDPSocket}!Receive@{Receive}}
+\index{Receive@{Receive}!cppu::net::UDPSocket@{cppu::net::UDPSocket}}
+\doxysubsubsection{\texorpdfstring{Receive()}{Receive()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily std\+::size\+\_\+t cppu\+::net\+::\+UDPSocket\+::\+Receive (\begin{DoxyParamCaption}\item[{void $\ast$}]{data,  }\item[{std\+::size\+\_\+t}]{size,  }\item[{\mbox{\hyperlink{structcppu_1_1net_1_1_end_point}{End\+Point}} \&}]{remote\+End\+Point }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+\mbox{\Hypertarget{classcppu_1_1net_1_1_u_d_p_socket_a0c94c2208912c95546960333257fa399}\label{classcppu_1_1net_1_1_u_d_p_socket_a0c94c2208912c95546960333257fa399}} 
+\index{cppu::net::UDPSocket@{cppu::net::UDPSocket}!ReceiveAsync@{ReceiveAsync}}
+\index{ReceiveAsync@{ReceiveAsync}!cppu::net::UDPSocket@{cppu::net::UDPSocket}}
+\doxysubsubsection{\texorpdfstring{ReceiveAsync()}{ReceiveAsync()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily void cppu\+::net\+::\+UDPSocket\+::\+Receive\+Async (\begin{DoxyParamCaption}\item[{void $\ast$}]{data,  }\item[{std\+::size\+\_\+t}]{size }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+\mbox{\Hypertarget{classcppu_1_1net_1_1_u_d_p_socket_a54ce43f435404cc7fd85ba983d95c0f8}\label{classcppu_1_1net_1_1_u_d_p_socket_a54ce43f435404cc7fd85ba983d95c0f8}} 
+\index{cppu::net::UDPSocket@{cppu::net::UDPSocket}!ReceiveAsync@{ReceiveAsync}}
+\index{ReceiveAsync@{ReceiveAsync}!cppu::net::UDPSocket@{cppu::net::UDPSocket}}
+\doxysubsubsection{\texorpdfstring{ReceiveAsync()}{ReceiveAsync()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily void cppu\+::net\+::\+UDPSocket\+::\+Receive\+Async (\begin{DoxyParamCaption}\item[{void $\ast$}]{data,  }\item[{std\+::size\+\_\+t}]{size,  }\item[{\mbox{\hyperlink{structcppu_1_1net_1_1_end_point}{End\+Point}} \&}]{remote\+End\+Point }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+\mbox{\Hypertarget{classcppu_1_1net_1_1_u_d_p_socket_af4d6db7a264b5ade1679a5af4533cabe}\label{classcppu_1_1net_1_1_u_d_p_socket_af4d6db7a264b5ade1679a5af4533cabe}} 
+\index{cppu::net::UDPSocket@{cppu::net::UDPSocket}!Send@{Send}}
+\index{Send@{Send}!cppu::net::UDPSocket@{cppu::net::UDPSocket}}
+\doxysubsubsection{\texorpdfstring{Send()}{Send()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{namespacecppu_1_1net_ac1a2bb96e82c66cb663141c05a16eeae}{Error\+Code}} cppu\+::net\+::\+UDPSocket\+::\+Send (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{structcppu_1_1net_1_1_end_point}{End\+Point}} \&}]{remote\+End\+Point,  }\item[{const void $\ast$}]{data,  }\item[{std\+::size\+\_\+t}]{size }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+\mbox{\Hypertarget{classcppu_1_1net_1_1_u_d_p_socket_a680929d6dbd7f5d3cb512b2f5cf78ac8}\label{classcppu_1_1net_1_1_u_d_p_socket_a680929d6dbd7f5d3cb512b2f5cf78ac8}} 
+\index{cppu::net::UDPSocket@{cppu::net::UDPSocket}!SendAsync@{SendAsync}}
+\index{SendAsync@{SendAsync}!cppu::net::UDPSocket@{cppu::net::UDPSocket}}
+\doxysubsubsection{\texorpdfstring{SendAsync()}{SendAsync()}}
+{\footnotesize\ttfamily void cppu\+::net\+::\+UDPSocket\+::\+Send\+Async (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{structcppu_1_1net_1_1_end_point}{End\+Point}} \&}]{remote\+End\+Point,  }\item[{const void $\ast$}]{data,  }\item[{std\+::size\+\_\+t}]{size }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+\mbox{\Hypertarget{classcppu_1_1net_1_1_u_d_p_socket_a6a1bdc8b931f5647f97f422d2cb75275}\label{classcppu_1_1net_1_1_u_d_p_socket_a6a1bdc8b931f5647f97f422d2cb75275}} 
+\index{cppu::net::UDPSocket@{cppu::net::UDPSocket}!SetBlocking@{SetBlocking}}
+\index{SetBlocking@{SetBlocking}!cppu::net::UDPSocket@{cppu::net::UDPSocket}}
+\doxysubsubsection{\texorpdfstring{SetBlocking()}{SetBlocking()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{namespacecppu_1_1net_ac1a2bb96e82c66cb663141c05a16eeae}{Error\+Code}} cppu\+::net\+::\+UDPSocket\+::\+Set\+Blocking (\begin{DoxyParamCaption}\item[{bool}]{enabled }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+G\+:/\+Projects/\+C++/cpputilities/include/cppu/net/\mbox{\hyperlink{_u_d_p_socket_8h}{UDPSocket.\+h}}\end{DoxyCompactItemize}

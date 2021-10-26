@@ -1,0 +1,179 @@
+\hypertarget{classcppu_1_1serial_1_1_archive_reader}{}\doxysection{cppu\+::serial\+::Archive\+Reader Class Reference}
+\label{classcppu_1_1serial_1_1_archive_reader}\index{cppu::serial::ArchiveReader@{cppu::serial::ArchiveReader}}
+
+
+{\ttfamily \#include $<$Serializer.\+h$>$}
+
+\doxysubsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+struct \mbox{\hyperlink{structcppu_1_1serial_1_1_archive_reader_1_1_pointer}{Pointer}}
+\end{DoxyCompactItemize}
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{classcppu_1_1serial_1_1_archive_reader_ac66e806571e54a609555601422dd4280}{Archive\+Reader}} (const \mbox{\hyperlink{classcppu_1_1serial_1_1_archive_writer}{Archive\+Writer}} \&archive)
+\item 
+\mbox{\hyperlink{classcppu_1_1serial_1_1_archive_reader_aaded3293289e00afa8eccb2ae7641120}{Archive\+Reader}} (const std\+::string \&string)
+\item 
+\mbox{\hyperlink{classcppu_1_1serial_1_1_archive_reader_a8dcc35ca44589aef002d175601e892a4}{$\sim$\+Archive\+Reader}} ()
+\item 
+\mbox{\hyperlink{namespacecppu_1_1serial_a5273cffccb8e0aa90012969f8c5eb0a9}{Value\+Pos}} \mbox{\hyperlink{classcppu_1_1serial_1_1_archive_reader_a25ae941fda574a2a80abb96e9bede074}{Get\+VTable\+Entry}} (\mbox{\hyperlink{namespacecppu_1_1serial_a22bd78bc3b940a97cea915a2024a886d}{Key}} key)
+\item 
+\mbox{\hyperlink{namespacecppu_1_1serial_acb3f1620f40ea56fcc15f81e0538d446}{Value\+Size}} \mbox{\hyperlink{classcppu_1_1serial_1_1_archive_reader_a47f19fe769058c7631ebd0dc32f21f77}{Get\+VTable\+Size}} ()
+\item 
+void \mbox{\hyperlink{classcppu_1_1serial_1_1_archive_reader_a24c6a368a2ebd83d0866af6948247e2f}{De\+Serialize}} (\mbox{\hyperlink{namespacecppu_1_1serial_a22bd78bc3b940a97cea915a2024a886d}{Key}} key, void $\ast$data, std\+::size\+\_\+t size)
+\item 
+{\footnotesize template$<$typename T $>$ }\\void \mbox{\hyperlink{classcppu_1_1serial_1_1_archive_reader_a8fdbf602f0ddf60b966548d043828e00}{De\+Serialize}} (\mbox{\hyperlink{namespacecppu_1_1serial_a22bd78bc3b940a97cea915a2024a886d}{Key}} key, T \&data)
+\item 
+{\footnotesize template$<$typename T $>$ }\\void \mbox{\hyperlink{classcppu_1_1serial_1_1_archive_reader_ac4e866d18876bac93d8abe5773b2adfc}{De\+Serialize\+Container}} (\mbox{\hyperlink{namespacecppu_1_1serial_a22bd78bc3b940a97cea915a2024a886d}{Key}} key, T \&data)
+\item 
+{\footnotesize template$<$typename T $>$ }\\void \mbox{\hyperlink{classcppu_1_1serial_1_1_archive_reader_a8c4452bf8120134433789b7891bf6cb9}{De\+Serialize}} (\mbox{\hyperlink{namespacecppu_1_1serial_a22bd78bc3b940a97cea915a2024a886d}{Key}} key, std\+::list$<$ T $>$ \&data)
+\item 
+{\footnotesize template$<$typename T $>$ }\\void \mbox{\hyperlink{classcppu_1_1serial_1_1_archive_reader_a5dba0871c673e5354e70e371b811a0f5}{Read\+Position}} (T \&data, int position)
+\item 
+{\footnotesize template$<$typename K , typename T $>$ }\\void \mbox{\hyperlink{classcppu_1_1serial_1_1_archive_reader_ae0ff3e9f9be336d224c4c06cf77fbf0f}{Read\+Position}} (std\+::pair$<$ K, T $>$ \&data, int position)
+\item 
+{\footnotesize template$<$typename... TT$>$ }\\void \mbox{\hyperlink{classcppu_1_1serial_1_1_archive_reader_a01406e0fb43e11b1fd99fc865498f308}{Read\+Position}} (std\+::tuple$<$ TT... $>$ \&data, int position)
+\item 
+void \mbox{\hyperlink{classcppu_1_1serial_1_1_archive_reader_a2837d63cc455bec4735482751b73c222}{Read\+Position}} (void $\ast$data, std\+::size\+\_\+t size, int position)
+\item 
+{\footnotesize template$<$typename T $>$ }\\void \mbox{\hyperlink{classcppu_1_1serial_1_1_archive_reader_a31ee5283e61f8f0417553c6452b8ec37}{Read}} (T \&data, int offset=0)
+\item 
+void \mbox{\hyperlink{classcppu_1_1serial_1_1_archive_reader_ab4ad75a294dbfc318077f1645edcbca8}{Read}} (void $\ast$data, std\+::size\+\_\+t size, int offset=0)
+\item 
+{\footnotesize template$<$typename... P$>$ }\\void \mbox{\hyperlink{classcppu_1_1serial_1_1_archive_reader_aa8955b3710ec66021bf2a6f24db98586}{Polymorphic}} (P... bases)
+\item 
+\mbox{\hyperlink{classcppu_1_1serial_1_1_archive_reader}{Archive\+Reader}} \mbox{\hyperlink{classcppu_1_1serial_1_1_archive_reader_aaaf9db96661bf82591cdc9f90cc2a6cd}{Get\+Sub\+Archive}} ()
+\item 
+template$<$$>$ void \mbox{\hyperlink{classcppu_1_1serial_1_1_archive_reader_a5cff9b3eef93585968e6abd896a7e721}{Read\+Position}} (std\+::string \&data, int position)
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{classcppu_1_1serial_1_1_archive_reader_ac66e806571e54a609555601422dd4280}\label{classcppu_1_1serial_1_1_archive_reader_ac66e806571e54a609555601422dd4280}} 
+\index{cppu::serial::ArchiveReader@{cppu::serial::ArchiveReader}!ArchiveReader@{ArchiveReader}}
+\index{ArchiveReader@{ArchiveReader}!cppu::serial::ArchiveReader@{cppu::serial::ArchiveReader}}
+\doxysubsubsection{\texorpdfstring{ArchiveReader()}{ArchiveReader()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily cppu\+::serial\+::\+Archive\+Reader\+::\+Archive\+Reader (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classcppu_1_1serial_1_1_archive_writer}{Archive\+Writer}} \&}]{archive }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+\mbox{\Hypertarget{classcppu_1_1serial_1_1_archive_reader_aaded3293289e00afa8eccb2ae7641120}\label{classcppu_1_1serial_1_1_archive_reader_aaded3293289e00afa8eccb2ae7641120}} 
+\index{cppu::serial::ArchiveReader@{cppu::serial::ArchiveReader}!ArchiveReader@{ArchiveReader}}
+\index{ArchiveReader@{ArchiveReader}!cppu::serial::ArchiveReader@{cppu::serial::ArchiveReader}}
+\doxysubsubsection{\texorpdfstring{ArchiveReader()}{ArchiveReader()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily cppu\+::serial\+::\+Archive\+Reader\+::\+Archive\+Reader (\begin{DoxyParamCaption}\item[{const std\+::string \&}]{string }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+\mbox{\Hypertarget{classcppu_1_1serial_1_1_archive_reader_a8dcc35ca44589aef002d175601e892a4}\label{classcppu_1_1serial_1_1_archive_reader_a8dcc35ca44589aef002d175601e892a4}} 
+\index{cppu::serial::ArchiveReader@{cppu::serial::ArchiveReader}!````~ArchiveReader@{$\sim$ArchiveReader}}
+\index{````~ArchiveReader@{$\sim$ArchiveReader}!cppu::serial::ArchiveReader@{cppu::serial::ArchiveReader}}
+\doxysubsubsection{\texorpdfstring{$\sim$ArchiveReader()}{~ArchiveReader()}}
+{\footnotesize\ttfamily cppu\+::serial\+::\+Archive\+Reader\+::$\sim$\+Archive\+Reader (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{classcppu_1_1serial_1_1_archive_reader_a8c4452bf8120134433789b7891bf6cb9}\label{classcppu_1_1serial_1_1_archive_reader_a8c4452bf8120134433789b7891bf6cb9}} 
+\index{cppu::serial::ArchiveReader@{cppu::serial::ArchiveReader}!DeSerialize@{DeSerialize}}
+\index{DeSerialize@{DeSerialize}!cppu::serial::ArchiveReader@{cppu::serial::ArchiveReader}}
+\doxysubsubsection{\texorpdfstring{DeSerialize()}{DeSerialize()}\hspace{0.1cm}{\footnotesize\ttfamily [1/3]}}
+{\footnotesize\ttfamily template$<$typename T $>$ \\
+void cppu\+::serial\+::\+Archive\+Reader\+::\+De\+Serialize (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{namespacecppu_1_1serial_a22bd78bc3b940a97cea915a2024a886d}{Key}}}]{key,  }\item[{std\+::list$<$ T $>$ \&}]{data }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+\mbox{\Hypertarget{classcppu_1_1serial_1_1_archive_reader_a8fdbf602f0ddf60b966548d043828e00}\label{classcppu_1_1serial_1_1_archive_reader_a8fdbf602f0ddf60b966548d043828e00}} 
+\index{cppu::serial::ArchiveReader@{cppu::serial::ArchiveReader}!DeSerialize@{DeSerialize}}
+\index{DeSerialize@{DeSerialize}!cppu::serial::ArchiveReader@{cppu::serial::ArchiveReader}}
+\doxysubsubsection{\texorpdfstring{DeSerialize()}{DeSerialize()}\hspace{0.1cm}{\footnotesize\ttfamily [2/3]}}
+{\footnotesize\ttfamily template$<$typename T $>$ \\
+void cppu\+::serial\+::\+Archive\+Reader\+::\+De\+Serialize (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{namespacecppu_1_1serial_a22bd78bc3b940a97cea915a2024a886d}{Key}}}]{key,  }\item[{T \&}]{data }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+\mbox{\Hypertarget{classcppu_1_1serial_1_1_archive_reader_a24c6a368a2ebd83d0866af6948247e2f}\label{classcppu_1_1serial_1_1_archive_reader_a24c6a368a2ebd83d0866af6948247e2f}} 
+\index{cppu::serial::ArchiveReader@{cppu::serial::ArchiveReader}!DeSerialize@{DeSerialize}}
+\index{DeSerialize@{DeSerialize}!cppu::serial::ArchiveReader@{cppu::serial::ArchiveReader}}
+\doxysubsubsection{\texorpdfstring{DeSerialize()}{DeSerialize()}\hspace{0.1cm}{\footnotesize\ttfamily [3/3]}}
+{\footnotesize\ttfamily void cppu\+::serial\+::\+Archive\+Reader\+::\+De\+Serialize (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{namespacecppu_1_1serial_a22bd78bc3b940a97cea915a2024a886d}{Key}}}]{key,  }\item[{void $\ast$}]{data,  }\item[{std\+::size\+\_\+t}]{size }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+\mbox{\Hypertarget{classcppu_1_1serial_1_1_archive_reader_ac4e866d18876bac93d8abe5773b2adfc}\label{classcppu_1_1serial_1_1_archive_reader_ac4e866d18876bac93d8abe5773b2adfc}} 
+\index{cppu::serial::ArchiveReader@{cppu::serial::ArchiveReader}!DeSerializeContainer@{DeSerializeContainer}}
+\index{DeSerializeContainer@{DeSerializeContainer}!cppu::serial::ArchiveReader@{cppu::serial::ArchiveReader}}
+\doxysubsubsection{\texorpdfstring{DeSerializeContainer()}{DeSerializeContainer()}}
+{\footnotesize\ttfamily template$<$typename T $>$ \\
+void cppu\+::serial\+::\+Archive\+Reader\+::\+De\+Serialize\+Container (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{namespacecppu_1_1serial_a22bd78bc3b940a97cea915a2024a886d}{Key}}}]{key,  }\item[{T \&}]{data }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+\mbox{\Hypertarget{classcppu_1_1serial_1_1_archive_reader_aaaf9db96661bf82591cdc9f90cc2a6cd}\label{classcppu_1_1serial_1_1_archive_reader_aaaf9db96661bf82591cdc9f90cc2a6cd}} 
+\index{cppu::serial::ArchiveReader@{cppu::serial::ArchiveReader}!GetSubArchive@{GetSubArchive}}
+\index{GetSubArchive@{GetSubArchive}!cppu::serial::ArchiveReader@{cppu::serial::ArchiveReader}}
+\doxysubsubsection{\texorpdfstring{GetSubArchive()}{GetSubArchive()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classcppu_1_1serial_1_1_archive_reader}{Archive\+Reader}} cppu\+::serial\+::\+Archive\+Reader\+::\+Get\+Sub\+Archive (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+\mbox{\Hypertarget{classcppu_1_1serial_1_1_archive_reader_a25ae941fda574a2a80abb96e9bede074}\label{classcppu_1_1serial_1_1_archive_reader_a25ae941fda574a2a80abb96e9bede074}} 
+\index{cppu::serial::ArchiveReader@{cppu::serial::ArchiveReader}!GetVTableEntry@{GetVTableEntry}}
+\index{GetVTableEntry@{GetVTableEntry}!cppu::serial::ArchiveReader@{cppu::serial::ArchiveReader}}
+\doxysubsubsection{\texorpdfstring{GetVTableEntry()}{GetVTableEntry()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{namespacecppu_1_1serial_a5273cffccb8e0aa90012969f8c5eb0a9}{Value\+Pos}} cppu\+::serial\+::\+Archive\+Reader\+::\+Get\+VTable\+Entry (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{namespacecppu_1_1serial_a22bd78bc3b940a97cea915a2024a886d}{Key}}}]{key }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+\mbox{\Hypertarget{classcppu_1_1serial_1_1_archive_reader_a47f19fe769058c7631ebd0dc32f21f77}\label{classcppu_1_1serial_1_1_archive_reader_a47f19fe769058c7631ebd0dc32f21f77}} 
+\index{cppu::serial::ArchiveReader@{cppu::serial::ArchiveReader}!GetVTableSize@{GetVTableSize}}
+\index{GetVTableSize@{GetVTableSize}!cppu::serial::ArchiveReader@{cppu::serial::ArchiveReader}}
+\doxysubsubsection{\texorpdfstring{GetVTableSize()}{GetVTableSize()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{namespacecppu_1_1serial_acb3f1620f40ea56fcc15f81e0538d446}{Value\+Size}} cppu\+::serial\+::\+Archive\+Reader\+::\+Get\+VTable\+Size (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+\mbox{\Hypertarget{classcppu_1_1serial_1_1_archive_reader_aa8955b3710ec66021bf2a6f24db98586}\label{classcppu_1_1serial_1_1_archive_reader_aa8955b3710ec66021bf2a6f24db98586}} 
+\index{cppu::serial::ArchiveReader@{cppu::serial::ArchiveReader}!Polymorphic@{Polymorphic}}
+\index{Polymorphic@{Polymorphic}!cppu::serial::ArchiveReader@{cppu::serial::ArchiveReader}}
+\doxysubsubsection{\texorpdfstring{Polymorphic()}{Polymorphic()}}
+{\footnotesize\ttfamily template$<$typename... P$>$ \\
+void cppu\+::serial\+::\+Archive\+Reader\+::\+Polymorphic (\begin{DoxyParamCaption}\item[{P...}]{bases }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+\mbox{\Hypertarget{classcppu_1_1serial_1_1_archive_reader_a31ee5283e61f8f0417553c6452b8ec37}\label{classcppu_1_1serial_1_1_archive_reader_a31ee5283e61f8f0417553c6452b8ec37}} 
+\index{cppu::serial::ArchiveReader@{cppu::serial::ArchiveReader}!Read@{Read}}
+\index{Read@{Read}!cppu::serial::ArchiveReader@{cppu::serial::ArchiveReader}}
+\doxysubsubsection{\texorpdfstring{Read()}{Read()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily template$<$typename T $>$ \\
+void cppu\+::serial\+::\+Archive\+Reader\+::\+Read (\begin{DoxyParamCaption}\item[{T \&}]{data,  }\item[{int}]{offset = {\ttfamily 0} }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+\mbox{\Hypertarget{classcppu_1_1serial_1_1_archive_reader_ab4ad75a294dbfc318077f1645edcbca8}\label{classcppu_1_1serial_1_1_archive_reader_ab4ad75a294dbfc318077f1645edcbca8}} 
+\index{cppu::serial::ArchiveReader@{cppu::serial::ArchiveReader}!Read@{Read}}
+\index{Read@{Read}!cppu::serial::ArchiveReader@{cppu::serial::ArchiveReader}}
+\doxysubsubsection{\texorpdfstring{Read()}{Read()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily void cppu\+::serial\+::\+Archive\+Reader\+::\+Read (\begin{DoxyParamCaption}\item[{void $\ast$}]{data,  }\item[{std\+::size\+\_\+t}]{size,  }\item[{int}]{offset = {\ttfamily 0} }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+\mbox{\Hypertarget{classcppu_1_1serial_1_1_archive_reader_ae0ff3e9f9be336d224c4c06cf77fbf0f}\label{classcppu_1_1serial_1_1_archive_reader_ae0ff3e9f9be336d224c4c06cf77fbf0f}} 
+\index{cppu::serial::ArchiveReader@{cppu::serial::ArchiveReader}!ReadPosition@{ReadPosition}}
+\index{ReadPosition@{ReadPosition}!cppu::serial::ArchiveReader@{cppu::serial::ArchiveReader}}
+\doxysubsubsection{\texorpdfstring{ReadPosition()}{ReadPosition()}\hspace{0.1cm}{\footnotesize\ttfamily [1/5]}}
+{\footnotesize\ttfamily template$<$typename K , typename T $>$ \\
+void cppu\+::serial\+::\+Archive\+Reader\+::\+Read\+Position (\begin{DoxyParamCaption}\item[{std\+::pair$<$ K, T $>$ \&}]{data,  }\item[{int}]{position }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+\mbox{\Hypertarget{classcppu_1_1serial_1_1_archive_reader_a5cff9b3eef93585968e6abd896a7e721}\label{classcppu_1_1serial_1_1_archive_reader_a5cff9b3eef93585968e6abd896a7e721}} 
+\index{cppu::serial::ArchiveReader@{cppu::serial::ArchiveReader}!ReadPosition@{ReadPosition}}
+\index{ReadPosition@{ReadPosition}!cppu::serial::ArchiveReader@{cppu::serial::ArchiveReader}}
+\doxysubsubsection{\texorpdfstring{ReadPosition()}{ReadPosition()}\hspace{0.1cm}{\footnotesize\ttfamily [2/5]}}
+{\footnotesize\ttfamily template$<$$>$ \\
+void cppu\+::serial\+::\+Archive\+Reader\+::\+Read\+Position (\begin{DoxyParamCaption}\item[{std\+::string \&}]{data,  }\item[{int}]{position }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+\mbox{\Hypertarget{classcppu_1_1serial_1_1_archive_reader_a01406e0fb43e11b1fd99fc865498f308}\label{classcppu_1_1serial_1_1_archive_reader_a01406e0fb43e11b1fd99fc865498f308}} 
+\index{cppu::serial::ArchiveReader@{cppu::serial::ArchiveReader}!ReadPosition@{ReadPosition}}
+\index{ReadPosition@{ReadPosition}!cppu::serial::ArchiveReader@{cppu::serial::ArchiveReader}}
+\doxysubsubsection{\texorpdfstring{ReadPosition()}{ReadPosition()}\hspace{0.1cm}{\footnotesize\ttfamily [3/5]}}
+{\footnotesize\ttfamily template$<$typename... TT$>$ \\
+void cppu\+::serial\+::\+Archive\+Reader\+::\+Read\+Position (\begin{DoxyParamCaption}\item[{std\+::tuple$<$ TT... $>$ \&}]{data,  }\item[{int}]{position }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+\mbox{\Hypertarget{classcppu_1_1serial_1_1_archive_reader_a5dba0871c673e5354e70e371b811a0f5}\label{classcppu_1_1serial_1_1_archive_reader_a5dba0871c673e5354e70e371b811a0f5}} 
+\index{cppu::serial::ArchiveReader@{cppu::serial::ArchiveReader}!ReadPosition@{ReadPosition}}
+\index{ReadPosition@{ReadPosition}!cppu::serial::ArchiveReader@{cppu::serial::ArchiveReader}}
+\doxysubsubsection{\texorpdfstring{ReadPosition()}{ReadPosition()}\hspace{0.1cm}{\footnotesize\ttfamily [4/5]}}
+{\footnotesize\ttfamily template$<$typename T $>$ \\
+void cppu\+::serial\+::\+Archive\+Reader\+::\+Read\+Position (\begin{DoxyParamCaption}\item[{T \&}]{data,  }\item[{int}]{position }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+\mbox{\Hypertarget{classcppu_1_1serial_1_1_archive_reader_a2837d63cc455bec4735482751b73c222}\label{classcppu_1_1serial_1_1_archive_reader_a2837d63cc455bec4735482751b73c222}} 
+\index{cppu::serial::ArchiveReader@{cppu::serial::ArchiveReader}!ReadPosition@{ReadPosition}}
+\index{ReadPosition@{ReadPosition}!cppu::serial::ArchiveReader@{cppu::serial::ArchiveReader}}
+\doxysubsubsection{\texorpdfstring{ReadPosition()}{ReadPosition()}\hspace{0.1cm}{\footnotesize\ttfamily [5/5]}}
+{\footnotesize\ttfamily void cppu\+::serial\+::\+Archive\+Reader\+::\+Read\+Position (\begin{DoxyParamCaption}\item[{void $\ast$}]{data,  }\item[{std\+::size\+\_\+t}]{size,  }\item[{int}]{position }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+G\+:/\+Projects/\+C++/cpputilities/include/cppu/serial/\mbox{\hyperlink{_serializer_8h}{Serializer.\+h}}\item 
+G\+:/\+Projects/\+C++/cpputilities/include/cppu/serial/\mbox{\hyperlink{_serializer_8inl}{Serializer.\+inl}}\end{DoxyCompactItemize}

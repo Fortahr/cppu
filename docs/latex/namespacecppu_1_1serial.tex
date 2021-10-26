@@ -1,0 +1,225 @@
+\hypertarget{namespacecppu_1_1serial}{}\doxysection{cppu\+::serial Namespace Reference}
+\label{namespacecppu_1_1serial}\index{cppu::serial@{cppu::serial}}
+\doxysubsection*{Namespaces}
+\begin{DoxyCompactItemize}
+\item 
+ \mbox{\hyperlink{namespacecppu_1_1serial_1_1details}{details}}
+\item 
+ \mbox{\hyperlink{namespacecppu_1_1serial_1_1impl}{impl}}
+\end{DoxyCompactItemize}
+\doxysubsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+struct \mbox{\hyperlink{structcppu_1_1serial_1_1_v_table_write}{VTable\+Write}}
+\item 
+struct \mbox{\hyperlink{structcppu_1_1serial_1_1_v_table_read}{VTable\+Read}}
+\item 
+struct \mbox{\hyperlink{structcppu_1_1serial_1_1_v_reference_table_read}{VReference\+Table\+Read}}
+\item 
+class \mbox{\hyperlink{classcppu_1_1serial_1_1base}{base}}
+\item 
+struct \mbox{\hyperlink{structcppu_1_1serial_1_1_archive_reference}{Archive\+Reference}}
+\item 
+class \mbox{\hyperlink{classcppu_1_1serial_1_1_serializer}{Serializer}}
+\item 
+class \mbox{\hyperlink{classcppu_1_1serial_1_1_archive_writer}{Archive\+Writer}}
+\item 
+class \mbox{\hyperlink{classcppu_1_1serial_1_1_sub_archive_writer}{Sub\+Archive\+Writer}}
+\item 
+class \mbox{\hyperlink{classcppu_1_1serial_1_1_archive_reader}{Archive\+Reader}}
+\item 
+class \mbox{\hyperlink{classcppu_1_1serial_1_1serialize__checker}{serialize\+\_\+checker}}
+\item 
+struct \mbox{\hyperlink{structcppu_1_1serial_1_1namespace__has__construct}{namespace\+\_\+has\+\_\+construct}}
+\item 
+struct \mbox{\hyperlink{structcppu_1_1serial_1_1namespace__has__construct_3_01_t_00_01std_1_1void__t_3_01decltype_07_conbc90410c29dc5e3378411ac3017f9baa}{namespace\+\_\+has\+\_\+construct$<$ T, std\+::void\+\_\+t$<$ decltype(\+Construct(std\+::declval$<$ Archive\+Reader \& $>$(), std\+::declval$<$ T \& $>$())) $>$ $>$}}
+\end{DoxyCompactItemize}
+\doxysubsection*{Typedefs}
+\begin{DoxyCompactItemize}
+\item 
+typedef uint16\+\_\+t \mbox{\hyperlink{namespacecppu_1_1serial_a22bd78bc3b940a97cea915a2024a886d}{Key}}
+\item 
+typedef uint16\+\_\+t \mbox{\hyperlink{namespacecppu_1_1serial_a5fe8f2fec8580427e6101c964f5a9453}{Archive\+Version}}
+\item 
+typedef uint32\+\_\+t \mbox{\hyperlink{namespacecppu_1_1serial_a5273cffccb8e0aa90012969f8c5eb0a9}{Value\+Pos}}
+\item 
+typedef uint32\+\_\+t \mbox{\hyperlink{namespacecppu_1_1serial_acb3f1620f40ea56fcc15f81e0538d446}{Value\+Size}}
+\item 
+typedef uint32\+\_\+t \mbox{\hyperlink{namespacecppu_1_1serial_a9bbcb1ffc2c480017327400216e14bb8}{VTable\+Size}}
+\item 
+typedef uint32\+\_\+t \mbox{\hyperlink{namespacecppu_1_1serial_a34d04e2fb839fc1d265a9d7d763a476c}{Reference}}
+\end{DoxyCompactItemize}
+\doxysubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \mbox{\hyperlink{namespacecppu_1_1serial_ae38b085a178da064c02db9d6f16ffff7}{Serialize}} ()
+\item 
+void \mbox{\hyperlink{namespacecppu_1_1serial_a0c25af09805f4d73ec5b43404960b849}{De\+Serialize}} ()
+\item 
+{\footnotesize template$<$class T $>$ }\\void \mbox{\hyperlink{namespacecppu_1_1serial_a4ec90c6ae0c331fda07f0510a72354d9}{Memcpy\+Serialize}} (\mbox{\hyperlink{classcppu_1_1serial_1_1_archive_writer}{cppu\+::serial\+::\+Archive\+Writer}} \&writer, const T \&data)
+\item 
+{\footnotesize template$<$class T $>$ }\\void \mbox{\hyperlink{namespacecppu_1_1serial_a791752c8da2252b775ab3956b5640bc7}{Memcpy\+De\+Serialize}} (\mbox{\hyperlink{classcppu_1_1serial_1_1_archive_reader}{cppu\+::serial\+::\+Archive\+Reader}} \&reader, T \&data)
+\item 
+void \mbox{\hyperlink{namespacecppu_1_1serial_aafac298b7a448b981119b0a72939801e}{Construct}} ()
+\item 
+{\footnotesize template$<$class T , std\+::enable\+\_\+if\+\_\+t$<$ std\+::is\+\_\+constructible\+\_\+v$<$ T $>$$\vert$$\vert$std\+::is\+\_\+constructible\+\_\+v$<$ T, cppu\+::serial\+::\+Archive\+Reader \& $>$, int $>$  = 0$>$ }\\void \mbox{\hyperlink{namespacecppu_1_1serial_a5aa012f5d993b4a91dd7545c067dfd3b}{Construct}} (\mbox{\hyperlink{classcppu_1_1serial_1_1_archive_reader}{cppu\+::serial\+::\+Archive\+Reader}} \&reader, \mbox{\hyperlink{classcppu_1_1cgc_1_1strong__ptr}{cgc\+::strong\+\_\+ptr}}$<$ T $>$ \&ptr)
+\item 
+{\footnotesize template$<$class T , std\+::enable\+\_\+if\+\_\+t$<$ std\+::is\+\_\+constructible\+\_\+v$<$ T $>$$\vert$$\vert$std\+::is\+\_\+constructible\+\_\+v$<$ T, cppu\+::serial\+::\+Archive\+Reader \& $>$, int $>$  = 0$>$ }\\void \mbox{\hyperlink{namespacecppu_1_1serial_a062291b340e667ead87c5cc47ff0396c}{Construct}} (\mbox{\hyperlink{classcppu_1_1serial_1_1_archive_reader}{cppu\+::serial\+::\+Archive\+Reader}} \&reader, std\+::shared\+\_\+ptr$<$ T $>$ \&ptr)
+\item 
+{\footnotesize template$<$class T $>$ }\\void \mbox{\hyperlink{namespacecppu_1_1serial_a2ad497508c708c7c146ae4d5194bebce}{Construct}} (\mbox{\hyperlink{classcppu_1_1serial_1_1_archive_reader}{cppu\+::serial\+::\+Archive\+Reader}} \&reader, T $\ast$\&ptr)
+\end{DoxyCompactItemize}
+\doxysubsection*{Variables}
+\begin{DoxyCompactItemize}
+\item 
+{\footnotesize template$<$typename T , typename P $>$ }\\constexpr bool \mbox{\hyperlink{namespacecppu_1_1serial_a075577456127291df59b3e5a5ed9fe6b}{class\+\_\+has\+\_\+construct\+\_\+v}} = \mbox{\hyperlink{classcppu_1_1serial_1_1serialize__checker}{serialize\+\_\+checker}}$<$T$>$\+::template class\+\_\+construct\+\_\+value$<$P$>$
+\item 
+{\footnotesize template$<$typename T $>$ }\\constexpr bool \mbox{\hyperlink{namespacecppu_1_1serial_ac4ffeec4a2ed2bb04ff2b8cb062e3d92}{class\+\_\+has\+\_\+serialize\+\_\+v}} = \mbox{\hyperlink{classcppu_1_1serial_1_1serialize__checker}{serialize\+\_\+checker}}$<$T$>$\+::serialize\+\_\+value
+\item 
+{\footnotesize template$<$typename T $>$ }\\constexpr bool \mbox{\hyperlink{namespacecppu_1_1serial_ae7168cc3173f115763af2e4b2da244b4}{class\+\_\+has\+\_\+deserialize\+\_\+v}} = \mbox{\hyperlink{classcppu_1_1serial_1_1serialize__checker}{serialize\+\_\+checker}}$<$T$>$\+::deserialize\+\_\+value
+\item 
+{\footnotesize template$<$typename T $>$ }\\constexpr bool \mbox{\hyperlink{namespacecppu_1_1serial_ab15d62dede2547772f34da9dfdce7018}{namespace\+\_\+has\+\_\+serialize\+\_\+v}} = \mbox{\hyperlink{classcppu_1_1serial_1_1serialize__checker}{serialize\+\_\+checker}}$<$T$>$\+::namespace\+\_\+serialize\+\_\+value
+\item 
+{\footnotesize template$<$typename T $>$ }\\constexpr bool \mbox{\hyperlink{namespacecppu_1_1serial_ad65e3f032f86d04f6a51b67bdc5cacfe}{namespace\+\_\+has\+\_\+deserialize\+\_\+v}} = \mbox{\hyperlink{classcppu_1_1serial_1_1serialize__checker}{serialize\+\_\+checker}}$<$T$>$\+::namespace\+\_\+deserialize\+\_\+value
+\item 
+{\footnotesize template$<$typename T $>$ }\\constexpr bool \mbox{\hyperlink{namespacecppu_1_1serial_aacbb7fe3950a70c1b981911a713325b2}{namespace\+\_\+has\+\_\+construct\+\_\+v}} = \mbox{\hyperlink{structcppu_1_1serial_1_1namespace__has__construct}{namespace\+\_\+has\+\_\+construct}}$<$T$>$\+::value
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Typedef Documentation}
+\mbox{\Hypertarget{namespacecppu_1_1serial_a5fe8f2fec8580427e6101c964f5a9453}\label{namespacecppu_1_1serial_a5fe8f2fec8580427e6101c964f5a9453}} 
+\index{cppu::serial@{cppu::serial}!ArchiveVersion@{ArchiveVersion}}
+\index{ArchiveVersion@{ArchiveVersion}!cppu::serial@{cppu::serial}}
+\doxysubsubsection{\texorpdfstring{ArchiveVersion}{ArchiveVersion}}
+{\footnotesize\ttfamily typedef uint16\+\_\+t \mbox{\hyperlink{namespacecppu_1_1serial_a5fe8f2fec8580427e6101c964f5a9453}{cppu\+::serial\+::\+Archive\+Version}}}
+
+\mbox{\Hypertarget{namespacecppu_1_1serial_a22bd78bc3b940a97cea915a2024a886d}\label{namespacecppu_1_1serial_a22bd78bc3b940a97cea915a2024a886d}} 
+\index{cppu::serial@{cppu::serial}!Key@{Key}}
+\index{Key@{Key}!cppu::serial@{cppu::serial}}
+\doxysubsubsection{\texorpdfstring{Key}{Key}}
+{\footnotesize\ttfamily typedef uint16\+\_\+t \mbox{\hyperlink{namespacecppu_1_1serial_a22bd78bc3b940a97cea915a2024a886d}{cppu\+::serial\+::\+Key}}}
+
+\mbox{\Hypertarget{namespacecppu_1_1serial_a34d04e2fb839fc1d265a9d7d763a476c}\label{namespacecppu_1_1serial_a34d04e2fb839fc1d265a9d7d763a476c}} 
+\index{cppu::serial@{cppu::serial}!Reference@{Reference}}
+\index{Reference@{Reference}!cppu::serial@{cppu::serial}}
+\doxysubsubsection{\texorpdfstring{Reference}{Reference}}
+{\footnotesize\ttfamily typedef uint32\+\_\+t \mbox{\hyperlink{namespacecppu_1_1serial_a34d04e2fb839fc1d265a9d7d763a476c}{cppu\+::serial\+::\+Reference}}}
+
+\mbox{\Hypertarget{namespacecppu_1_1serial_a5273cffccb8e0aa90012969f8c5eb0a9}\label{namespacecppu_1_1serial_a5273cffccb8e0aa90012969f8c5eb0a9}} 
+\index{cppu::serial@{cppu::serial}!ValuePos@{ValuePos}}
+\index{ValuePos@{ValuePos}!cppu::serial@{cppu::serial}}
+\doxysubsubsection{\texorpdfstring{ValuePos}{ValuePos}}
+{\footnotesize\ttfamily typedef uint32\+\_\+t \mbox{\hyperlink{namespacecppu_1_1serial_a5273cffccb8e0aa90012969f8c5eb0a9}{cppu\+::serial\+::\+Value\+Pos}}}
+
+\mbox{\Hypertarget{namespacecppu_1_1serial_acb3f1620f40ea56fcc15f81e0538d446}\label{namespacecppu_1_1serial_acb3f1620f40ea56fcc15f81e0538d446}} 
+\index{cppu::serial@{cppu::serial}!ValueSize@{ValueSize}}
+\index{ValueSize@{ValueSize}!cppu::serial@{cppu::serial}}
+\doxysubsubsection{\texorpdfstring{ValueSize}{ValueSize}}
+{\footnotesize\ttfamily typedef uint32\+\_\+t \mbox{\hyperlink{namespacecppu_1_1serial_acb3f1620f40ea56fcc15f81e0538d446}{cppu\+::serial\+::\+Value\+Size}}}
+
+\mbox{\Hypertarget{namespacecppu_1_1serial_a9bbcb1ffc2c480017327400216e14bb8}\label{namespacecppu_1_1serial_a9bbcb1ffc2c480017327400216e14bb8}} 
+\index{cppu::serial@{cppu::serial}!VTableSize@{VTableSize}}
+\index{VTableSize@{VTableSize}!cppu::serial@{cppu::serial}}
+\doxysubsubsection{\texorpdfstring{VTableSize}{VTableSize}}
+{\footnotesize\ttfamily typedef uint32\+\_\+t \mbox{\hyperlink{namespacecppu_1_1serial_a9bbcb1ffc2c480017327400216e14bb8}{cppu\+::serial\+::\+VTable\+Size}}}
+
+
+
+\doxysubsection{Function Documentation}
+\mbox{\Hypertarget{namespacecppu_1_1serial_aafac298b7a448b981119b0a72939801e}\label{namespacecppu_1_1serial_aafac298b7a448b981119b0a72939801e}} 
+\index{cppu::serial@{cppu::serial}!Construct@{Construct}}
+\index{Construct@{Construct}!cppu::serial@{cppu::serial}}
+\doxysubsubsection{\texorpdfstring{Construct()}{Construct()}\hspace{0.1cm}{\footnotesize\ttfamily [1/4]}}
+{\footnotesize\ttfamily void cppu\+::serial\+::\+Construct (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+\mbox{\Hypertarget{namespacecppu_1_1serial_a5aa012f5d993b4a91dd7545c067dfd3b}\label{namespacecppu_1_1serial_a5aa012f5d993b4a91dd7545c067dfd3b}} 
+\index{cppu::serial@{cppu::serial}!Construct@{Construct}}
+\index{Construct@{Construct}!cppu::serial@{cppu::serial}}
+\doxysubsubsection{\texorpdfstring{Construct()}{Construct()}\hspace{0.1cm}{\footnotesize\ttfamily [2/4]}}
+{\footnotesize\ttfamily template$<$class T , std\+::enable\+\_\+if\+\_\+t$<$ std\+::is\+\_\+constructible\+\_\+v$<$ T $>$$\vert$$\vert$std\+::is\+\_\+constructible\+\_\+v$<$ T, cppu\+::serial\+::\+Archive\+Reader \& $>$, int $>$  = 0$>$ \\
+void cppu\+::serial\+::\+Construct (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classcppu_1_1serial_1_1_archive_reader}{cppu\+::serial\+::\+Archive\+Reader}} \&}]{reader,  }\item[{\mbox{\hyperlink{classcppu_1_1cgc_1_1strong__ptr}{cgc\+::strong\+\_\+ptr}}$<$ T $>$ \&}]{ptr }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+\mbox{\Hypertarget{namespacecppu_1_1serial_a062291b340e667ead87c5cc47ff0396c}\label{namespacecppu_1_1serial_a062291b340e667ead87c5cc47ff0396c}} 
+\index{cppu::serial@{cppu::serial}!Construct@{Construct}}
+\index{Construct@{Construct}!cppu::serial@{cppu::serial}}
+\doxysubsubsection{\texorpdfstring{Construct()}{Construct()}\hspace{0.1cm}{\footnotesize\ttfamily [3/4]}}
+{\footnotesize\ttfamily template$<$class T , std\+::enable\+\_\+if\+\_\+t$<$ std\+::is\+\_\+constructible\+\_\+v$<$ T $>$$\vert$$\vert$std\+::is\+\_\+constructible\+\_\+v$<$ T, cppu\+::serial\+::\+Archive\+Reader \& $>$, int $>$  = 0$>$ \\
+void cppu\+::serial\+::\+Construct (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classcppu_1_1serial_1_1_archive_reader}{cppu\+::serial\+::\+Archive\+Reader}} \&}]{reader,  }\item[{std\+::shared\+\_\+ptr$<$ T $>$ \&}]{ptr }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+\mbox{\Hypertarget{namespacecppu_1_1serial_a2ad497508c708c7c146ae4d5194bebce}\label{namespacecppu_1_1serial_a2ad497508c708c7c146ae4d5194bebce}} 
+\index{cppu::serial@{cppu::serial}!Construct@{Construct}}
+\index{Construct@{Construct}!cppu::serial@{cppu::serial}}
+\doxysubsubsection{\texorpdfstring{Construct()}{Construct()}\hspace{0.1cm}{\footnotesize\ttfamily [4/4]}}
+{\footnotesize\ttfamily template$<$class T $>$ \\
+void cppu\+::serial\+::\+Construct (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classcppu_1_1serial_1_1_archive_reader}{cppu\+::serial\+::\+Archive\+Reader}} \&}]{reader,  }\item[{T $\ast$\&}]{ptr }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+\mbox{\Hypertarget{namespacecppu_1_1serial_a0c25af09805f4d73ec5b43404960b849}\label{namespacecppu_1_1serial_a0c25af09805f4d73ec5b43404960b849}} 
+\index{cppu::serial@{cppu::serial}!DeSerialize@{DeSerialize}}
+\index{DeSerialize@{DeSerialize}!cppu::serial@{cppu::serial}}
+\doxysubsubsection{\texorpdfstring{DeSerialize()}{DeSerialize()}}
+{\footnotesize\ttfamily void cppu\+::serial\+::\+De\+Serialize (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+\mbox{\Hypertarget{namespacecppu_1_1serial_a791752c8da2252b775ab3956b5640bc7}\label{namespacecppu_1_1serial_a791752c8da2252b775ab3956b5640bc7}} 
+\index{cppu::serial@{cppu::serial}!MemcpyDeSerialize@{MemcpyDeSerialize}}
+\index{MemcpyDeSerialize@{MemcpyDeSerialize}!cppu::serial@{cppu::serial}}
+\doxysubsubsection{\texorpdfstring{MemcpyDeSerialize()}{MemcpyDeSerialize()}}
+{\footnotesize\ttfamily template$<$class T $>$ \\
+void cppu\+::serial\+::\+Memcpy\+De\+Serialize (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classcppu_1_1serial_1_1_archive_reader}{cppu\+::serial\+::\+Archive\+Reader}} \&}]{reader,  }\item[{T \&}]{data }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+\mbox{\Hypertarget{namespacecppu_1_1serial_a4ec90c6ae0c331fda07f0510a72354d9}\label{namespacecppu_1_1serial_a4ec90c6ae0c331fda07f0510a72354d9}} 
+\index{cppu::serial@{cppu::serial}!MemcpySerialize@{MemcpySerialize}}
+\index{MemcpySerialize@{MemcpySerialize}!cppu::serial@{cppu::serial}}
+\doxysubsubsection{\texorpdfstring{MemcpySerialize()}{MemcpySerialize()}}
+{\footnotesize\ttfamily template$<$class T $>$ \\
+void cppu\+::serial\+::\+Memcpy\+Serialize (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classcppu_1_1serial_1_1_archive_writer}{cppu\+::serial\+::\+Archive\+Writer}} \&}]{writer,  }\item[{const T \&}]{data }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+\mbox{\Hypertarget{namespacecppu_1_1serial_ae38b085a178da064c02db9d6f16ffff7}\label{namespacecppu_1_1serial_ae38b085a178da064c02db9d6f16ffff7}} 
+\index{cppu::serial@{cppu::serial}!Serialize@{Serialize}}
+\index{Serialize@{Serialize}!cppu::serial@{cppu::serial}}
+\doxysubsubsection{\texorpdfstring{Serialize()}{Serialize()}}
+{\footnotesize\ttfamily void cppu\+::serial\+::\+Serialize (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+\doxysubsection{Variable Documentation}
+\mbox{\Hypertarget{namespacecppu_1_1serial_a075577456127291df59b3e5a5ed9fe6b}\label{namespacecppu_1_1serial_a075577456127291df59b3e5a5ed9fe6b}} 
+\index{cppu::serial@{cppu::serial}!class\_has\_construct\_v@{class\_has\_construct\_v}}
+\index{class\_has\_construct\_v@{class\_has\_construct\_v}!cppu::serial@{cppu::serial}}
+\doxysubsubsection{\texorpdfstring{class\_has\_construct\_v}{class\_has\_construct\_v}}
+{\footnotesize\ttfamily template$<$typename T , typename P $>$ \\
+constexpr bool cppu\+::serial\+::class\+\_\+has\+\_\+construct\+\_\+v = \mbox{\hyperlink{classcppu_1_1serial_1_1serialize__checker}{serialize\+\_\+checker}}$<$T$>$\+::template class\+\_\+construct\+\_\+value$<$P$>$\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [constexpr]}}
+
+\mbox{\Hypertarget{namespacecppu_1_1serial_ae7168cc3173f115763af2e4b2da244b4}\label{namespacecppu_1_1serial_ae7168cc3173f115763af2e4b2da244b4}} 
+\index{cppu::serial@{cppu::serial}!class\_has\_deserialize\_v@{class\_has\_deserialize\_v}}
+\index{class\_has\_deserialize\_v@{class\_has\_deserialize\_v}!cppu::serial@{cppu::serial}}
+\doxysubsubsection{\texorpdfstring{class\_has\_deserialize\_v}{class\_has\_deserialize\_v}}
+{\footnotesize\ttfamily template$<$typename T $>$ \\
+constexpr bool cppu\+::serial\+::class\+\_\+has\+\_\+deserialize\+\_\+v = \mbox{\hyperlink{classcppu_1_1serial_1_1serialize__checker}{serialize\+\_\+checker}}$<$T$>$\+::deserialize\+\_\+value\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [constexpr]}}
+
+\mbox{\Hypertarget{namespacecppu_1_1serial_ac4ffeec4a2ed2bb04ff2b8cb062e3d92}\label{namespacecppu_1_1serial_ac4ffeec4a2ed2bb04ff2b8cb062e3d92}} 
+\index{cppu::serial@{cppu::serial}!class\_has\_serialize\_v@{class\_has\_serialize\_v}}
+\index{class\_has\_serialize\_v@{class\_has\_serialize\_v}!cppu::serial@{cppu::serial}}
+\doxysubsubsection{\texorpdfstring{class\_has\_serialize\_v}{class\_has\_serialize\_v}}
+{\footnotesize\ttfamily template$<$typename T $>$ \\
+constexpr bool cppu\+::serial\+::class\+\_\+has\+\_\+serialize\+\_\+v = \mbox{\hyperlink{classcppu_1_1serial_1_1serialize__checker}{serialize\+\_\+checker}}$<$T$>$\+::serialize\+\_\+value\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [constexpr]}}
+
+\mbox{\Hypertarget{namespacecppu_1_1serial_aacbb7fe3950a70c1b981911a713325b2}\label{namespacecppu_1_1serial_aacbb7fe3950a70c1b981911a713325b2}} 
+\index{cppu::serial@{cppu::serial}!namespace\_has\_construct\_v@{namespace\_has\_construct\_v}}
+\index{namespace\_has\_construct\_v@{namespace\_has\_construct\_v}!cppu::serial@{cppu::serial}}
+\doxysubsubsection{\texorpdfstring{namespace\_has\_construct\_v}{namespace\_has\_construct\_v}}
+{\footnotesize\ttfamily template$<$typename T $>$ \\
+constexpr bool cppu\+::serial\+::namespace\+\_\+has\+\_\+construct\+\_\+v = \mbox{\hyperlink{structcppu_1_1serial_1_1namespace__has__construct}{namespace\+\_\+has\+\_\+construct}}$<$T$>$\+::value\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [constexpr]}}
+
+\mbox{\Hypertarget{namespacecppu_1_1serial_ad65e3f032f86d04f6a51b67bdc5cacfe}\label{namespacecppu_1_1serial_ad65e3f032f86d04f6a51b67bdc5cacfe}} 
+\index{cppu::serial@{cppu::serial}!namespace\_has\_deserialize\_v@{namespace\_has\_deserialize\_v}}
+\index{namespace\_has\_deserialize\_v@{namespace\_has\_deserialize\_v}!cppu::serial@{cppu::serial}}
+\doxysubsubsection{\texorpdfstring{namespace\_has\_deserialize\_v}{namespace\_has\_deserialize\_v}}
+{\footnotesize\ttfamily template$<$typename T $>$ \\
+constexpr bool cppu\+::serial\+::namespace\+\_\+has\+\_\+deserialize\+\_\+v = \mbox{\hyperlink{classcppu_1_1serial_1_1serialize__checker}{serialize\+\_\+checker}}$<$T$>$\+::namespace\+\_\+deserialize\+\_\+value\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [constexpr]}}
+
+\mbox{\Hypertarget{namespacecppu_1_1serial_ab15d62dede2547772f34da9dfdce7018}\label{namespacecppu_1_1serial_ab15d62dede2547772f34da9dfdce7018}} 
+\index{cppu::serial@{cppu::serial}!namespace\_has\_serialize\_v@{namespace\_has\_serialize\_v}}
+\index{namespace\_has\_serialize\_v@{namespace\_has\_serialize\_v}!cppu::serial@{cppu::serial}}
+\doxysubsubsection{\texorpdfstring{namespace\_has\_serialize\_v}{namespace\_has\_serialize\_v}}
+{\footnotesize\ttfamily template$<$typename T $>$ \\
+constexpr bool cppu\+::serial\+::namespace\+\_\+has\+\_\+serialize\+\_\+v = \mbox{\hyperlink{classcppu_1_1serial_1_1serialize__checker}{serialize\+\_\+checker}}$<$T$>$\+::namespace\+\_\+serialize\+\_\+value\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [constexpr]}}
+

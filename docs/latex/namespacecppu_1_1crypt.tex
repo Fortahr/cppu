@@ -1,0 +1,72 @@
+\hypertarget{namespacecppu_1_1crypt}{}\doxysection{cppu\+::crypt Namespace Reference}
+\label{namespacecppu_1_1crypt}\index{cppu::crypt@{cppu::crypt}}
+\doxysubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+size\+\_\+t \mbox{\hyperlink{namespacecppu_1_1crypt_a02f29c3502434573cb9a5b4d9dc58a06}{base64\+\_\+dec\+\_\+len}} (size\+\_\+t len)
+\item 
+size\+\_\+t \mbox{\hyperlink{namespacecppu_1_1crypt_a5e805d5a79ab532643edee313799e942}{base64\+\_\+enc\+\_\+len}} (size\+\_\+t len)
+\item 
+size\+\_\+t \mbox{\hyperlink{namespacecppu_1_1crypt_a5c0e3fba0aeac9f7f9a15d74456f60ca}{base64\+\_\+dec\+\_\+core}} (\mbox{\hyperlink{dtypes_8h_a33a5e996e7a90acefb8b1c0bea47e365}{uint8}} $\ast$out, const char $\ast$in)
+\item 
+bool \mbox{\hyperlink{namespacecppu_1_1crypt_aee59febff8fa0eb133e50c8b7442a50f}{l\+\_\+isspace}} (char ch)
+\item 
+size\+\_\+t \mbox{\hyperlink{namespacecppu_1_1crypt_a4d81a05d79128b27e95d75296e393ba2}{base64\+\_\+dec\+\_\+raw}} (\mbox{\hyperlink{dtypes_8h_a0c8186d9b9b7880309c27230bbb5e69d}{byte}} $\ast$out, size\+\_\+t $\ast$outend, std\+::string\+\_\+view text, size\+\_\+t $\ast$textend)
+\item 
+std\+::vector$<$ \mbox{\hyperlink{dtypes_8h_a0c8186d9b9b7880309c27230bbb5e69d}{byte}} $>$ \mbox{\hyperlink{namespacecppu_1_1crypt_abce99b71afaa950dab6fcb1ee2a19508}{base64\+\_\+dec}} (std\+::string\+\_\+view text)
+\item 
+void \mbox{\hyperlink{namespacecppu_1_1crypt_ae9176d5d3dc7e1350a6ec415495ec537}{base64\+\_\+enc\+\_\+raw}} (\mbox{\hyperlink{dtypes_8h_a0c8186d9b9b7880309c27230bbb5e69d}{byte}} $\ast$out, std\+::string\+\_\+view bytes)
+\item 
+std\+::vector$<$ \mbox{\hyperlink{dtypes_8h_a0c8186d9b9b7880309c27230bbb5e69d}{byte}} $>$ \mbox{\hyperlink{namespacecppu_1_1crypt_a9a05a55fa2ea728e21bf726c1c9011e9}{base64\+\_\+enc}} (std\+::string\+\_\+view bytes)
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Function Documentation}
+\mbox{\Hypertarget{namespacecppu_1_1crypt_abce99b71afaa950dab6fcb1ee2a19508}\label{namespacecppu_1_1crypt_abce99b71afaa950dab6fcb1ee2a19508}} 
+\index{cppu::crypt@{cppu::crypt}!base64\_dec@{base64\_dec}}
+\index{base64\_dec@{base64\_dec}!cppu::crypt@{cppu::crypt}}
+\doxysubsubsection{\texorpdfstring{base64\_dec()}{base64\_dec()}}
+{\footnotesize\ttfamily std\+::vector$<$\mbox{\hyperlink{dtypes_8h_a0c8186d9b9b7880309c27230bbb5e69d}{byte}}$>$ cppu\+::crypt\+::base64\+\_\+dec (\begin{DoxyParamCaption}\item[{std\+::string\+\_\+view}]{text }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+\mbox{\Hypertarget{namespacecppu_1_1crypt_a5c0e3fba0aeac9f7f9a15d74456f60ca}\label{namespacecppu_1_1crypt_a5c0e3fba0aeac9f7f9a15d74456f60ca}} 
+\index{cppu::crypt@{cppu::crypt}!base64\_dec\_core@{base64\_dec\_core}}
+\index{base64\_dec\_core@{base64\_dec\_core}!cppu::crypt@{cppu::crypt}}
+\doxysubsubsection{\texorpdfstring{base64\_dec\_core()}{base64\_dec\_core()}}
+{\footnotesize\ttfamily size\+\_\+t cppu\+::crypt\+::base64\+\_\+dec\+\_\+core (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{dtypes_8h_a33a5e996e7a90acefb8b1c0bea47e365}{uint8}} $\ast$}]{out,  }\item[{const char $\ast$}]{in }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+\mbox{\Hypertarget{namespacecppu_1_1crypt_a02f29c3502434573cb9a5b4d9dc58a06}\label{namespacecppu_1_1crypt_a02f29c3502434573cb9a5b4d9dc58a06}} 
+\index{cppu::crypt@{cppu::crypt}!base64\_dec\_len@{base64\_dec\_len}}
+\index{base64\_dec\_len@{base64\_dec\_len}!cppu::crypt@{cppu::crypt}}
+\doxysubsubsection{\texorpdfstring{base64\_dec\_len()}{base64\_dec\_len()}}
+{\footnotesize\ttfamily size\+\_\+t cppu\+::crypt\+::base64\+\_\+dec\+\_\+len (\begin{DoxyParamCaption}\item[{size\+\_\+t}]{len }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+\mbox{\Hypertarget{namespacecppu_1_1crypt_a4d81a05d79128b27e95d75296e393ba2}\label{namespacecppu_1_1crypt_a4d81a05d79128b27e95d75296e393ba2}} 
+\index{cppu::crypt@{cppu::crypt}!base64\_dec\_raw@{base64\_dec\_raw}}
+\index{base64\_dec\_raw@{base64\_dec\_raw}!cppu::crypt@{cppu::crypt}}
+\doxysubsubsection{\texorpdfstring{base64\_dec\_raw()}{base64\_dec\_raw()}}
+{\footnotesize\ttfamily size\+\_\+t cppu\+::crypt\+::base64\+\_\+dec\+\_\+raw (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{dtypes_8h_a0c8186d9b9b7880309c27230bbb5e69d}{byte}} $\ast$}]{out,  }\item[{size\+\_\+t $\ast$}]{outend,  }\item[{std\+::string\+\_\+view}]{text,  }\item[{size\+\_\+t $\ast$}]{textend }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+\mbox{\Hypertarget{namespacecppu_1_1crypt_a9a05a55fa2ea728e21bf726c1c9011e9}\label{namespacecppu_1_1crypt_a9a05a55fa2ea728e21bf726c1c9011e9}} 
+\index{cppu::crypt@{cppu::crypt}!base64\_enc@{base64\_enc}}
+\index{base64\_enc@{base64\_enc}!cppu::crypt@{cppu::crypt}}
+\doxysubsubsection{\texorpdfstring{base64\_enc()}{base64\_enc()}}
+{\footnotesize\ttfamily std\+::vector$<$\mbox{\hyperlink{dtypes_8h_a0c8186d9b9b7880309c27230bbb5e69d}{byte}}$>$ cppu\+::crypt\+::base64\+\_\+enc (\begin{DoxyParamCaption}\item[{std\+::string\+\_\+view}]{bytes }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+\mbox{\Hypertarget{namespacecppu_1_1crypt_a5e805d5a79ab532643edee313799e942}\label{namespacecppu_1_1crypt_a5e805d5a79ab532643edee313799e942}} 
+\index{cppu::crypt@{cppu::crypt}!base64\_enc\_len@{base64\_enc\_len}}
+\index{base64\_enc\_len@{base64\_enc\_len}!cppu::crypt@{cppu::crypt}}
+\doxysubsubsection{\texorpdfstring{base64\_enc\_len()}{base64\_enc\_len()}}
+{\footnotesize\ttfamily size\+\_\+t cppu\+::crypt\+::base64\+\_\+enc\+\_\+len (\begin{DoxyParamCaption}\item[{size\+\_\+t}]{len }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+\mbox{\Hypertarget{namespacecppu_1_1crypt_ae9176d5d3dc7e1350a6ec415495ec537}\label{namespacecppu_1_1crypt_ae9176d5d3dc7e1350a6ec415495ec537}} 
+\index{cppu::crypt@{cppu::crypt}!base64\_enc\_raw@{base64\_enc\_raw}}
+\index{base64\_enc\_raw@{base64\_enc\_raw}!cppu::crypt@{cppu::crypt}}
+\doxysubsubsection{\texorpdfstring{base64\_enc\_raw()}{base64\_enc\_raw()}}
+{\footnotesize\ttfamily void cppu\+::crypt\+::base64\+\_\+enc\+\_\+raw (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{dtypes_8h_a0c8186d9b9b7880309c27230bbb5e69d}{byte}} $\ast$}]{out,  }\item[{std\+::string\+\_\+view}]{bytes }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+\mbox{\Hypertarget{namespacecppu_1_1crypt_aee59febff8fa0eb133e50c8b7442a50f}\label{namespacecppu_1_1crypt_aee59febff8fa0eb133e50c8b7442a50f}} 
+\index{cppu::crypt@{cppu::crypt}!l\_isspace@{l\_isspace}}
+\index{l\_isspace@{l\_isspace}!cppu::crypt@{cppu::crypt}}
+\doxysubsubsection{\texorpdfstring{l\_isspace()}{l\_isspace()}}
+{\footnotesize\ttfamily bool cppu\+::crypt\+::l\+\_\+isspace (\begin{DoxyParamCaption}\item[{char}]{ch }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+

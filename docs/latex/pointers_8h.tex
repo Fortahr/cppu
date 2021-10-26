@@ -1,0 +1,47 @@
+\hypertarget{pointers_8h}{}\doxysection{G\+:/\+Projects/\+C++/cpputilities/include/cppu/cgc/pointers.h File Reference}
+\label{pointers_8h}\index{G:/Projects/C++/cpputilities/include/cppu/cgc/pointers.h@{G:/Projects/C++/cpputilities/include/cppu/cgc/pointers.h}}
+{\ttfamily \#include $<$cstring$>$}\newline
+{\ttfamily \#include \char`\"{}details/base\+\_\+counter.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}details/garbage\+\_\+cleaner.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}details/destructors.\+h\char`\"{}}\newline
+\doxysubsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+class \mbox{\hyperlink{classcppu_1_1cgc_1_1strong__ptr}{cppu\+::cgc\+::strong\+\_\+ptr$<$ T $>$}}
+\item 
+class \mbox{\hyperlink{classcppu_1_1cgc_1_1weak__ptr}{cppu\+::cgc\+::weak\+\_\+ptr$<$ T $>$}}
+\item 
+class \mbox{\hyperlink{classcppu_1_1cgc_1_1raw__ptr}{cppu\+::cgc\+::raw\+\_\+ptr$<$ T $>$}}
+\end{DoxyCompactItemize}
+\doxysubsection*{Namespaces}
+\begin{DoxyCompactItemize}
+\item 
+ \mbox{\hyperlink{namespacecppu}{cppu}}
+\begin{DoxyCompactList}\small\item\em No copy/move variant of the mutex object. \end{DoxyCompactList}\item 
+ \mbox{\hyperlink{namespacecppu_1_1cgc}{cppu\+::cgc}}
+\end{DoxyCompactItemize}
+\doxysubsection*{Macros}
+\begin{DoxyCompactItemize}
+\item 
+\#define \mbox{\hyperlink{pointers_8h_a64f4059674f4dcee0bafe0528d95edb7}{GET\+\_\+\+NAME}}(X)~\#X
+\end{DoxyCompactItemize}
+\doxysubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+{\footnotesize template$<$typename T , typename T2 , typename  = typename std\+::enable\+\_\+if$<$std\+::is\+\_\+base\+\_\+of$<$\+T, T2$>$\+::value $\vert$$\vert$ std\+::is\+\_\+base\+\_\+of$<$\+T2, T$>$\+::value $\vert$$\vert$ std\+::is\+\_\+same$<$\+T, T2$>$\+::value$>$\+::type$>$ }\\strong\+\_\+ptr$<$ T $>$ \mbox{\hyperlink{namespacecppu_1_1cgc_ab1a7efa021bc255617c2655be004ccd6}{cppu\+::cgc\+::static\+\_\+pointer\+\_\+cast}} (const strong\+\_\+ptr$<$ T2 $>$ \&cast) noexcept
+\item 
+{\footnotesize template$<$typename T , typename T2 , typename  = typename std\+::enable\+\_\+if$<$std\+::is\+\_\+base\+\_\+of$<$\+T2, T$>$\+::value$>$\+::type$>$ }\\strong\+\_\+ptr$<$ T $>$ \mbox{\hyperlink{namespacecppu_1_1cgc_a7e57d98098d5e061b329db4f03004045}{cppu\+::cgc\+::dynamic\+\_\+pointer\+\_\+cast}} (const strong\+\_\+ptr$<$ T2 $>$ \&cast) noexcept
+\begin{DoxyCompactList}\small\item\em only down casting is supported, for up casting just use the constructor (it\textquotesingle{}s implicit!) or the static cast \end{DoxyCompactList}\item 
+{\footnotesize template$<$typename T $>$ }\\const strong\+\_\+ptr$<$ T $>$ \& \mbox{\hyperlink{namespacecppu_1_1cgc_ad6c1323817a49f63e476f38e20b7dbda}{cppu\+::cgc\+::const\+\_\+pointer\+\_\+cast}} (const strong\+\_\+ptr$<$ T $>$ \&cast) noexcept
+\begin{DoxyCompactList}\small\item\em remove the const attribute \end{DoxyCompactList}\item 
+{\footnotesize template$<$typename T , typename T2 $>$ }\\const strong\+\_\+ptr$<$ T $>$ \& \mbox{\hyperlink{namespacecppu_1_1cgc_a83a2a5316685e71cc0f22865641dc009}{cppu\+::cgc\+::reinterpret\+\_\+pointer\+\_\+cast}} (const strong\+\_\+ptr$<$ T2 $>$ \&cast) noexcept
+\begin{DoxyCompactList}\small\item\em reinterpret the pointers\textquotesingle{} bit as if it is another type, unsafe by nature so programmer should gurantee its safety \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Macro Definition Documentation}
+\mbox{\Hypertarget{pointers_8h_a64f4059674f4dcee0bafe0528d95edb7}\label{pointers_8h_a64f4059674f4dcee0bafe0528d95edb7}} 
+\index{pointers.h@{pointers.h}!GET\_NAME@{GET\_NAME}}
+\index{GET\_NAME@{GET\_NAME}!pointers.h@{pointers.h}}
+\doxysubsubsection{\texorpdfstring{GET\_NAME}{GET\_NAME}}
+{\footnotesize\ttfamily \#define GET\+\_\+\+NAME(\begin{DoxyParamCaption}\item[{}]{X }\end{DoxyParamCaption})~\#X}
+

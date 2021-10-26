@@ -1,0 +1,55 @@
+\hypertarget{classcppu_1_1os_1_1_stack_trace}{}\doxysection{cppu\+::os\+::Stack\+Trace Class Reference}
+\label{classcppu_1_1os_1_1_stack_trace}\index{cppu::os::StackTrace@{cppu::os::StackTrace}}
+
+
+{\ttfamily \#include $<$Stack\+Trace.\+h$>$}
+
+\doxysubsection*{Static Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+static void \mbox{\hyperlink{classcppu_1_1os_1_1_stack_trace_abbdcf86250c7d8d6c3a31310ef0c917e}{Get\+Back\+Trace}} (std\+::ostream \&stream, int ignore\+Last\+Frames=1, int max\+Frames=20)
+\begin{DoxyCompactList}\small\item\em Get backtrace/callstack and stream it into given stream. \end{DoxyCompactList}\item 
+static void \mbox{\hyperlink{classcppu_1_1os_1_1_stack_trace_a46fbe1afcfd615a8b02750698d3cc585}{Get\+Back\+Trace}} (std\+::string \&output, int max\+Frames=20)
+\begin{DoxyCompactList}\small\item\em Get backtrace/callstack and place it in a string. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{classcppu_1_1os_1_1_stack_trace_abbdcf86250c7d8d6c3a31310ef0c917e}\label{classcppu_1_1os_1_1_stack_trace_abbdcf86250c7d8d6c3a31310ef0c917e}} 
+\index{cppu::os::StackTrace@{cppu::os::StackTrace}!GetBackTrace@{GetBackTrace}}
+\index{GetBackTrace@{GetBackTrace}!cppu::os::StackTrace@{cppu::os::StackTrace}}
+\doxysubsubsection{\texorpdfstring{GetBackTrace()}{GetBackTrace()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily static void cppu\+::os\+::\+Stack\+Trace\+::\+Get\+Back\+Trace (\begin{DoxyParamCaption}\item[{std\+::ostream \&}]{stream,  }\item[{int}]{ignore\+Last\+Frames = {\ttfamily 1},  }\item[{int}]{max\+Frames = {\ttfamily 20} }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [static]}}
+
+
+
+Get backtrace/callstack and stream it into given stream. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em stream} & stream which will be filled with backtrace/callstack info \\
+\hline
+{\em max\+Frames} & max amount of functions you want to see traced (Windows Server 2003 and Windows XP\+: The sum of the Frames\+To\+Skip and Frames\+To\+Capture parameters must be less than 63) \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{classcppu_1_1os_1_1_stack_trace_a46fbe1afcfd615a8b02750698d3cc585}\label{classcppu_1_1os_1_1_stack_trace_a46fbe1afcfd615a8b02750698d3cc585}} 
+\index{cppu::os::StackTrace@{cppu::os::StackTrace}!GetBackTrace@{GetBackTrace}}
+\index{GetBackTrace@{GetBackTrace}!cppu::os::StackTrace@{cppu::os::StackTrace}}
+\doxysubsubsection{\texorpdfstring{GetBackTrace()}{GetBackTrace()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily static void cppu\+::os\+::\+Stack\+Trace\+::\+Get\+Back\+Trace (\begin{DoxyParamCaption}\item[{std\+::string \&}]{output,  }\item[{int}]{max\+Frames = {\ttfamily 20} }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [static]}}
+
+
+
+Get backtrace/callstack and place it in a string. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em output} & string which will be filled with backtrace/callstack info \\
+\hline
+{\em max\+Frames} & max amount of functions you want to see traced (Windows Server 2003 and Windows XP\+: The sum of the Frames\+To\+Skip and Frames\+To\+Capture parameters must be less than 63) \\
+\hline
+\end{DoxyParams}
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+G\+:/\+Projects/\+C++/cpputilities/include/cppu/os/\mbox{\hyperlink{_stack_trace_8h}{Stack\+Trace.\+h}}\end{DoxyCompactItemize}

@@ -1,0 +1,70 @@
+\hypertarget{namespacecppu_1_1serial_1_1impl}{}\doxysection{cppu\+::serial\+::impl Namespace Reference}
+\label{namespacecppu_1_1serial_1_1impl}\index{cppu::serial::impl@{cppu::serial::impl}}
+\doxysubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+{\footnotesize template$<$typename T $>$ }\\constexpr auto \mbox{\hyperlink{namespacecppu_1_1serial_1_1impl_a28fee14336f8814f65929aa3365fc01f}{template\+\_\+hash}} () noexcept
+\item 
+{\footnotesize template$<$typename T $>$ }\\constexpr auto \mbox{\hyperlink{namespacecppu_1_1serial_1_1impl_a96fac8dc8828ebfad5b2ee666f2d6d6c}{class\+\_\+hash}} () noexcept
+\item 
+constexpr \mbox{\hyperlink{namespacecppu_a748e4797ef05e40ddc8a8162f667a1d6}{cppu\+::hash\+\_\+t}} \mbox{\hyperlink{namespacecppu_1_1serial_1_1impl_a260acc0fe5675a427ee9c4a7264256df}{hash\+\_\+combine}} (\mbox{\hyperlink{namespacecppu_a748e4797ef05e40ddc8a8162f667a1d6}{cppu\+::hash\+\_\+t}} hash1, \mbox{\hyperlink{namespacecppu_a748e4797ef05e40ddc8a8162f667a1d6}{cppu\+::hash\+\_\+t}} hash2)
+\item 
+{\footnotesize template$<$typename T $>$ }\\constexpr void \mbox{\hyperlink{namespacecppu_1_1serial_1_1impl_aaf2814f23a5e59956be30754a14e461b}{Write\+Base}} (\mbox{\hyperlink{classcppu_1_1serial_1_1_archive_writer}{Archive\+Writer}} \&writer, const \mbox{\hyperlink{classcppu_1_1serial_1_1base}{base}}$<$ T $>$ \&type)
+\item 
+{\footnotesize template$<$typename T $>$ }\\constexpr void \mbox{\hyperlink{namespacecppu_1_1serial_1_1impl_a9caf5900fdc1736597e32d350c2145ad}{Read\+Base}} (\mbox{\hyperlink{classcppu_1_1serial_1_1_archive_reader}{Archive\+Reader}} \&reader, \mbox{\hyperlink{classcppu_1_1serial_1_1base}{base}}$<$ T $>$ \&type)
+\item 
+{\footnotesize template$<$typename T $>$ }\\void \mbox{\hyperlink{namespacecppu_1_1serial_1_1impl_a179fc88caa0632c73f6d018e49445634}{Impl\+Serialize}} (\mbox{\hyperlink{classcppu_1_1serial_1_1_archive_writer}{Archive\+Writer}} \&reader, const T \&data)
+\item 
+{\footnotesize template$<$typename T $>$ }\\void \mbox{\hyperlink{namespacecppu_1_1serial_1_1impl_ae8cf3dee7326fe14a5bcbeabf58ab391}{Impl\+De\+Serialize}} (\mbox{\hyperlink{classcppu_1_1serial_1_1_archive_reader}{Archive\+Reader}} \&reader, T \&data)
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Function Documentation}
+\mbox{\Hypertarget{namespacecppu_1_1serial_1_1impl_a96fac8dc8828ebfad5b2ee666f2d6d6c}\label{namespacecppu_1_1serial_1_1impl_a96fac8dc8828ebfad5b2ee666f2d6d6c}} 
+\index{cppu::serial::impl@{cppu::serial::impl}!class\_hash@{class\_hash}}
+\index{class\_hash@{class\_hash}!cppu::serial::impl@{cppu::serial::impl}}
+\doxysubsubsection{\texorpdfstring{class\_hash()}{class\_hash()}}
+{\footnotesize\ttfamily template$<$typename T $>$ \\
+constexpr auto cppu\+::serial\+::impl\+::class\+\_\+hash (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [constexpr]}, {\ttfamily [noexcept]}}
+
+\mbox{\Hypertarget{namespacecppu_1_1serial_1_1impl_a260acc0fe5675a427ee9c4a7264256df}\label{namespacecppu_1_1serial_1_1impl_a260acc0fe5675a427ee9c4a7264256df}} 
+\index{cppu::serial::impl@{cppu::serial::impl}!hash\_combine@{hash\_combine}}
+\index{hash\_combine@{hash\_combine}!cppu::serial::impl@{cppu::serial::impl}}
+\doxysubsubsection{\texorpdfstring{hash\_combine()}{hash\_combine()}}
+{\footnotesize\ttfamily constexpr \mbox{\hyperlink{namespacecppu_a748e4797ef05e40ddc8a8162f667a1d6}{cppu\+::hash\+\_\+t}} cppu\+::serial\+::impl\+::hash\+\_\+combine (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{namespacecppu_a748e4797ef05e40ddc8a8162f667a1d6}{cppu\+::hash\+\_\+t}}}]{hash1,  }\item[{\mbox{\hyperlink{namespacecppu_a748e4797ef05e40ddc8a8162f667a1d6}{cppu\+::hash\+\_\+t}}}]{hash2 }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [constexpr]}}
+
+\mbox{\Hypertarget{namespacecppu_1_1serial_1_1impl_ae8cf3dee7326fe14a5bcbeabf58ab391}\label{namespacecppu_1_1serial_1_1impl_ae8cf3dee7326fe14a5bcbeabf58ab391}} 
+\index{cppu::serial::impl@{cppu::serial::impl}!ImplDeSerialize@{ImplDeSerialize}}
+\index{ImplDeSerialize@{ImplDeSerialize}!cppu::serial::impl@{cppu::serial::impl}}
+\doxysubsubsection{\texorpdfstring{ImplDeSerialize()}{ImplDeSerialize()}}
+{\footnotesize\ttfamily template$<$typename T $>$ \\
+void cppu\+::serial\+::impl\+::\+Impl\+De\+Serialize (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classcppu_1_1serial_1_1_archive_reader}{Archive\+Reader}} \&}]{reader,  }\item[{T \&}]{data }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+\mbox{\Hypertarget{namespacecppu_1_1serial_1_1impl_a179fc88caa0632c73f6d018e49445634}\label{namespacecppu_1_1serial_1_1impl_a179fc88caa0632c73f6d018e49445634}} 
+\index{cppu::serial::impl@{cppu::serial::impl}!ImplSerialize@{ImplSerialize}}
+\index{ImplSerialize@{ImplSerialize}!cppu::serial::impl@{cppu::serial::impl}}
+\doxysubsubsection{\texorpdfstring{ImplSerialize()}{ImplSerialize()}}
+{\footnotesize\ttfamily template$<$typename T $>$ \\
+void cppu\+::serial\+::impl\+::\+Impl\+Serialize (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classcppu_1_1serial_1_1_archive_writer}{Archive\+Writer}} \&}]{reader,  }\item[{const T \&}]{data }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+\mbox{\Hypertarget{namespacecppu_1_1serial_1_1impl_a9caf5900fdc1736597e32d350c2145ad}\label{namespacecppu_1_1serial_1_1impl_a9caf5900fdc1736597e32d350c2145ad}} 
+\index{cppu::serial::impl@{cppu::serial::impl}!ReadBase@{ReadBase}}
+\index{ReadBase@{ReadBase}!cppu::serial::impl@{cppu::serial::impl}}
+\doxysubsubsection{\texorpdfstring{ReadBase()}{ReadBase()}}
+{\footnotesize\ttfamily template$<$typename T $>$ \\
+constexpr void cppu\+::serial\+::impl\+::\+Read\+Base (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classcppu_1_1serial_1_1_archive_reader}{Archive\+Reader}} \&}]{reader,  }\item[{\mbox{\hyperlink{classcppu_1_1serial_1_1base}{base}}$<$ T $>$ \&}]{type }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [constexpr]}}
+
+\mbox{\Hypertarget{namespacecppu_1_1serial_1_1impl_a28fee14336f8814f65929aa3365fc01f}\label{namespacecppu_1_1serial_1_1impl_a28fee14336f8814f65929aa3365fc01f}} 
+\index{cppu::serial::impl@{cppu::serial::impl}!template\_hash@{template\_hash}}
+\index{template\_hash@{template\_hash}!cppu::serial::impl@{cppu::serial::impl}}
+\doxysubsubsection{\texorpdfstring{template\_hash()}{template\_hash()}}
+{\footnotesize\ttfamily template$<$typename T $>$ \\
+constexpr auto cppu\+::serial\+::impl\+::template\+\_\+hash (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [constexpr]}, {\ttfamily [noexcept]}}
+
+\mbox{\Hypertarget{namespacecppu_1_1serial_1_1impl_aaf2814f23a5e59956be30754a14e461b}\label{namespacecppu_1_1serial_1_1impl_aaf2814f23a5e59956be30754a14e461b}} 
+\index{cppu::serial::impl@{cppu::serial::impl}!WriteBase@{WriteBase}}
+\index{WriteBase@{WriteBase}!cppu::serial::impl@{cppu::serial::impl}}
+\doxysubsubsection{\texorpdfstring{WriteBase()}{WriteBase()}}
+{\footnotesize\ttfamily template$<$typename T $>$ \\
+constexpr void cppu\+::serial\+::impl\+::\+Write\+Base (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classcppu_1_1serial_1_1_archive_writer}{Archive\+Writer}} \&}]{writer,  }\item[{const \mbox{\hyperlink{classcppu_1_1serial_1_1base}{base}}$<$ T $>$ \&}]{type }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [constexpr]}}
+

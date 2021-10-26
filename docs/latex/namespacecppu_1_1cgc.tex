@@ -1,0 +1,189 @@
+\hypertarget{namespacecppu_1_1cgc}{}\doxysection{cppu\+::cgc Namespace Reference}
+\label{namespacecppu_1_1cgc}\index{cppu::cgc@{cppu::cgc}}
+\doxysubsection*{Namespaces}
+\begin{DoxyCompactItemize}
+\item 
+ \mbox{\hyperlink{namespacecppu_1_1cgc_1_1details}{details}}
+\item 
+ \mbox{\hyperlink{namespacecppu_1_1cgc_1_1ref}{ref}}
+\end{DoxyCompactItemize}
+\doxysubsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+class \mbox{\hyperlink{classcppu_1_1cgc_1_1array}{array}}
+\item 
+class \mbox{\hyperlink{classcppu_1_1cgc_1_1strong__ptr}{strong\+\_\+ptr}}
+\item 
+class \mbox{\hyperlink{classcppu_1_1cgc_1_1weak__ptr}{weak\+\_\+ptr}}
+\item 
+class \mbox{\hyperlink{classcppu_1_1cgc_1_1deque}{deque}}
+\item 
+class \mbox{\hyperlink{classcppu_1_1cgc_1_1queue}{queue}}
+\item 
+class \mbox{\hyperlink{classcppu_1_1cgc_1_1map}{map}}
+\item 
+class \mbox{\hyperlink{classcppu_1_1cgc_1_1unordered__map}{unordered\+\_\+map}}
+\item 
+class \mbox{\hyperlink{classcppu_1_1cgc_1_1constructor}{constructor}}
+\item 
+class \mbox{\hyperlink{classcppu_1_1cgc_1_1m__array}{m\+\_\+array}}
+\item 
+class \mbox{\hyperlink{classcppu_1_1cgc_1_1raw__ptr}{raw\+\_\+ptr}}
+\end{DoxyCompactItemize}
+\doxysubsection*{Typedefs}
+\begin{DoxyCompactItemize}
+\item 
+typedef \mbox{\hyperlink{dtypes_8h_a33a5e996e7a90acefb8b1c0bea47e365}{uint8}} \mbox{\hyperlink{namespacecppu_1_1cgc_a0d9e9fcfcc9f270cfdb10a306184e6db}{SIZE\+\_\+8}}
+\item 
+typedef \mbox{\hyperlink{dtypes_8h_ac2a9e79eb120216f855626495b7bd18a}{uint16}} \mbox{\hyperlink{namespacecppu_1_1cgc_a7534fca67a9aa48370fdec4e30054b10}{SIZE\+\_\+16}}
+\item 
+typedef \mbox{\hyperlink{dtypes_8h_acbd4acd0d29e2d6c43104827f77d9cd2}{uint32}} \mbox{\hyperlink{namespacecppu_1_1cgc_a6da67e7b5f441dbe54240e79c1287e4b}{SIZE\+\_\+32}}
+\item 
+typedef \mbox{\hyperlink{dtypes_8h_abc0f5bc07737e498f287334775dff2b6}{uint64}} \mbox{\hyperlink{namespacecppu_1_1cgc_abdce57e2aaca1075ba1dc4f00f61ac8a}{SIZE\+\_\+64}}
+\end{DoxyCompactItemize}
+\doxysubsection*{Enumerations}
+\begin{DoxyCompactItemize}
+\item 
+enum \mbox{\hyperlink{namespacecppu_1_1cgc_ab4a2e31cf76ab4ec8ec1b0e96719622b}{CLEAN\+\_\+\+PROC}} \{ \mbox{\hyperlink{namespacecppu_1_1cgc_ab4a2e31cf76ab4ec8ec1b0e96719622ba0482d35ea1274f528ccd4ce4befecbf3}{DIRECT}} = 0
+, \mbox{\hyperlink{namespacecppu_1_1cgc_ab4a2e31cf76ab4ec8ec1b0e96719622ba16ae293d9fb82c7327986f34d9c9a668}{MANUAL}} = 1
+, \mbox{\hyperlink{namespacecppu_1_1cgc_ab4a2e31cf76ab4ec8ec1b0e96719622ba3d2d80d5742a8694e9233ae15b255520}{THREAD}} = 2
+ \}
+\end{DoxyCompactItemize}
+\doxysubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+{\footnotesize template$<$class T , class... Args$>$ }\\\mbox{\hyperlink{classcppu_1_1cgc_1_1strong__ptr}{strong\+\_\+ptr}}$<$ T $>$ \mbox{\hyperlink{namespacecppu_1_1cgc_a984fd7a19a9d5a94f96c7f870164ea7a}{construct\+\_\+new}} (Args \&\&... arguments)
+\item 
+{\footnotesize template$<$class T , class... Args$>$ }\\\mbox{\hyperlink{classcppu_1_1cgc_1_1strong__ptr}{strong\+\_\+ptr}}$<$ T $>$ \mbox{\hyperlink{namespacecppu_1_1cgc_ac13e52a815bcc0579cb1f7d371b85164}{gcnew}} (Args \&\&... arguments)
+\item 
+void \mbox{\hyperlink{namespacecppu_1_1cgc_a246b2f117cfebf65dc4e5431424b5a06}{gc\+\_\+start}} ()
+\item 
+void \mbox{\hyperlink{namespacecppu_1_1cgc_a4ddd378562c818ce65f29f23a95ac892}{gc\+\_\+stop}} ()
+\item 
+{\footnotesize template$<$typename T , typename T2 , typename  = typename std\+::enable\+\_\+if$<$std\+::is\+\_\+base\+\_\+of$<$\+T, T2$>$\+::value $\vert$$\vert$ std\+::is\+\_\+base\+\_\+of$<$\+T2, T$>$\+::value $\vert$$\vert$ std\+::is\+\_\+same$<$\+T, T2$>$\+::value$>$\+::type$>$ }\\\mbox{\hyperlink{classcppu_1_1cgc_1_1strong__ptr}{strong\+\_\+ptr}}$<$ T $>$ \mbox{\hyperlink{namespacecppu_1_1cgc_ab1a7efa021bc255617c2655be004ccd6}{static\+\_\+pointer\+\_\+cast}} (const \mbox{\hyperlink{classcppu_1_1cgc_1_1strong__ptr}{strong\+\_\+ptr}}$<$ T2 $>$ \&cast) noexcept
+\item 
+{\footnotesize template$<$typename T , typename T2 , typename  = typename std\+::enable\+\_\+if$<$std\+::is\+\_\+base\+\_\+of$<$\+T2, T$>$\+::value$>$\+::type$>$ }\\\mbox{\hyperlink{classcppu_1_1cgc_1_1strong__ptr}{strong\+\_\+ptr}}$<$ T $>$ \mbox{\hyperlink{namespacecppu_1_1cgc_a7e57d98098d5e061b329db4f03004045}{dynamic\+\_\+pointer\+\_\+cast}} (const \mbox{\hyperlink{classcppu_1_1cgc_1_1strong__ptr}{strong\+\_\+ptr}}$<$ T2 $>$ \&cast) noexcept
+\begin{DoxyCompactList}\small\item\em only down casting is supported, for up casting just use the constructor (it\textquotesingle{}s implicit!) or the static cast \end{DoxyCompactList}\item 
+{\footnotesize template$<$typename T $>$ }\\const \mbox{\hyperlink{classcppu_1_1cgc_1_1strong__ptr}{strong\+\_\+ptr}}$<$ T $>$ \& \mbox{\hyperlink{namespacecppu_1_1cgc_ad6c1323817a49f63e476f38e20b7dbda}{const\+\_\+pointer\+\_\+cast}} (const \mbox{\hyperlink{classcppu_1_1cgc_1_1strong__ptr}{strong\+\_\+ptr}}$<$ T $>$ \&cast) noexcept
+\begin{DoxyCompactList}\small\item\em remove the const attribute \end{DoxyCompactList}\item 
+{\footnotesize template$<$typename T , typename T2 $>$ }\\const \mbox{\hyperlink{classcppu_1_1cgc_1_1strong__ptr}{strong\+\_\+ptr}}$<$ T $>$ \& \mbox{\hyperlink{namespacecppu_1_1cgc_a83a2a5316685e71cc0f22865641dc009}{reinterpret\+\_\+pointer\+\_\+cast}} (const \mbox{\hyperlink{classcppu_1_1cgc_1_1strong__ptr}{strong\+\_\+ptr}}$<$ T2 $>$ \&cast) noexcept
+\begin{DoxyCompactList}\small\item\em reinterpret the pointers\textquotesingle{} bit as if it is another type, unsafe by nature so programmer should gurantee its safety \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Typedef Documentation}
+\mbox{\Hypertarget{namespacecppu_1_1cgc_a7534fca67a9aa48370fdec4e30054b10}\label{namespacecppu_1_1cgc_a7534fca67a9aa48370fdec4e30054b10}} 
+\index{cppu::cgc@{cppu::cgc}!SIZE\_16@{SIZE\_16}}
+\index{SIZE\_16@{SIZE\_16}!cppu::cgc@{cppu::cgc}}
+\doxysubsubsection{\texorpdfstring{SIZE\_16}{SIZE\_16}}
+{\footnotesize\ttfamily typedef \mbox{\hyperlink{dtypes_8h_ac2a9e79eb120216f855626495b7bd18a}{uint16}} \mbox{\hyperlink{namespacecppu_1_1cgc_a7534fca67a9aa48370fdec4e30054b10}{cppu\+::cgc\+::\+SIZE\+\_\+16}}}
+
+\mbox{\Hypertarget{namespacecppu_1_1cgc_a6da67e7b5f441dbe54240e79c1287e4b}\label{namespacecppu_1_1cgc_a6da67e7b5f441dbe54240e79c1287e4b}} 
+\index{cppu::cgc@{cppu::cgc}!SIZE\_32@{SIZE\_32}}
+\index{SIZE\_32@{SIZE\_32}!cppu::cgc@{cppu::cgc}}
+\doxysubsubsection{\texorpdfstring{SIZE\_32}{SIZE\_32}}
+{\footnotesize\ttfamily typedef \mbox{\hyperlink{dtypes_8h_acbd4acd0d29e2d6c43104827f77d9cd2}{uint32}} \mbox{\hyperlink{namespacecppu_1_1cgc_a6da67e7b5f441dbe54240e79c1287e4b}{cppu\+::cgc\+::\+SIZE\+\_\+32}}}
+
+\mbox{\Hypertarget{namespacecppu_1_1cgc_abdce57e2aaca1075ba1dc4f00f61ac8a}\label{namespacecppu_1_1cgc_abdce57e2aaca1075ba1dc4f00f61ac8a}} 
+\index{cppu::cgc@{cppu::cgc}!SIZE\_64@{SIZE\_64}}
+\index{SIZE\_64@{SIZE\_64}!cppu::cgc@{cppu::cgc}}
+\doxysubsubsection{\texorpdfstring{SIZE\_64}{SIZE\_64}}
+{\footnotesize\ttfamily typedef \mbox{\hyperlink{dtypes_8h_abc0f5bc07737e498f287334775dff2b6}{uint64}} \mbox{\hyperlink{namespacecppu_1_1cgc_abdce57e2aaca1075ba1dc4f00f61ac8a}{cppu\+::cgc\+::\+SIZE\+\_\+64}}}
+
+\mbox{\Hypertarget{namespacecppu_1_1cgc_a0d9e9fcfcc9f270cfdb10a306184e6db}\label{namespacecppu_1_1cgc_a0d9e9fcfcc9f270cfdb10a306184e6db}} 
+\index{cppu::cgc@{cppu::cgc}!SIZE\_8@{SIZE\_8}}
+\index{SIZE\_8@{SIZE\_8}!cppu::cgc@{cppu::cgc}}
+\doxysubsubsection{\texorpdfstring{SIZE\_8}{SIZE\_8}}
+{\footnotesize\ttfamily typedef \mbox{\hyperlink{dtypes_8h_a33a5e996e7a90acefb8b1c0bea47e365}{uint8}} \mbox{\hyperlink{namespacecppu_1_1cgc_a0d9e9fcfcc9f270cfdb10a306184e6db}{cppu\+::cgc\+::\+SIZE\+\_\+8}}}
+
+
+
+\doxysubsection{Enumeration Type Documentation}
+\mbox{\Hypertarget{namespacecppu_1_1cgc_ab4a2e31cf76ab4ec8ec1b0e96719622b}\label{namespacecppu_1_1cgc_ab4a2e31cf76ab4ec8ec1b0e96719622b}} 
+\index{cppu::cgc@{cppu::cgc}!CLEAN\_PROC@{CLEAN\_PROC}}
+\index{CLEAN\_PROC@{CLEAN\_PROC}!cppu::cgc@{cppu::cgc}}
+\doxysubsubsection{\texorpdfstring{CLEAN\_PROC}{CLEAN\_PROC}}
+{\footnotesize\ttfamily enum \mbox{\hyperlink{namespacecppu_1_1cgc_ab4a2e31cf76ab4ec8ec1b0e96719622b}{cppu\+::cgc\+::\+CLEAN\+\_\+\+PROC}}}
+
+\begin{DoxyEnumFields}{Enumerator}
+\raisebox{\heightof{T}}[0pt][0pt]{\index{DIRECT@{DIRECT}!cppu::cgc@{cppu::cgc}}\index{cppu::cgc@{cppu::cgc}!DIRECT@{DIRECT}}}\mbox{\Hypertarget{namespacecppu_1_1cgc_ab4a2e31cf76ab4ec8ec1b0e96719622ba0482d35ea1274f528ccd4ce4befecbf3}\label{namespacecppu_1_1cgc_ab4a2e31cf76ab4ec8ec1b0e96719622ba0482d35ea1274f528ccd4ce4befecbf3}} 
+DIRECT&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{MANUAL@{MANUAL}!cppu::cgc@{cppu::cgc}}\index{cppu::cgc@{cppu::cgc}!MANUAL@{MANUAL}}}\mbox{\Hypertarget{namespacecppu_1_1cgc_ab4a2e31cf76ab4ec8ec1b0e96719622ba16ae293d9fb82c7327986f34d9c9a668}\label{namespacecppu_1_1cgc_ab4a2e31cf76ab4ec8ec1b0e96719622ba16ae293d9fb82c7327986f34d9c9a668}} 
+MANUAL&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{THREAD@{THREAD}!cppu::cgc@{cppu::cgc}}\index{cppu::cgc@{cppu::cgc}!THREAD@{THREAD}}}\mbox{\Hypertarget{namespacecppu_1_1cgc_ab4a2e31cf76ab4ec8ec1b0e96719622ba3d2d80d5742a8694e9233ae15b255520}\label{namespacecppu_1_1cgc_ab4a2e31cf76ab4ec8ec1b0e96719622ba3d2d80d5742a8694e9233ae15b255520}} 
+THREAD&\\
+\hline
+
+\end{DoxyEnumFields}
+
+
+\doxysubsection{Function Documentation}
+\mbox{\Hypertarget{namespacecppu_1_1cgc_ad6c1323817a49f63e476f38e20b7dbda}\label{namespacecppu_1_1cgc_ad6c1323817a49f63e476f38e20b7dbda}} 
+\index{cppu::cgc@{cppu::cgc}!const\_pointer\_cast@{const\_pointer\_cast}}
+\index{const\_pointer\_cast@{const\_pointer\_cast}!cppu::cgc@{cppu::cgc}}
+\doxysubsubsection{\texorpdfstring{const\_pointer\_cast()}{const\_pointer\_cast()}}
+{\footnotesize\ttfamily template$<$typename T $>$ \\
+const \mbox{\hyperlink{classcppu_1_1cgc_1_1strong__ptr}{strong\+\_\+ptr}}$<$T$>$\& cppu\+::cgc\+::const\+\_\+pointer\+\_\+cast (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classcppu_1_1cgc_1_1strong__ptr}{strong\+\_\+ptr}}$<$ T $>$ \&}]{cast }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [noexcept]}}
+
+
+
+remove the const attribute 
+
+\mbox{\Hypertarget{namespacecppu_1_1cgc_a984fd7a19a9d5a94f96c7f870164ea7a}\label{namespacecppu_1_1cgc_a984fd7a19a9d5a94f96c7f870164ea7a}} 
+\index{cppu::cgc@{cppu::cgc}!construct\_new@{construct\_new}}
+\index{construct\_new@{construct\_new}!cppu::cgc@{cppu::cgc}}
+\doxysubsubsection{\texorpdfstring{construct\_new()}{construct\_new()}}
+{\footnotesize\ttfamily template$<$class T , class... Args$>$ \\
+\mbox{\hyperlink{classcppu_1_1cgc_1_1strong__ptr}{strong\+\_\+ptr}}$<$ T $>$ cppu\+::cgc\+::construct\+\_\+new (\begin{DoxyParamCaption}\item[{Args \&\&...}]{arguments }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+\mbox{\Hypertarget{namespacecppu_1_1cgc_a7e57d98098d5e061b329db4f03004045}\label{namespacecppu_1_1cgc_a7e57d98098d5e061b329db4f03004045}} 
+\index{cppu::cgc@{cppu::cgc}!dynamic\_pointer\_cast@{dynamic\_pointer\_cast}}
+\index{dynamic\_pointer\_cast@{dynamic\_pointer\_cast}!cppu::cgc@{cppu::cgc}}
+\doxysubsubsection{\texorpdfstring{dynamic\_pointer\_cast()}{dynamic\_pointer\_cast()}}
+{\footnotesize\ttfamily template$<$typename T , typename T2 , typename  = typename std\+::enable\+\_\+if$<$std\+::is\+\_\+base\+\_\+of$<$\+T2, T$>$\+::value$>$\+::type$>$ \\
+\mbox{\hyperlink{classcppu_1_1cgc_1_1strong__ptr}{strong\+\_\+ptr}}$<$T$>$ cppu\+::cgc\+::dynamic\+\_\+pointer\+\_\+cast (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classcppu_1_1cgc_1_1strong__ptr}{strong\+\_\+ptr}}$<$ T2 $>$ \&}]{cast }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [noexcept]}}
+
+
+
+only down casting is supported, for up casting just use the constructor (it\textquotesingle{}s implicit!) or the static cast 
+
+\mbox{\Hypertarget{namespacecppu_1_1cgc_a246b2f117cfebf65dc4e5431424b5a06}\label{namespacecppu_1_1cgc_a246b2f117cfebf65dc4e5431424b5a06}} 
+\index{cppu::cgc@{cppu::cgc}!gc\_start@{gc\_start}}
+\index{gc\_start@{gc\_start}!cppu::cgc@{cppu::cgc}}
+\doxysubsubsection{\texorpdfstring{gc\_start()}{gc\_start()}}
+{\footnotesize\ttfamily void cppu\+::cgc\+::gc\+\_\+start (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+\mbox{\Hypertarget{namespacecppu_1_1cgc_a4ddd378562c818ce65f29f23a95ac892}\label{namespacecppu_1_1cgc_a4ddd378562c818ce65f29f23a95ac892}} 
+\index{cppu::cgc@{cppu::cgc}!gc\_stop@{gc\_stop}}
+\index{gc\_stop@{gc\_stop}!cppu::cgc@{cppu::cgc}}
+\doxysubsubsection{\texorpdfstring{gc\_stop()}{gc\_stop()}}
+{\footnotesize\ttfamily void cppu\+::cgc\+::gc\+\_\+stop (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+\mbox{\Hypertarget{namespacecppu_1_1cgc_ac13e52a815bcc0579cb1f7d371b85164}\label{namespacecppu_1_1cgc_ac13e52a815bcc0579cb1f7d371b85164}} 
+\index{cppu::cgc@{cppu::cgc}!gcnew@{gcnew}}
+\index{gcnew@{gcnew}!cppu::cgc@{cppu::cgc}}
+\doxysubsubsection{\texorpdfstring{gcnew()}{gcnew()}}
+{\footnotesize\ttfamily template$<$class T , class... Args$>$ \\
+\mbox{\hyperlink{classcppu_1_1cgc_1_1strong__ptr}{strong\+\_\+ptr}}$<$ T $>$ cppu\+::cgc\+::gcnew (\begin{DoxyParamCaption}\item[{Args \&\&...}]{arguments }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+\mbox{\Hypertarget{namespacecppu_1_1cgc_a83a2a5316685e71cc0f22865641dc009}\label{namespacecppu_1_1cgc_a83a2a5316685e71cc0f22865641dc009}} 
+\index{cppu::cgc@{cppu::cgc}!reinterpret\_pointer\_cast@{reinterpret\_pointer\_cast}}
+\index{reinterpret\_pointer\_cast@{reinterpret\_pointer\_cast}!cppu::cgc@{cppu::cgc}}
+\doxysubsubsection{\texorpdfstring{reinterpret\_pointer\_cast()}{reinterpret\_pointer\_cast()}}
+{\footnotesize\ttfamily template$<$typename T , typename T2 $>$ \\
+const \mbox{\hyperlink{classcppu_1_1cgc_1_1strong__ptr}{strong\+\_\+ptr}}$<$T$>$\& cppu\+::cgc\+::reinterpret\+\_\+pointer\+\_\+cast (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classcppu_1_1cgc_1_1strong__ptr}{strong\+\_\+ptr}}$<$ T2 $>$ \&}]{cast }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [noexcept]}}
+
+
+
+reinterpret the pointers\textquotesingle{} bit as if it is another type, unsafe by nature so programmer should gurantee its safety 
+
+\mbox{\Hypertarget{namespacecppu_1_1cgc_ab1a7efa021bc255617c2655be004ccd6}\label{namespacecppu_1_1cgc_ab1a7efa021bc255617c2655be004ccd6}} 
+\index{cppu::cgc@{cppu::cgc}!static\_pointer\_cast@{static\_pointer\_cast}}
+\index{static\_pointer\_cast@{static\_pointer\_cast}!cppu::cgc@{cppu::cgc}}
+\doxysubsubsection{\texorpdfstring{static\_pointer\_cast()}{static\_pointer\_cast()}}
+{\footnotesize\ttfamily template$<$typename T , typename T2 , typename  = typename std\+::enable\+\_\+if$<$std\+::is\+\_\+base\+\_\+of$<$\+T, T2$>$\+::value $\vert$$\vert$ std\+::is\+\_\+base\+\_\+of$<$\+T2, T$>$\+::value $\vert$$\vert$ std\+::is\+\_\+same$<$\+T, T2$>$\+::value$>$\+::type$>$ \\
+\mbox{\hyperlink{classcppu_1_1cgc_1_1strong__ptr}{strong\+\_\+ptr}}$<$T$>$ cppu\+::cgc\+::static\+\_\+pointer\+\_\+cast (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classcppu_1_1cgc_1_1strong__ptr}{strong\+\_\+ptr}}$<$ T2 $>$ \&}]{cast }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [noexcept]}}
+

@@ -1,0 +1,87 @@
+\hypertarget{classcppu_1_1serial_1_1_serializer}{}\doxysection{cppu\+::serial\+::Serializer Class Reference}
+\label{classcppu_1_1serial_1_1_serializer}\index{cppu::serial::Serializer@{cppu::serial::Serializer}}
+
+
+{\ttfamily \#include $<$Serializer.\+h$>$}
+
+\doxysubsection*{Public Types}
+\begin{DoxyCompactItemize}
+\item 
+typedef \mbox{\hyperlink{namespacecppu_a748e4797ef05e40ddc8a8162f667a1d6}{cppu\+::hash\+\_\+t}} \mbox{\hyperlink{classcppu_1_1serial_1_1_serializer_a1ea5371de87ced101101711a6eeeb85e}{Key}}
+\item 
+typedef std\+::function$<$ void(\mbox{\hyperlink{classcppu_1_1serial_1_1_archive_reader}{Archive\+Reader}} \&, void $\ast$)$>$ \mbox{\hyperlink{classcppu_1_1serial_1_1_serializer_a07a6c94a766c694f5619738ae16f0d74}{Constructor}}
+\end{DoxyCompactItemize}
+\doxysubsection*{Static Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+static auto \& \mbox{\hyperlink{classcppu_1_1serial_1_1_serializer_a4fabb4f3e4296f8254f8a04e32d6c07c}{Class\+IDs}} ()
+\item 
+static void \mbox{\hyperlink{classcppu_1_1serial_1_1_serializer_a2f0627c2a920745747811e66ee3ab37c}{Register}} (\mbox{\hyperlink{classcppu_1_1serial_1_1_serializer_a1ea5371de87ced101101711a6eeeb85e}{Key}} key, \mbox{\hyperlink{classcppu_1_1serial_1_1_serializer_a07a6c94a766c694f5619738ae16f0d74}{Constructor}} constructor)
+\item 
+{\footnotesize template$<$typename T $>$ }\\static bool \mbox{\hyperlink{classcppu_1_1serial_1_1_serializer_a8566ce0413af2996b847a070843e42ad}{Register}} ()
+\end{DoxyCompactItemize}
+\doxysubsection*{Friends}
+\begin{DoxyCompactItemize}
+\item 
+class \mbox{\hyperlink{classcppu_1_1serial_1_1_serializer_a81f2ca23fc8f9eded8f6f2270e1fdf00}{Archive\+Reader}}
+\item 
+class \mbox{\hyperlink{classcppu_1_1serial_1_1_serializer_ab87840a738fad8bb960e58edb311f6d3}{Archive\+Writer}}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Member Typedef Documentation}
+\mbox{\Hypertarget{classcppu_1_1serial_1_1_serializer_a07a6c94a766c694f5619738ae16f0d74}\label{classcppu_1_1serial_1_1_serializer_a07a6c94a766c694f5619738ae16f0d74}} 
+\index{cppu::serial::Serializer@{cppu::serial::Serializer}!Constructor@{Constructor}}
+\index{Constructor@{Constructor}!cppu::serial::Serializer@{cppu::serial::Serializer}}
+\doxysubsubsection{\texorpdfstring{Constructor}{Constructor}}
+{\footnotesize\ttfamily typedef std\+::function$<$void(\mbox{\hyperlink{classcppu_1_1serial_1_1_archive_reader}{Archive\+Reader}}\&, void$\ast$)$>$ \mbox{\hyperlink{classcppu_1_1serial_1_1_serializer_a07a6c94a766c694f5619738ae16f0d74}{cppu\+::serial\+::\+Serializer\+::\+Constructor}}}
+
+\mbox{\Hypertarget{classcppu_1_1serial_1_1_serializer_a1ea5371de87ced101101711a6eeeb85e}\label{classcppu_1_1serial_1_1_serializer_a1ea5371de87ced101101711a6eeeb85e}} 
+\index{cppu::serial::Serializer@{cppu::serial::Serializer}!Key@{Key}}
+\index{Key@{Key}!cppu::serial::Serializer@{cppu::serial::Serializer}}
+\doxysubsubsection{\texorpdfstring{Key}{Key}}
+{\footnotesize\ttfamily typedef \mbox{\hyperlink{namespacecppu_a748e4797ef05e40ddc8a8162f667a1d6}{cppu\+::hash\+\_\+t}} \mbox{\hyperlink{classcppu_1_1serial_1_1_serializer_a1ea5371de87ced101101711a6eeeb85e}{cppu\+::serial\+::\+Serializer\+::\+Key}}}
+
+
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{classcppu_1_1serial_1_1_serializer_a4fabb4f3e4296f8254f8a04e32d6c07c}\label{classcppu_1_1serial_1_1_serializer_a4fabb4f3e4296f8254f8a04e32d6c07c}} 
+\index{cppu::serial::Serializer@{cppu::serial::Serializer}!ClassIDs@{ClassIDs}}
+\index{ClassIDs@{ClassIDs}!cppu::serial::Serializer@{cppu::serial::Serializer}}
+\doxysubsubsection{\texorpdfstring{ClassIDs()}{ClassIDs()}}
+{\footnotesize\ttfamily static auto\& cppu\+::serial\+::\+Serializer\+::\+Class\+IDs (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [static]}}
+
+\mbox{\Hypertarget{classcppu_1_1serial_1_1_serializer_a8566ce0413af2996b847a070843e42ad}\label{classcppu_1_1serial_1_1_serializer_a8566ce0413af2996b847a070843e42ad}} 
+\index{cppu::serial::Serializer@{cppu::serial::Serializer}!Register@{Register}}
+\index{Register@{Register}!cppu::serial::Serializer@{cppu::serial::Serializer}}
+\doxysubsubsection{\texorpdfstring{Register()}{Register()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily template$<$typename T $>$ \\
+bool cppu\+::serial\+::\+Serializer\+::\+Register\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [static]}}
+
+\mbox{\Hypertarget{classcppu_1_1serial_1_1_serializer_a2f0627c2a920745747811e66ee3ab37c}\label{classcppu_1_1serial_1_1_serializer_a2f0627c2a920745747811e66ee3ab37c}} 
+\index{cppu::serial::Serializer@{cppu::serial::Serializer}!Register@{Register}}
+\index{Register@{Register}!cppu::serial::Serializer@{cppu::serial::Serializer}}
+\doxysubsubsection{\texorpdfstring{Register()}{Register()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily static void cppu\+::serial\+::\+Serializer\+::\+Register (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classcppu_1_1serial_1_1_serializer_a1ea5371de87ced101101711a6eeeb85e}{Key}}}]{key,  }\item[{\mbox{\hyperlink{classcppu_1_1serial_1_1_serializer_a07a6c94a766c694f5619738ae16f0d74}{Constructor}}}]{constructor }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [static]}}
+
+
+
+\doxysubsection{Friends And Related Function Documentation}
+\mbox{\Hypertarget{classcppu_1_1serial_1_1_serializer_a81f2ca23fc8f9eded8f6f2270e1fdf00}\label{classcppu_1_1serial_1_1_serializer_a81f2ca23fc8f9eded8f6f2270e1fdf00}} 
+\index{cppu::serial::Serializer@{cppu::serial::Serializer}!ArchiveReader@{ArchiveReader}}
+\index{ArchiveReader@{ArchiveReader}!cppu::serial::Serializer@{cppu::serial::Serializer}}
+\doxysubsubsection{\texorpdfstring{ArchiveReader}{ArchiveReader}}
+{\footnotesize\ttfamily friend class \mbox{\hyperlink{classcppu_1_1serial_1_1_archive_reader}{Archive\+Reader}}\hspace{0.3cm}{\ttfamily [friend]}}
+
+\mbox{\Hypertarget{classcppu_1_1serial_1_1_serializer_ab87840a738fad8bb960e58edb311f6d3}\label{classcppu_1_1serial_1_1_serializer_ab87840a738fad8bb960e58edb311f6d3}} 
+\index{cppu::serial::Serializer@{cppu::serial::Serializer}!ArchiveWriter@{ArchiveWriter}}
+\index{ArchiveWriter@{ArchiveWriter}!cppu::serial::Serializer@{cppu::serial::Serializer}}
+\doxysubsubsection{\texorpdfstring{ArchiveWriter}{ArchiveWriter}}
+{\footnotesize\ttfamily friend class \mbox{\hyperlink{classcppu_1_1serial_1_1_archive_writer}{Archive\+Writer}}\hspace{0.3cm}{\ttfamily [friend]}}
+
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+G\+:/\+Projects/\+C++/cpputilities/include/cppu/serial/\mbox{\hyperlink{_serializer_8h}{Serializer.\+h}}\item 
+G\+:/\+Projects/\+C++/cpputilities/include/cppu/serial/\mbox{\hyperlink{_serializer_8inl}{Serializer.\+inl}}\end{DoxyCompactItemize}
