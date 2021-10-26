@@ -147,6 +147,11 @@ namespace cppu
 				return *reinterpret_cast<strong_ptr<void*>*>(this);
 			}
 
+			operator weak_ptr<T> ()
+			{
+				return weak_ptr<T>(*this);
+			}
+
 			template <typename TB, typename = typename std::enable_if<std::is_same<TB, T>::value || std::is_base_of<TB, T>::value>::type>
 			inline bool operator==(const strong_ptr<TB>& rhs) const { return pointer == rhs.pointer; }
 			template <typename TB, typename = typename std::enable_if<std::is_same<TB, T>::value || std::is_base_of<TB, T>::value>::type>
@@ -260,19 +265,37 @@ namespace cppu
 				IncrementWeakReference();
 			}
 
-			weak_ptr(const strong_ptr<T>& copy)
+			/*weak_ptr(const strong_ptr<T>& copy)
+				: pointer(copy.pointer)
+				, refCounter(copy.refCounter)
+			{
+				IncrementWeakReference();
+			}*/
+
+			weak_ptr(const strong_ptr<std::remove_const_t<T>>& copy)
 				: pointer(copy.pointer)
 				, refCounter(copy.refCounter)
 			{
 				IncrementWeakReference();
 			}
 
-			template <typename T2, typename = typename std::enable_if<std::is_base_of<T, T2>::value>::type>
-			weak_ptr(const weak_ptr<T2>& copy)
+			// up cast constructor
+			template <typename TD, typename = typename std::enable_if_t<std::is_base_of_v<T, TD>&& std::is_assignable_v<T*&, TD*>>>
+			weak_ptr(const weak_ptr<TD>& copy)
 				: pointer(copy.pointer)
 				, refCounter(copy.refCounter)
 			{
 				IncrementWeakReference();
+			}
+
+			// up cast move constructor
+			template <typename TD, typename = typename std::enable_if_t<std::is_base_of_v<T, TD>&& std::is_assignable_v<T*&, TD*>>>
+			weak_ptr(weak_ptr<TD>&& move) noexcept
+				: pointer(std::move(move.pointer))
+				, refCounter(std::move(move.refCounter))
+			{
+				move.pointer = nullptr;
+				move.refCounter = nullptr;
 			}
 
 			~weak_ptr()

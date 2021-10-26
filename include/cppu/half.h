@@ -285,8 +285,6 @@ namespace half_float
 
 		/// Helper for tag dispatching.
 		template<bool B> struct bool_type : std::integral_constant<bool,B> {};
-		using std::true_type;
-		using std::false_type;
 
 		/// Type traits for floating point types.
 		template<typename T> struct is_float : std::is_floating_point<T> {};
@@ -297,17 +295,17 @@ namespace half_float
 
 		/// Helper for tag dispatching.
 		template<bool> struct bool_type {};
-		typedef bool_type<true> true_type;
-		typedef bool_type<false> false_type;
-
-		/// Type traits for floating point types.
+		
+		/// @link
+		/// Type traits for floating point types.		
 		template<typename> struct is_float : false_type {};
 		template<typename T> struct is_float<const T> : is_float<T> {};
 		template<typename T> struct is_float<volatile T> : is_float<T> {};
 		template<typename T> struct is_float<const volatile T> : is_float<T> {};
-		template<> struct is_float<float> : true_type {};
-		template<> struct is_float<double> : true_type {};
-		template<> struct is_float<long double> : true_type {};
+		template<> struct is_float<float> : std::true_type {};
+		template<> struct is_float<double> : std::true_type {};
+		template<> struct is_float<long double> : std::true_type {};
+		/// @endlink
 	#endif
 
 		/// Type traits for floating point bits.
@@ -450,7 +448,7 @@ namespace half_float
 		/// \tparam R rounding mode to use, `std::round_indeterminate` for fastest rounding
 		/// \param value single-precision value
 		/// \return binary representation of half-precision value
-		template<std::float_round_style R> uint16 float2half_impl(float value, true_type)
+		template<std::float_round_style R> uint16 float2half_impl(float value, std::true_type)
 		{
 			typedef bits<float>::type uint32;
 			uint32 bits;// = *reinterpret_cast<uint32*>(&value);		//violating strict aliasing!
@@ -570,7 +568,7 @@ namespace half_float
 		/// \tparam R rounding mode to use, `std::round_indeterminate` for fastest rounding
 		/// \param value double-precision value
 		/// \return binary representation of half-precision value
-		template<std::float_round_style R> uint16 float2half_impl(double value, true_type)
+		template<std::float_round_style R> uint16 float2half_impl(double value, std::true_type)
 		{
 			typedef bits<float>::type uint32;
 			typedef bits<double>::type uint64;
@@ -742,7 +740,7 @@ namespace half_float
 		/// Credit for this goes to [Jeroen van der Zijp](ftp://ftp.fox-toolkit.org/pub/fasthalffloatconversion.pdf).
 		/// \param value binary representation of half-precision value
 		/// \return single-precision value
-		inline float half2float_impl(uint16 value, float, true_type)
+		inline float half2float_impl(uint16 value, float, std::true_type)
 		{
 			typedef bits<float>::type uint32;
 /*			uint32 bits = static_cast<uint32>(value&0x8000) << 16;
@@ -900,7 +898,7 @@ namespace half_float
 		/// Convert half-precision to IEEE double-precision.
 		/// \param value binary representation of half-precision value
 		/// \return double-precision value
-		inline double half2float_impl(uint16 value, double, true_type)
+		inline double half2float_impl(uint16 value, double, std::true_type)
 		{
 			typedef bits<float>::type uint32;
 			typedef bits<double>::type uint64;
@@ -2073,8 +2071,8 @@ namespace half_float
 			static half cast(U arg) { return cast_impl(arg, is_float<U>()); };
 
 		private:
-			static half cast_impl(U arg, true_type) { return half(binary, float2half<R>(arg)); }
-			static half cast_impl(U arg, false_type) { return half(binary, int2half<R>(arg)); }
+			static half cast_impl(U arg, std::true_type) { return half(binary, float2half<R>(arg)); }
+			static half cast_impl(U arg, std::false_type) { return half(binary, int2half<R>(arg)); }
 		};
 		template<typename T,std::float_round_style R> struct half_caster<T,half,R>
 		{
@@ -2085,8 +2083,8 @@ namespace half_float
 			static T cast(half arg) { return cast_impl(arg, is_float<T>()); }
 
 		private:
-			static T cast_impl(half arg, true_type) { return half2float<T>(arg.data_); }
-			static T cast_impl(half arg, false_type) { return half2int<R,T>(arg.data_); }
+			static T cast_impl(half arg, std::true_type) { return half2float<T>(arg.data_); }
+			static T cast_impl(half arg, std::false_type) { return half2int<R,T>(arg.data_); }
 		};
 		template<typename T,std::float_round_style R> struct half_caster<T,expr,R>
 		{
@@ -2097,8 +2095,8 @@ namespace half_float
 			static T cast(expr arg) { return cast_impl(arg, is_float<T>()); }
 
 		private:
-			static T cast_impl(float arg, true_type) { return static_cast<T>(arg); }
-			static T cast_impl(half arg, false_type) { return half2int<R,T>(arg.data_); }
+			static T cast_impl(float arg, std::true_type) { return static_cast<T>(arg); }
+			static T cast_impl(half arg, std::false_type) { return half2int<R,T>(arg.data_); }
 		};
 		template<std::float_round_style R> struct half_caster<half,half,R>
 		{

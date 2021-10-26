@@ -13,12 +13,14 @@ namespace cppu
 
 	template<class T> struct is_smart_ptr : std::false_type {};
 	
+	/// @cond HIDDEN_SYMBOLS
 	template<class T> struct is_smart_ptr<std::unique_ptr<T>> : std::true_type {};
 	template<class T> struct is_smart_ptr<std::shared_ptr<T>> : std::true_type {};
 	template<class T> struct is_smart_ptr<std::weak_ptr<T>> : std::true_type {};
 	
 	template<class T> struct is_smart_ptr<::cppu::cgc::strong_ptr<T>> : std::true_type {};
 	template<class T> struct is_smart_ptr<::cppu::cgc::weak_ptr<T>> : std::true_type {};
+	/// @endcond
 
 	template<class T> inline constexpr bool is_smart_ptr_v = is_smart_ptr<T>::value;
 
@@ -60,20 +62,26 @@ namespace cppu
 	template<typename T>
 	struct is_string : public std::integral_constant<bool, std::is_same_v<char*, typename std::decay_t<T>> || std::is_same_v<const char*, typename std::decay_t<T>>> {};
 
+	/// @cond HIDDEN_SYMBOLS
 	template<>
 	struct is_string<std::string> : std::true_type {};
-
+	/// @endcond
+	
 	template <typename T, typename = void>
 	struct is_map : std::false_type {};
 
+	/// @cond HIDDEN_SYMBOLS
 	template <typename T>
 	struct is_map<T, std::enable_if_t<std::is_same<typename T::value_type, std::pair<const typename T::key_type, typename T::mapped_type>>::value>> : std::true_type {};
-
+	/// @endcond
+	
 	template<typename T> inline constexpr bool is_map_v = is_map<T>::value;
 
 	template<typename T> struct is_vector : public std::false_type {};
+	/// @cond HIDDEN_SYMBOLS
 	template<typename T, typename A> struct is_vector<std::vector<T, A>> : public std::true_type {};
-
+	/// @endcond
+	
 	template<typename T> inline constexpr bool is_vector_v = is_vector<T>::value;
 
 

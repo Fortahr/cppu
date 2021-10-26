@@ -270,7 +270,7 @@ namespace cppu
 			}
 
 			template<class... _Args>
-			void emplace_back(_Args&& ... arguments)
+			T& emplace_back(_Args&& ... arguments)
 			{
 				if (_size < _capacity)
 				{
@@ -282,30 +282,39 @@ namespace cppu
 				size_type newCapacity = _capacity + _capacity * mulCapacity + addCapacity;
 				T* newData = allocate(newCapacity);
 				moveRange(_data, _data + _size, newData);
-				new((void*)(newData + _size)) T(std::forward<_Args>(arguments)...);
+				T* newElement = new((void*)(newData + _size)) T(std::forward<_Args>(arguments)...);
 
 				deleteRange(_data, _data + _size);
 				free(_data);
 				_data = newData;
 				_capacity = newCapacity;
 				_size++;
+
+				return *newElement;
 			}
 
 			template<class... _Args>
-			void emplace(size_type index, _Args && ... arguments)
+			T& insert(const const_iterator& it, _Args&&... arguments)
 			{
-					T* end = _data + _size;
+				T* end = _data + _size;
+				size_t index = it.ptr - _data;
 
 				// can we just move all data (enough allocated data)?
 				if (_size < _capacity)
 				{
 					if (index < _size)
+					{
 						moveRangeReverse(_data + index, end - 1, end);
 
-					(_data + index)->~T();
-					new((void*)(_data + index)) T(std::forward<_Args>(arguments)...);
+						// destruct old value (should've been moved to the next place)
+						(_data + index)->~T();
+					}
+
+					T* newElement = new((void*)(_data + index)) T(std::forward<_Args>(arguments)...);
 
 					_size++;
+
+					return *newElement;
 				}
 				else
 				{
@@ -321,7 +330,7 @@ namespace cppu
 					}
 
 					// construct new object
-					new((void*)(newData + index)) T(std::forward<_Args>(arguments)...);
+					T* newElement = new((void*)(newData + index)) T(std::forward<_Args>(arguments)...);
 
 					// clean up old data
 					deleteRange(_data, _data + _size);
@@ -331,14 +340,22 @@ namespace cppu
 					_data = newData;
 					_capacity = newCapacity;
 					_size++;
+
+					return *newElement;
 				}
 			}
 
 			template<class... _Args>
-			void emplace(const const_iterator& it, _Args&& ... arguments)
+			T& emplace(const const_iterator& it, _Args&& ... arguments)
 			{
 				size_type index = it.ptr - _data;
-				emplace(index, std::forward<_Args>(arguments)...);
+				if (index < size)
+				{
+					(_data + index)->~T();
+					return new((void*)(_data + index)) T(std::forward<_Args>(arguments)...);
+				}
+				else
+					return emplace_back(std::forward<_Args>(arguments)...);
 			}
 
 			void resize(size_type newSize)
