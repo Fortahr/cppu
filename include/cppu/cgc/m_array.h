@@ -1,6 +1,8 @@
 #pragma once
 
-#include "../ncm/mutex.h"
+#include <mutex>
+
+#include "../ncm.h"
 #include "array.h"
 
 namespace cppu
@@ -13,7 +15,7 @@ namespace cppu
 		{
 		private:
 			std::vector<cgc::array<T, S, clean_proc>*> arrays;
-			ncm::mutex lock;
+			ncm<std::mutex> lock;
 
 		public:
 			struct iterator

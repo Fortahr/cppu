@@ -1,6 +1,5 @@
 #pragma once
 
-#include "../dtypes.h"
 #include <atomic>
 #include <bitset>
 #include <queue>
@@ -21,10 +20,10 @@ namespace cppu
 {
 	namespace cgc
 	{
-		typedef uint8 SIZE_8;
-		typedef uint16 SIZE_16;
-		typedef uint32 SIZE_32;
-		typedef uint64 SIZE_64;
+		typedef uint8_t SIZE_8;
+		typedef uint16_t SIZE_16;
+		typedef uint32_t SIZE_32;
+		typedef uint64_t SIZE_64;
 		
 		template<class T, class S = SIZE_32, CLEAN_PROC clean_proc = CLEAN_PROC::DIRECT>
 		class array : public details::icontainer
@@ -46,12 +45,12 @@ namespace cppu
 			std::atomic<S> initSlots;
 			std::atomic<S> garbage;
 
-			inline static uint first_free(const S& freeSlots)
+			inline static size_t first_free(const S& freeSlots)
 			{
 				return bs_rtol(freeSlots); // bit scan
 			}
 
-			inline uint reserve_spot()
+			inline size_t reserve_spot()
 			{
 				// Find first available spot, in a thread safe & lock free approach
 				S freeSlotsCheck = freeSlots.load();
@@ -98,7 +97,7 @@ namespace cppu
 				return constructor::construct_pointer(object, new details::container_counter(this, details::destructor::create_destructor<T>()));
 			}
 
-			inline void clean_and_destruct_slot(uint offset)
+			inline void clean_and_destruct_slot(size_t offset)
 			{
 				S oldValue, newValue;
 				T& item = slots[offset];
@@ -243,7 +242,7 @@ namespace cppu
 				return pointer;
 			}
 
-			virtual bool add_as_garbage(void* ptr, const details::base_counter* c)
+			bool add_as_garbage(void* ptr, const details::base_counter* c) override
 			{
 				if constexpr (clean_proc == CLEAN_PROC::DIRECT)
 					clean_and_destruct_slot((reinterpret_cast<uintptr_t>(ptr) - reinterpret_cast<uintptr_t>(slots)) / sizeof(T));
@@ -267,8 +266,7 @@ namespace cppu
 				return true;
 			}
 
-
-			size_t clean_garbage(size_t max = std::numeric_limits<size_t>::max())
+			size_t clean_garbage(size_t max = std::numeric_limits<size_t>::max()) override
 			{
 				if constexpr (clean_proc == CLEAN_PROC::MANUAL)
 				{

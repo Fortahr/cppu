@@ -1,6 +1,6 @@
 #pragma once
 
-#include <mutex>
+#include <shared_mutex>
 #include <deque>
 #include <algorithm>
 
@@ -15,11 +15,10 @@ namespace cppu
 			{
 			private:
 				std::deque<T> container;
-				std::mutex lock;
+				mutable std::shared_mutex lock;
 
 			public:
-				deque()
-				{}
+				deque() = default;
 
 				deque(deque& other)
 					: container(other.container)
@@ -33,36 +32,43 @@ namespace cppu
 
 				T& operator[](std::size_t i)
 				{
+					std::shared_lock lk(lock);
 					return container[i];
 				}
 
 				inline T& at(std::size_t i)
 				{
-					return container[i];
+					std::shared_lock lk(lock);
+					return container.at(i);
 				}
 
 				inline const T& at(std::size_t i) const
 				{
-					return container[i];
+					std::shared_lock lk(lock);
+					return container.at(i);
 				}
 
 				inline typename std::deque<T>::iterator begin()
 				{
+					std::shared_lock lk(lock);
 					return container.begin();
 				}
 
 				inline typename std::deque<T>::const_iterator begin() const
 				{
+					std::shared_lock lk(lock);
 					return container.begin();
 				}
 
 				inline typename std::deque<T>::iterator end()
 				{
+					std::shared_lock lk(lock);
 					return container.end();
 				}
 
 				inline typename std::deque<T>::const_iterator end() const
 				{
+					std::shared_lock lk(lock);
 					return container.end();
 				}
 
@@ -78,57 +84,57 @@ namespace cppu
 
 				inline void clear()
 				{
-					std::lock_guard<std::mutex> lk(lock);
+					std::unique_lock lk(lock);
 					container.clear();
 				}
 
 				inline typename std::deque<T>::iterator erase(const typename std::deque<T>::const_iterator& it)
 				{
-					std::lock_guard<std::mutex> lk(lock);
+					std::unique_lock lk(lock);
 					return container.erase(it);
 				}
 
 				inline typename std::deque<T>::iterator erase(typename std::deque<T>::iterator& obj)
 				{
-					std::lock_guard<std::mutex> lk(lock);
+					std::unique_lock lk(lock);
 					return container.erase(obj);
 				}
 
 				void insert(const typename std::deque<T>::const_iterator& insert_from, const typename std::deque<T>::const_iterator& from, const typename std::deque<T>::const_iterator& to)
 				{
-					std::lock_guard<std::mutex> lk(lock);
+					std::unique_lock lk(lock);
 					container.insert(insert_from, from, to);
 				}
 
 				template<class... _Valty>
 				void emplace_back(_Valty&&... _Val)
 				{
-					std::lock_guard<std::mutex> lk(lock);
+					std::unique_lock lk(lock);
 					container.emplace_back(std::forward<_Valty>(_Val)...);
 				}
 
 				template<class... _Valty>
 				void emplace_front(_Valty&&... _Val)
 				{
-					std::lock_guard<std::mutex> lk(lock);
+					std::unique_lock lk(lock);
 					container.emplace_front(std::forward<_Valty>(_Val)...);
 				}
 
 				void push_back(const T& obj)
 				{
-					std::lock_guard<std::mutex> lk(lock);
+					std::unique_lock lk(lock);
 					container.push_back(obj);
 				}
 
 				void push_back(T&& obj)
 				{
-					std::lock_guard<std::mutex> lk(lock);
+					std::unique_lock lk(lock);
 					container.push_back(std::move(obj));
 				}
 
 				bool push_back_if_not_exists(const T& obj)
 				{
-					std::lock_guard<std::mutex> lk(lock);
+					std::unique_lock lk(lock);
 					bool notExists = std::find(container.begin(), container.end(), obj) == container.end();
 					if (notExists)
 						container.push_back(obj);
@@ -138,7 +144,7 @@ namespace cppu
 
 				bool push_back_if_not_exists(T& obj)
 				{
-					std::lock_guard<std::mutex> lk(lock);
+					std::unique_lock lk(lock);
 					bool notExists = std::find(container.begin(), container.end(), obj) == container.end();
 					if(notExists)
 						container.push_back(obj);
@@ -148,31 +154,31 @@ namespace cppu
 
 				void push_front(const T& obj)
 				{
-					std::lock_guard<std::mutex> lk(lock);
+					std::unique_lock lk(lock);
 					container.push_front(obj);
 				}
 
 				void push_front(T&& obj)
 				{
-					std::lock_guard<std::mutex> lk(lock);
+					std::unique_lock lk(lock);
 					container.push_front(std::move(obj));
 				}
 
 				void pop_back()
 				{
-					std::lock_guard<std::mutex> lk(lock);
+					std::unique_lock lk(lock);
 					container.pop_back();
 				}
 
 				void pop_front()
 				{
-					std::lock_guard<std::mutex> lk(lock);
+					std::unique_lock lk(lock);
 					container.pop_front();
 				}
 
 				bool pop_back(T& obj)
 				{
-					std::lock_guard<std::mutex> lk(lock);
+					std::unique_lock lk(lock);
 					if (!container.empty())
 					{
 						obj = std::move(container.back());
@@ -186,7 +192,7 @@ namespace cppu
 
 				bool pop_front(T& obj)
 				{
-					std::lock_guard<std::mutex> lk(lock);
+					std::unique_lock lk(lock);
 					if (!container.empty())
 					{
 						obj = std::move(container.front());
@@ -200,70 +206,70 @@ namespace cppu
 
 				T& front()
 				{
-					//std::unique_lock<std::mutex> lk(lock);
+					std::shared_lock lk(lock);
 					return container.front();
 				}
 
 				T& back()
 				{
-					//std::unique_lock<std::mutex> lk(lock);
+					std::shared_lock lk(lock);
 					return container.back();
 				}
 
 				typename std::deque<T>::iterator find(const T& obj)
 				{
-					std::lock_guard<std::mutex> lk(lock);
+					std::shared_lock lk(lock);
 					return std::find(container.begin(), container.end(), obj);
 				}
 
 				template<class _Pr1>
 				typename std::deque<T>::iterator find_if(_Pr1 _Pred)
 				{
-					std::lock_guard<std::mutex> lk(lock);
+					std::shared_lock lk(lock);
 					return std::find_if(container.begin(), container.end(), _Pred);
 				}
 
 				void remove(T& obj)
 				{
-					std::lock_guard<std::mutex> lk(lock);
+					std::unique_lock lk(lock);
 					(void)std::remove(container.begin(), container.end(), obj);
 				}
 
 				template<class _Pr1>
 				void remove_if(_Pr1 _Pred)
 				{
-					std::lock_guard<std::mutex> lk(lock);
+					std::unique_lock lk(lock);
 					(void)std::remove_if(container.begin(), container.end(), _Pred);
 				}
 
 				template<class _Pr1>
 				void sort(_Pr1 _Pred)
 				{
-					std::lock_guard<std::mutex> lk(lock);
+					std::unique_lock lk(lock);
 					std::sort(container.begin(), container.end(), _Pred);
 				}
 
-				std::deque<T>& get_deque_and_lock(std::unique_lock<std::mutex>& lk)
+				std::deque<T>& get_deque_and_lock(std::unique_lock<std::shared_mutex>& lk)
 				{
-					lk = std::unique_lock<std::mutex>(lock);
+					lk = { lock };
 					return container;
 				}
 
-				const std::deque<T>& get_deque_and_lock(std::unique_lock<std::mutex>& lk) const
+				const std::deque<T>& get_deque_and_lock(std::shared_lock<std::shared_mutex>& lk) const
 				{
-					lk = std::unique_lock<std::mutex>(const_cast<std::mutex&>(lock));
+					lk = { lock };
 					return container;
 				}
 
 				inline void swap(std::deque<T>& swap)
 				{
-					std::lock_guard<std::mutex> lk(lock);
+					std::unique_lock lk(lock);
 					this->container.swap(swap);
 				}
 
 				inline void swap(deque<T>& swap)
 				{
-					std::lock_guard<std::mutex> lk(lock);
+					std::unique_lock lk(lock);
 					this->container.swap(swap.container);
 				}
 			};

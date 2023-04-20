@@ -31,7 +31,7 @@ namespace cppu
 		}
 			
 		template <hash_t hash>
-		inline constexpr hash_t compile_time_hash()
+		inline constexpr hash_t force_compile_eval()
 		{
 			return hash;
 		}
@@ -59,7 +59,7 @@ namespace cppu
 	}
 
 	#define CT_HASH(string)  __pragma(warning(suppress : 4307)) \
-		impl::compile_time_hash<impl::hash_function(string)>()
+		impl::force_compile_eval<impl::hash_function(string)>()
 
 	#else
 	// TODO: implement these with constexpr and warning ignores for other compilers

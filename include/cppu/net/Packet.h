@@ -1,7 +1,5 @@
 #pragma once
 
-#include "../dtypes.h"
-
 #include <vector>
 
 
@@ -13,21 +11,25 @@ namespace cppu
 		{
 		private:
 			mutable std::vector<char> data;
-			mutable uint pointer;
+			mutable uint32_t pointer;
 
-			inline void SetSize(uint size) { reinterpret_cast<uint&>(data.front()) = size; }
+			inline void SetSize(uint32_t size)
+			{
+				reinterpret_cast<uint32_t&>(data.front()) = size;
+				data.resize(size);
+			}
 
 		public:
 			Packet()
-				: data(sizeof(uint))
-				, pointer(sizeof(uint))
+				: data(sizeof(uint32_t))
+				, pointer(sizeof(uint32_t))
 			{
-				reinterpret_cast<uint&>(data[0]) = 0U;
+				reinterpret_cast<uint32_t&>(data.front()) = 0U;
 			}
 
-			Packet(std::vector<char>&& data, uint pointer = 0)
+			Packet(std::vector<char>&& data, uint32_t pointer = 0)
 				: data(std::move(data))
-				, pointer(pointer + sizeof(uint))
+				, pointer(pointer + sizeof(uint32_t))
 			{}
 
 			template<class T>
@@ -42,17 +44,15 @@ namespace cppu
 			inline void AddValue(const T& value)
 			{
 				SetSize(data.size() + sizeof(T));
-				data.resize(GetSize());
-
-				memcpy(&data[pointer], &value, sizeof(T));
+				memcpy(data.data() + pointer, &value, sizeof(T));
 				pointer += sizeof(T);
 			}
 
 			inline const void* GetData() const { return data.data(); }
-			inline uint GetSize() const { return reinterpret_cast<uint&>(data.front()); }
-			inline uint GetPacketSize() const { return reinterpret_cast<uint&>(data.front()) + sizeof(uint); }
-			inline void ResetPointer() const { pointer = sizeof(uint); }
-			inline void SetPointer(uint p) const { pointer = p + sizeof(uint); }
+			inline uint32_t GetSize() const { return reinterpret_cast<uint32_t&>(data.front()); }
+			inline uint32_t GetPacketSize() const { return reinterpret_cast<uint32_t&>(data.front()) + sizeof(uint32_t); }
+			inline void ResetPointer() const { pointer = sizeof(uint32_t); }
+			inline void SetPointer(uint32_t p) const { pointer = p + sizeof(uint32_t); }
 		};
 	}
 }

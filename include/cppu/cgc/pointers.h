@@ -364,15 +364,32 @@ namespace cppu
 				: pointer(nullptr)
 			{}
 
-
 			raw_ptr(T* ptr)
 				: pointer(ptr)
 			{}
-			
-			template <typename T2, typename = typename std::enable_if<std::is_base_of<T, typename T2::element_type>::value>::type>
-			raw_ptr(const T2& ptr)
+
+			raw_ptr(const strong_ptr<T>& ptr)
 				: pointer(ptr.pointer)
-			{}
+			{ }
+
+			raw_ptr(const weak_ptr<T>& ptr)
+				: pointer(ptr.pointer)
+			{ }
+			
+			template <typename T2, typename = std::enable_if_t<std::is_base_of_v<T, T2>>>
+			raw_ptr(const raw_ptr<T2>& ptr)
+				: pointer(ptr.pointer)
+			{ }
+
+			template <typename T2, typename = std::enable_if_t<std::is_base_of_v<T, T2>>>
+			raw_ptr(const strong_ptr<T2>&ptr)
+				: pointer(ptr.pointer)
+			{ }
+
+			template <typename T2, typename = std::enable_if_t<std::is_base_of_v<T, T2>>>
+			raw_ptr(const weak_ptr<T2>&ptr)
+				: pointer(ptr.pointer)
+			{ }
 
 			inline T* operator->() { return pointer; }
 			inline const T* operator->() const { return pointer; }

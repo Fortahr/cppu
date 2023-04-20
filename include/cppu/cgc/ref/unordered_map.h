@@ -37,7 +37,7 @@ namespace cppu
 					return constructor::construct_pointer(&object->get_value(), object->get_counter());
 				}
 
-				virtual bool add_as_garbage(void* ptr, const details::base_counter* c)
+				bool add_as_garbage(void* ptr, const details::base_counter* c) override
 				{
 					if constexpr (clean_proc == CLEAN_PROC::DIRECT)
 						BASE_MAP::base_destruct_slot(static_cast<const details::key_counter<K>*>(c)->get_key());
@@ -55,7 +55,7 @@ namespace cppu
 					return true;
 				}
 
-				virtual uint clean_garbage(uint max = std::numeric_limits<uint>::max())
+				size_t clean_garbage(size_t max = std::numeric_limits<size_t>::max()) override
 				{
 					if constexpr (clean_proc == CLEAN_PROC::DIRECT)
 						return max;

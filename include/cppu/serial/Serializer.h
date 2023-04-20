@@ -163,7 +163,7 @@ namespace cppu
 #if defined(DEBUG) || defined(_DEBUG)
 				memset(buffer, 0, sizeof(ValuePos)); // can be used to check if Finish() has already been called
 #endif
-				memcpy(buffer + sizeof(ValuePos), &version, sizeof(ArchiveVersion));
+				memcpy(reinterpret_cast<ValuePos*>(buffer + sizeof(ValuePos)), &version, sizeof(ArchiveVersion));
 
 			}
 
@@ -331,36 +331,46 @@ namespace cppu
 				: original(true)
 			{
 				buffer = static_cast<char*>(malloc(archive.writePosition));
-				memcpy(buffer, archive.buffer, archive.writePosition);
-
-				bufferSize = reinterpret_cast<ValuePos&>(archive.buffer[0]);
-				table = reinterpret_cast<VTableRead*>(buffer + bufferSize);
-
-				if (bufferSize + table->size < archive.writePosition)
+				if (buffer)
 				{
-					ValuePos offset = bufferSize + sizeof(table->size) + table->size * sizeof(table->rows);
-					referenceTable = reinterpret_cast<VReferenceTableRead*>(buffer + reinterpret_cast<ValuePos&>(buffer[offset]));
+					memcpy(buffer, archive.buffer, archive.writePosition);
 
-					references = new std::unordered_map<Reference, Pointer>();
+					bufferSize = reinterpret_cast<ValuePos&>(archive.buffer[0]);
+					table = reinterpret_cast<VTableRead*>(buffer + bufferSize);
+
+					if (bufferSize + table->size < archive.writePosition)
+					{
+						ValuePos offset = bufferSize + sizeof(table->size) + table->size * sizeof(table->rows);
+						referenceTable = reinterpret_cast<VReferenceTableRead*>(buffer + reinterpret_cast<ValuePos&>(buffer[offset]));
+
+						references = new std::unordered_map<Reference, Pointer>();
+					}
 				}
+				else
+					throw std::bad_alloc();
 			}
 
 			ArchiveReader(const std::string& string)
 				: original(true)
 			{
 				buffer = static_cast<char*>(malloc(string.size()));
-				memcpy(buffer, string.data(), string.size());
-
-				bufferSize = reinterpret_cast<ValuePos&>(buffer[0]);
-				table = reinterpret_cast<VTableRead*>(buffer + bufferSize);
-
-				if (bufferSize + table->size < string.size())
+				if (buffer)
 				{
-					ValuePos offset = bufferSize + sizeof(table->size) + table->size * sizeof(table->rows);
-					referenceTable = reinterpret_cast<VReferenceTableRead*>(buffer + reinterpret_cast<ValuePos&>(buffer[offset]));
+					memcpy(buffer, string.data(), string.size());
 
-					references = new std::unordered_map<Reference, Pointer>();
+					bufferSize = reinterpret_cast<ValuePos&>(buffer[0]);
+					table = reinterpret_cast<VTableRead*>(buffer + bufferSize);
+
+					if (bufferSize + table->size < string.size())
+					{
+						ValuePos offset = bufferSize + sizeof(table->size) + table->size * sizeof(table->rows);
+						referenceTable = reinterpret_cast<VReferenceTableRead*>(buffer + reinterpret_cast<ValuePos&>(buffer[offset]));
+
+						references = new std::unordered_map<Reference, Pointer>();
+					}
 				}
+				else
+					throw std::bad_alloc();
 			}
 
 			~ArchiveReader()

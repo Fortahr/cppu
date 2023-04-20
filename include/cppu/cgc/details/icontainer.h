@@ -2,8 +2,6 @@
 
 #include <limits>
 
-typedef unsigned int uint;
-
 namespace cppu
 {
 	namespace cgc
@@ -16,7 +14,7 @@ namespace cppu
 			{
 			public:
 				virtual bool add_as_garbage(void* ptr, const base_counter* c) = 0;
-				virtual uint clean_garbage(uint max = 4294967295u) = 0;
+				virtual size_t clean_garbage(size_t max = 4294967295u) = 0;
 			};
 		}
 	}

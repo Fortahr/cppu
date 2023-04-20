@@ -994,6 +994,9 @@ namespace cppu
 		template<typename T>
 		inline bool Serializer::Register()
 		{
+#define TYPE_NAME_ERROR(N) "Type #N is not a polymorphic type, consider making this type a polymorphic type or remove the registration."
+			static_assert(std::is_polymorphic_v<T>, TYPE_NAME_ERROR(T));
+
 			if constexpr (std::is_polymorphic_v<T>)
 			{
 				if constexpr (class_has_construct_v<T, T>)
@@ -1060,11 +1063,6 @@ namespace cppu
 				auto val = impl::class_hash<T>();
 
 				Serializer::ClassIDs().emplace(key, val);
-			}
-			else
-			{
-#define TYPE_NAME_ERROR(N) "Type #N is not a polymorphic type, consider making this type a polymorphic type or remove the registration."
-				static_assert(false, TYPE_NAME_ERROR(T));
 			}
 
 			return true;
