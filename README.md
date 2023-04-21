@@ -12,8 +12,8 @@ Crossplatform C++ library (c++17)
   cppu::function<void(int)>(&StaticFunction);
   cppu::function<void(int)>(&T::MemberFunction, &object); // ptr to object
   cppu::function<void(int)>(&T::MemberFunction, object); // may embed the object
-  cppu::function<void(int)>([]() { ... });
-  cppu::function<void(int)>([this]() { ... }); // embeds the lambda
+  cppu::function<void(int)>([](int x) { ... });
+  cppu::function<void(int)>([this](int x) { ... }); // embeds the lambda
   ```
 * No `std::bind` with placeholder types, directly construct member functions
 * Define `CPPU_FUNCTION_ENABLE_JUMP_RESOLVE` to resolve jmp tables, like those with incremental linking
