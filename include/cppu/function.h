@@ -148,26 +148,25 @@ namespace cppu
 	private:
 		enum tag_e : uintptr_t
 		{
-			TARGET_UNOWNED = 0,
-			TARGET_OWNED,
+			TARGET_LESS = 0,
 			TARGET_EMBEDDED,
-			FUNC_STATIC,
+			TARGET_UNOWNED,
+			TARGET_OWNED,
 
-			SHIFT = std::numeric_limits<uintptr_t>::digits - 3,
-			MASK = 0b11 << SHIFT,
+			SHIFT = std::numeric_limits<uintptr_t>::digits - 2,
+			MASK = uintptr_t(0b11) << SHIFT,
 
 			TARGET_UNOWNED_SHIFTED = TARGET_UNOWNED << SHIFT,
 			TARGET_OWNED_SHIFTED = TARGET_OWNED << SHIFT,
 			TARGET_EMBEDDED_SHIFTED = TARGET_EMBEDDED << SHIFT,
-			FUNC_STATIC_SHIFTED = FUNC_STATIC << SHIFT
+			TARGET_LESS_SHIFTED = TARGET_LESS << SHIFT
 		};
 
-		struct target_t
+		union target_t
 		{
-		private:
 			details::dummy* _ptr;
+			details::dummy _embed;
 
-		public:
 			target_t() noexcept = default;
 			target_t(const target_t&) noexcept = default;
 			target_t(target_t&& move) noexcept : _ptr(move._ptr) { move._ptr = nullptr; };
@@ -175,8 +174,6 @@ namespace cppu
 
 			target_t(details::dummy* ptr) noexcept : _ptr(ptr) { }
 			target_t(details::closure_t<>* ptr) noexcept : _ptr(static_cast<details::dummy*>(ptr)) { }
-
-			operator details::dummy* () const noexcept { return _ptr; }
 
 			void operator=(std::nullptr_t) noexcept { _ptr = nullptr; }
 			void operator=(const target_t& copy) noexcept { _ptr = copy._ptr; }
@@ -190,7 +187,7 @@ namespace cppu
 		{
 			_R(details::dummy::* _member)(_Args...);
 			_R(*_static)(_Args...);
-			intptr_t _address;
+			uintptr_t _address;
 
 			func_t() noexcept = default;
 			func_t(const func_t&) noexcept = default;
@@ -216,22 +213,17 @@ namespace cppu
 			return (_func._address & tag_e::MASK) == tag_e::TARGET_OWNED_SHIFTED;
 		}
 
-		inline details::dummy* target() const noexcept
-		{
-			return _target;
-		}
-
 		inline details::dummy* target_copy() const noexcept
 		{
 			return target_owned()
-				? static_cast<details::dummy*>(static_cast<details::closure_t<>*>(target())->copy())
-				: target();
+				? static_cast<details::dummy*>(static_cast<details::closure_t<>*>(_target._ptr)->copy())
+				: _target._ptr;
 		}
 
 		inline void target_destruct()
 		{
 			if (target_owned())
-				static_cast<details::closure_t<>*>(target())->destruct();
+				static_cast<details::closure_t<>*>(_target._ptr)->destruct();
 		}
 
 		template<typename _Func>
@@ -263,7 +255,7 @@ namespace cppu
 			: _target()
 			, _func(func)
 		{
-			_func._address |= tag_e::FUNC_STATIC_SHIFTED;
+			_func._address |= tag_e::TARGET_LESS_SHIFTED;
 		}
 
 		// member function
@@ -271,7 +263,9 @@ namespace cppu
 		function(_R(_B::* func)(_Args...), _T* target) noexcept
 			: _target((details::dummy*)static_cast<_B*>(target))
 			, _func(reinterpret_func(func))
-		{ }
+		{
+			_func._address |= tag_e::TARGET_UNOWNED_SHIFTED;
+		}
 
 		// member function embedded
 		template<typename _B, typename _T, typename = std::enable_if_t<std::is_base_of_v<_B, _T>>>
@@ -284,7 +278,10 @@ namespace cppu
 				_func._address |= tag_e::TARGET_EMBEDDED_SHIFTED;
 			}
 			else
+			{
 				new (&_target) target_t(new details::closure_t<_T>(target));
+				_func._address |= tag_e::TARGET_OWNED_SHIFTED;
+			}
 		}
 
 		// member function embedded
@@ -298,22 +295,29 @@ namespace cppu
 				_func._address |= tag_e::TARGET_EMBEDDED_SHIFTED;
 			}
 			else
+			{
 				new (&_target) target_t(new details::closure_t<_T>(std::move(target)));
+				_func._address |= tag_e::TARGET_OWNED_SHIFTED;
+			}
 		}
 
 		// lambda function
 		template<typename _Lambda, typename =
-			std::enable_if_t<details::is_lambda_invocable_v<decltype(&_Lambda::operator()), _R, _Args...>>>
+			std::enable_if_t<details::is_lambda_invocable_v<decltype(&std::decay_t<_Lambda>::operator()), _R, _Args...>>>
 		function(_Lambda&& lambda) noexcept
-			: _func(reinterpret_func(&_Lambda::operator()))
+			: _func(reinterpret_func(&std::decay_t<_Lambda>::operator()))
 		{
-			if constexpr (details::is_embeddable_v<_Lambda, sizeof(target_t)>)
+			typedef std::decay_t<_Lambda> _DecayedLambda;
+			if constexpr (details::is_embeddable_v<_DecayedLambda, sizeof(target_t)>)
 			{
-				new (&_target) _Lambda(std::move(lambda));
+				new (&_target) _DecayedLambda(std::move(lambda));
 				_func._address |= tag_e::TARGET_EMBEDDED_SHIFTED;
 			}
 			else
-				new (&_target) target_t(new details::closure_t<_Lambda>(std::move(lambda)));
+			{
+				new (&_target) target_t(new details::closure_t<_DecayedLambda>(std::move(lambda)));
+				_func._address |= tag_e::TARGET_OWNED_SHIFTED;
+			}
 		}
 
 		~function()
@@ -363,32 +367,24 @@ namespace cppu
 
 		__forceinline _R operator()(_Args... args) const
 		{
-			if (_func)
+			target_t target = _target;
+			func_t func = _func;
+
+			const uint_fast8_t tag = func._address >> tag_e::SHIFT;
+			func._address &= ~tag_e::MASK;
+
+#ifdef _MSC_VER
+			__assume(tag < 4);
+#endif
+			if (tag)
 			{
-				// use those registers
-				union { const target_t* ptr; details::dummy* object; } target;
-				target.ptr = &_target;
-				func_t func = _func;
-
-				const auto tag = (uintptr_t)func._address >> tag_e::SHIFT;
-				func._address &= ~tag_e::MASK;
-
-				switch (tag)
-				{
-				case tag_e::TARGET_UNOWNED:
-				case tag_e::TARGET_OWNED:
-					target.object = *target.ptr;
-					[[fallthrough]];
-				case tag_e::TARGET_EMBEDDED:
-					(target.object->*func._member)(std::forward<_Args>(args)...);
-					break;
-				default:
-					(*func._static)(std::forward<_Args>(args)...);
-					break;
-				}
+				details::dummy* obj = !(tag & 0b10) ? const_cast<details::dummy*>(&_target._embed) : target._ptr;
+				return (obj->*func._member)(std::forward<_Args>(args)...);
 			}
-			else
-				throw bad_function_call();
+			else if (func)
+				return (*func._static)(std::forward<_Args>(args)...);
+
+			throw bad_function_call();
 		}
 	};
 }
