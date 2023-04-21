@@ -81,17 +81,26 @@ namespace cppu
 				delete static_cast<closure_t*>(this);
 			}
 
+			// Force _B alignment (where our dummy is) but still keep the vtable ptr on the left of it
 			void* operator new(size_t size)
 			{
 #ifdef _WIN32
 				return _aligned_offset_malloc(sizeof(closure_t<>) + sizeof(_B), alignof(_B), sizeof(closure_t<>));
+#else
+				constexpr size_t align = std::max(sizeof(_B), sizeof(closure_t<>));
+				constexpr size_t size = align + sizeof(_B);
+				return (void*)((uintptr_t)std::aligned_alloc(align, size) + (align - sizeof(closure_t<>)));
 #endif
 			}
 
+			// compensate for _B alignment enforcement
 			void operator delete(void* ptr) noexcept
 			{
 #ifdef _WIN32
 				_aligned_free(ptr);
+#else
+				constexpr size_t align = std::max(sizeof(_B), sizeof(closure_t<>));
+				std::free((void*)((uinptr_t)ptr - (align - sizeof(closure_t<>))));
 #endif
 			}
 		};
