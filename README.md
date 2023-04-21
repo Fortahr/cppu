@@ -5,17 +5,17 @@ Crossplatform C++ library (c++17)
 
 ## Function wrapper, alternative to std::function
 * Faster and smaller than `std::function`, see [BENCHMARK.md](BENCHMARK.md)
-* Size <= `2 * sizeof(void*)`
-* Embedding of `sizeof(T) <= sizeof(void*)` objects/lambdas, i.e.: no heap alloc
+* Size == `2 * sizeof(void*)`
+* Embedding of `sizeof(T) <= sizeof(void*)` objects/lambdas, i.e.: no heap allocation
 * Supports lambda, static, and member functions
   ```cpp
   cppu::function<void(int)>(&StaticFunction);
-  cppu::function<void(int)>(&T::MemberFunction, &object); // ptr to object
-  cppu::function<void(int)>(&T::MemberFunction, object); // may embed the object
+  cppu::function<void(int)>(&T::MemberFunction, &object); // pointer to object
+  cppu::function<void(int)>(&T::MemberFunction, object); // copy object, may embed
   cppu::function<void(int)>([](int x) { ... });
   cppu::function<void(int)>([this](int x) { ... }); // embeds the lambda
   ```
-* No `std::bind` with placeholder types, directly construct member functions
+* No `std::bind` with placeholder types, just the member functions and a pointer
 * Define `CPPU_FUNCTION_ENABLE_JUMP_RESOLVE` to resolve jmp tables, like those with incremental linking
 * Uses pointer tagging (top 2 bits, masked out before invocation)
 
