@@ -4,15 +4,20 @@ Crossplatform C++ library (c++17)
 
 
 ## Function wrapper, alternative to std::function
-`cppu::function<R(Args...)>`
-* A nice small size of: `2 * sizeof(void*)`
-* Uses pointer tagging (upper 2 bits of the function pointer) to store object ownership and how to call, so no thunks
-* Supports lambda, static, and member functions without any external binding needs
-* Lambdas with `sizeof(Lambda) <= sizeof(void*)` and trivial de/constructors are embedded, so no heap allocation
-* Other objects with `sizeof(T) <= sizeof(void*) ` can be embedded as well
-* Has copy and destructor support for non embeddable types
-* Define macro `CPPU_FUNCTION_ENABLE_JUMP_RESOLVE` to resolve jmp ops, like those that come with incremental linking
-* Optimized for MSVC x86 and x86-64, other compilers still need testing
+* Faster and smaller than `std::function`, see [BENCHMARK.md](BENCHMARK.md)
+* Size <= `2 * sizeof(void*)`
+* Embedding of `sizeof(T) <= sizeof(void*)` objects/lambdas, i.e.: no heap alloc
+* Supports lambda, static, and member functions
+  ```cpp
+  cppu::function<void(int)>(&StaticFunction);
+  cppu::function<void(int)>(&T::MemberFunction, &object); // ptr to object
+  cppu::function<void(int)>(&T::MemberFunction, object); // may embed the object
+  cppu::function<void(int)>([]() { ... });
+  cppu::function<void(int)>([this]() { ... }); // embeds the lambda
+  ```
+* No `std::bind` with placeholder types, directly construct member functions
+* Define `CPPU_FUNCTION_ENABLE_JUMP_RESOLVE` to resolve jmp tables, like those with incremental linking
+* Uses pointer tagging (top 2 bits, masked out before invocation)
 
 ## Garbage collected containers with smart pointers
   - Strong and Weak pointer types for any of the containers,
