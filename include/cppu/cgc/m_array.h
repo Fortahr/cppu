@@ -2,7 +2,7 @@
 
 #include <mutex>
 
-#include "../ncm.h"
+#include "../misc/move_by_copy_t.h"
 #include "array.h"
 
 namespace cppu
@@ -15,7 +15,7 @@ namespace cppu
 		{
 		private:
 			std::vector<cgc::array<T, S, clean_proc>*> arrays;
-			ncm<std::mutex> lock;
+			move_by_copy_t<std::mutex> lock;
 
 		public:
 			struct iterator
@@ -239,7 +239,3 @@ namespace cppu
 		};
 	}
 }
-
-#ifdef CPPU_USE_NAMESPACE
-using namespace cppu;
-#endif

@@ -13,7 +13,3 @@ namespace cppu
 		move_by_copy_t<_T>& operator=(const move_by_copy_t&) { return *new(this) _T(); }
 	};
 }
-
-#ifdef CPPU_USE_NAMESPACE
-using namespace cppu;
-#endif

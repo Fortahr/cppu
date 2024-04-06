@@ -15,15 +15,14 @@ namespace cppu
 			constexpr auto template_hash() noexcept
 			{
 #ifdef __clang__
-				const char* name = __PRETTY_FUNCTION__;
-				return cppu::impl::hash_function(name + strlen("auto cppu::serial::impl::template_name() [T = "), strchr(name, '<'));
+				constexpr const char* name = __PRETTY_FUNCTION__ + cppu::strlen("auto cppu::serial::impl::template_hash() [T = ");
+				return cppu::hash(name, strchr(name, '<'));
 #elif defined(__GNUC__)
-				const char* name = __PRETTY_FUNCTION__;
-				return cppu::impl::hash_function(name + strlen("constexpr auto cppu::serial::impl::template_name() [with T = "), strchr(name, '<'));
+				constexpr const char* name = __PRETTY_FUNCTION__ + cppu::strlen("constexpr auto cppu::serial::impl::template_hash() [with T = ");
+				return cppu::hash(name, strchr(name, '<'));
 #elif defined(_MSC_VER)
-				const char* name = __FUNCSIG__;
-				name += strlen("auto __cdecl cppu::serial::impl::template_name<class ");
-				return cppu::impl::hash_function(name, strchr(name, '<'));
+				constexpr const char* name = __FUNCSIG__ + cppu::strlen("auto __cdecl cppu::serial::impl::template_hash<class ");
+				return cppu::hash(name, strchr(name, '<'));
 #else
 				static_assert(false, "no implementation found");
 #endif
@@ -33,14 +32,14 @@ namespace cppu
 			constexpr auto class_hash() noexcept
 			{
 #ifdef __clang__
-				const char* name = __PRETTY_FUNCTION__;
-				return cppu::impl::hash_function(name + strlen("auto cppu::serial::impl::class_hash() [T = "), name + strlen(name) - strlen("]"));
+				constexpr const char* name = __PRETTY_FUNCTION__;
+				return cppu::hash(name + cppu::strlen("auto cppu::serial::impl::class_hash() [T = "), cppu::strlen(name) - cppu::strlen("]"));
 #elif defined(__GNUC__)
-				const char* name = __PRETTY_FUNCTION__;
-				return cppu::impl::hash_function(name + strlen("constexpr auto cppu::serial::impl::class_hash() [with T = "), name + strlen(name) - strlen("]"));
+				constexpr const char* name = __PRETTY_FUNCTION__;
+				return cppu::hash(name + cppu::strlen("constexpr auto cppu::serial::impl::class_hash() [with T = "), cppu::strlen(name) - cppu::strlen("]"));
 #elif defined(_MSC_VER)
-				const char* name = __FUNCSIG__;
-				return cppu::impl::hash_function(name + strlen("auto __cdecl cppu::serial::impl::class_hash<class "), name + strlen(name) - strlen(">(void) noexcept"));
+				constexpr const char* name = __FUNCSIG__;
+				return cppu::hash(name + cppu::strlen("auto __cdecl cppu::serial::impl::class_hash<class "), cppu::strlen(name) - cppu::strlen(">(void) noexcept"));
 #else
 				static_assert(false, "no implementation found");
 #endif
@@ -66,8 +65,6 @@ namespace cppu
 
 		inline void Serialize() {}
 		inline void DeSerialize() {}
-
-
 
 		template <class T>
 		inline void MemcpySerialize(cppu::serial::ArchiveWriter& writer, const T& data)
@@ -760,9 +757,9 @@ namespace cppu
 				if (found != references->end())
 				{
 					if constexpr (std::is_pointer_v<T>)
-						data = found->second.operator() < ElementType* > ();
+						data = found->second.operator()<ElementType*> ();
 					else
-						data = found->second.operator() < T > ();
+						data = found->second.operator()<T> ();
 				}
 				else
 				{

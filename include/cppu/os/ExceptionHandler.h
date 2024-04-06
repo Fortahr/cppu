@@ -191,7 +191,3 @@ namespace cppu
 		};
 	}
 }
-
-#ifdef CPPU_USE_NAMESPACE
-using namespace cppu;
-#endif

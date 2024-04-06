@@ -5,6 +5,7 @@
 
 #include "./detail/config.h"
 #include "./Net.h"
+
 #include <asio/ip/address.hpp>
 #include <asio/ip/host_name.hpp>
 #include <asio/ip/udp.hpp>
@@ -90,7 +91,3 @@ namespace cppu
 		};
 	}
 }
-
-#ifdef CPPU_USE_NAMESPACE
-using namespace cppu;
-#endif

@@ -114,7 +114,7 @@ namespace cppu
 				socket.async_send_to(asio::buffer(data, size), asio::ip::udp::endpoint(remoteEndPoint.endPoint.address(), remoteEndPoint.endPoint.port()),
 					std::bind(&UDPSocket::SendHandler, this, std::placeholders::_1));
 
-				details::threadsWait().notify_one();
+				details::threadsWait.notify_one();
 			}
 
 			std::size_t Receive(void* data, std::size_t size)
@@ -128,7 +128,7 @@ namespace cppu
 				socket.async_receive(asio::buffer(data, size),
 					std::bind(&UDPSocket::ReceiveHandler, this, std::placeholders::_1));
 
-				details::threadsWait().notify_one();
+				details::threadsWait.notify_one();
 			}
 
 			std::size_t Receive(void* data, std::size_t size, EndPoint& remoteEndPoint)
@@ -142,12 +142,8 @@ namespace cppu
 				socket.async_receive_from(asio::buffer(data, size), reinterpret_cast<asio::ip::udp::endpoint&>(remoteEndPoint.endPoint),
 					std::bind(&UDPSocket::ReceiveHandler, this, std::placeholders::_1));
 
-				details::threadsWait().notify_one();
+				details::threadsWait.notify_one();
 			}
 		};
 	}
 }
-
-#ifdef CPPU_USE_NAMESPACE
-using namespace cppu;
-#endif

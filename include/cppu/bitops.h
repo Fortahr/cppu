@@ -125,7 +125,3 @@ namespace cppu
 			return clr_bit<T>(a, bit);
 	}
 }
-
-#ifdef CPPU_USE_NAMESPACE
-using namespace cppu;
-#endif

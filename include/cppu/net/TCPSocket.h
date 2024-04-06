@@ -99,7 +99,7 @@ namespace cppu
 				socket.async_connect(asio::ip::tcp::endpoint(remoteEndPoint.endPoint.address(), remoteEndPoint.endPoint.port()),
 					std::bind(&TCPSocket::ConnectHandler, this, std::placeholders::_1, callback));
 
-				details::threadsWait().notify_one();
+				details::threadsWait.notify_one();
 			}
 
 			bool IsOpen() const
@@ -149,7 +149,7 @@ namespace cppu
 				socket.async_send(asio::buffer(data, size),
 					std::bind(&TCPSocket::SendHandler, this, std::placeholders::_1));
 				
-				details::threadsWait().notify_one();
+				details::threadsWait.notify_one();
 			}
 
 			std::size_t Receive(void* data, std::size_t size)
@@ -163,12 +163,8 @@ namespace cppu
 				socket.async_receive(asio::buffer(data, size),
 					std::bind(&TCPSocket::ReceiveHandler, this, std::placeholders::_1));
 
-				details::threadsWait().notify_one();
+				details::threadsWait.notify_one();
 			}
 		};
 	}
 }
-
-#ifdef CPPU_USE_NAMESPACE
-using namespace cppu;
-#endif

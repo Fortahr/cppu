@@ -6,36 +6,34 @@ namespace cppu
 {
 	namespace logic
 	{
-		std::size_t LevenshteinDistance(const std::string& s1, const std::string& s2)
+		std::size_t LevenshteinDistance(std::string_view s1, std::string_view s2, size_t insert_cost, size_t delete_cost, size_t replace_cost)
 		{
 			if (s1.size() > s2.size())
-				return LevenshteinDistance(s2, s1);
+				std::swap(s2, s1);
 
-			const std::size_t min_size = s1.size(), max_size = s2.size();
-			std::vector<std::size_t> lev_dist(min_size + 1);
+			std::vector<size_t> lev_dist(s1.size() + 1);
 
-			for (std::size_t i = 0; i <= min_size; ++i)
-				lev_dist[i] = i;
+			for (size_t i = 0; i <= s1.size(); ++i)
+				lev_dist[i] = i * delete_cost;
 
-			for (std::size_t j = 1; j <= max_size; ++j)
+			for (size_t j = 1; j <= s2.size(); ++j)
 			{
-				std::size_t previous_diagonal_save;
-				std::size_t previous_diagonal = lev_dist[0];
-				++lev_dist[0];
+				size_t previous_diagonal = lev_dist[0];
+				lev_dist[0] += insert_cost;
 
-				for (std::size_t i = 1; i <= min_size; ++i)
+				for (size_t i = 1; i <= s1.size(); ++i)
 				{
-					previous_diagonal_save = lev_dist[i];
-					if (s1[i - 1] == s2[j - 1])
-						lev_dist[i] = previous_diagonal;
-					else
-						lev_dist[i] = std::min(std::min(lev_dist[i - 1], lev_dist[i]), previous_diagonal) + 1;
+					size_t temp = lev_dist[i];
 
-					previous_diagonal = previous_diagonal_save;
+					lev_dist[i] = s1[i - 1] == s2[j - 1]
+						? previous_diagonal
+						: std::min(std::min(lev_dist[i - 1] + delete_cost, lev_dist[i] + insert_cost), previous_diagonal + replace_cost);
+
+					previous_diagonal = temp;
 				}
 			}
 
-			return lev_dist[min_size];
+			return lev_dist[s1.size()];
 		}
 
 		int LevenshteinDistance(std::string::const_iterator s1_begin, std::string::const_iterator s1_end,
@@ -66,7 +64,7 @@ namespace cppu
 					if (s1_begin[i - 1] == s2_begin[j - 1])
 						lev_dist[i] = previous_diagonal;
 					else
-						lev_dist[i] = std::min(std::min(lev_dist[i - 1] + delete_cost, lev_dist[i] + insert_cost), previous_diagonal + replace_cost);
+						lev_dist[i] = std::min(std::min(previous_diagonal + delete_cost, lev_dist[i] + insert_cost), previous_diagonal + replace_cost);
 
 					previous_diagonal = previous_diagonal_save;
 				}
@@ -76,7 +74,3 @@ namespace cppu
 		}
 	}
 }
-
-#ifdef CPPU_USE_NAMESPACE
-using namespace cppu;
-#endif
